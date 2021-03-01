@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_initials"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/contact_list_item_shape_bg"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_contact_initials"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:fontFamily="@font/poppins"
+            android:text="NG"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="John Parker"
+            android:textColor="@color/black_two"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_contact_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Project Manager"
+            android:textColor="@color/warm_grey_two"
+            android:textSize="9sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_contact_add_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/poppins_medium"
+        android:text="28 Jan"
+        android:textColor="@color/black_two"
+        android:textSize="12sp" />
+
+</LinearLayout>

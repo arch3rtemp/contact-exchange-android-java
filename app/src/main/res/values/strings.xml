@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ContactsExchangeJava</string>
+    <string name="home_cards">My Cards</string>
+    <string name="cards_text">Organization</string>
+</resources>
