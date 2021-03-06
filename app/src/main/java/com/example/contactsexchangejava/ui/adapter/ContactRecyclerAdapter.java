@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.ui.model.Contact;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecyclerAdapter.ContactHolder> {
@@ -115,7 +114,7 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
             String initials = contact.getFirstName().substring(0, 1) + contact.getLastName().substring(0, 1);
             tvInitials.setText(initials);
             tvPosition.setText(contact.getPosition());
-            tvAddDate.setText(contact.getFormattedDate());
+            tvAddDate.setText(contact.getCreateDate());
             itemView.setOnClickListener(v -> clickListener.contactClicked(contact, getAdapterPosition()));
             Drawable background = llInitials.getBackground();
             setBackgroundColorAndRetainShape(contact.getColor(), background);

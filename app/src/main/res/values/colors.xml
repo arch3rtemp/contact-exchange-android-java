@@ -13,9 +13,15 @@
     <color name="light_navy">#1451a4</color>
     <color name="darkish_purple">#951d61</color>
     <color name="purple">#771E9D</color>
-    <color name="warm_grey_two">#989898</color>
+    <color name="warm_grey_two">#939393</color>
     <color name="soft_green">#75c463</color>
     <color name="clay_warm">#be6c60</color>
     <color name="clay">#be8060</color>
     <color name="dusky_rose">#be607c</color>
+    <color name="aqua_marine">#31d7cc</color>
+    <color name="ugly_yellow">#d7de00</color>
+    <color name="shamrock_green">#00d932</color>
+    <color name="black_three">#363636</color>
+    <color name="pumpkin">#e38100</color>
+    <color name="hospital_green">#84e397</color>
 </resources>

@@ -10,8 +10,7 @@
         android:id="@+id/ll_home_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginHorizontal="20dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingVertical="10dp"
@@ -38,7 +37,7 @@
                 android:layout_height="28dp"
                 android:fontFamily="@font/poppins"
                 android:gravity="center"
-                android:text="NG"
+                android:text="@string/test_initials"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 

@@ -1,6 +1,7 @@
 package com.example.contactsexchangejava.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.ui.adapter.ContactRecyclerAdapter;
 import com.example.contactsexchangejava.ui.model.Contact;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     TextView card;
     RecyclerView rvCards;
     RecyclerView rvContacts;
+    FloatingActionButton fab;
     ContactRecyclerAdapter rvCardAdapter;
     ContactRecyclerAdapter rvContactAdapter;
     LinearLayoutManager llCardManager;
@@ -33,16 +36,33 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        initUI(view);
+        setListeners();
         createCardRecyclerView(view);
         createContactRecyclerView(view);
+
+    }
+
+    private void initUI(View view) {
+        fab = view.findViewById(R.id.fb_add);
+    }
+
+    private void setListeners() {
+        fab.setOnClickListener(v -> {
+            CreateOrEditCardFragment createCardFragment = new CreateOrEditCardFragment(true);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_container, createCardFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
     }
 
     public void createCardRecyclerView(View view) {
@@ -54,7 +74,29 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         rvCards.setLayoutManager(llCardManager);
         rvCards.setAdapter(rvCardAdapter);
         rvCardAdapter.setContactClickListener(this);
+        observeRecyclerListener();
 //        rvCardAdapter.addContacts(getMyCards());
+    }
+
+    public void observeRecyclerListener() {
+        rvCards.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dx > 0) {
+                    fab.setVisibility(View.INVISIBLE);
+                } else {
+                    fab.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
     }
 
     public void createContactRecyclerView(View view) {
@@ -73,6 +115,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         List<Contact> cards = new ArrayList<>();
         cards.add(new Contact("Archil", "Asanishvili","Georgian-American University", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", getResources().getColor(R.color.light_navy), true));
         cards.add(new Contact("Archil", "Asanishvili","Terabank", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", getResources().getColor(R.color.purple), true));
+//        cards.add(new Contact("Archil", "Asanishvili","Terabank", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", getResources().getColor(R.color.purple), true));
         return cards;
     }
 
@@ -82,8 +125,8 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         contacts.add(new Contact("Alice", "Worth", "GAU", "Office Manager", "worth@gau.ge", "+995 577 783189", "+995 598 48 84 34", getResources().getColor(R.color.clay), false));
         contacts.add(new Contact("Brad", "Wilson", "GAU", "Graphic Designer", "wilson@gau.ge", "+995 577 783189", "+995 598 48 84 34", getResources().getColor(R.color.dusky_rose), false));
         contacts.add(new Contact("Jack", "Jackson", "GAU", "Art Director", "jackson@gau.ge", "+995 577 783189", "+995 598 48 84 34", getResources().getColor(R.color.soft_green),false));
-        contacts.addAll(contacts);
-        contacts.addAll(contacts);
+//        contacts.addAll(contacts);
+//        contacts.addAll(contacts);
         return contacts;
     }
 

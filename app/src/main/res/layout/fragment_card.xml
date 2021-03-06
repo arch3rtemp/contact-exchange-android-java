@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,9 @@
         android:layout_height="168dp"
         android:layout_marginHorizontal="20dp"
         android:background="@drawable/card_shape_bg"
+        android:layout_marginTop="5dp"
         android:paddingStart="20dp"
+        android:paddingEnd="14dp"
         android:paddingTop="20dp"
         android:paddingBottom="14dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Archil Asanishvili"
+            android:text="@string/test_name"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,40 +37,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="UI/UX Designer"
+            android:text="@string/test_position"
             android:textColor="@color/white"
             android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:ignore="SmallSp" />
 
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="a.asanishvili@gau.edu.ge"
+            android:text="@string/test_email"
             android:textColor="@color/white"
             android:textSize="13sp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_phone_number_1"
+            app:layout_constraintBottom_toTopOf="@+id/tv_phone_mobile"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tv_phone_number_1"
+            android:id="@+id/tv_phone_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="+995 032 295 12 32"
+            android:text="@string/test_mobile"
             android:textColor="@color/white"
             android:textSize="13sp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_phone_number_2"
+            app:layout_constraintBottom_toTopOf="@+id/tv_phone_office"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tv_phone_number_2"
+            android:id="@+id/tv_phone_office"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="+995 555 09 09 70"
+            android:text="@string/test_office"
             android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -100,20 +104,22 @@
                 app:layout_constraintBottom_toTopOf="@+id/tv_edit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/edit" />
 
             <TextView
                 android:id="@+id/tv_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Edit"
+                android:text="@string/edit"
                 android:textColor="@color/black_two"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_pencil" />
+                app:layout_constraintTop_toBottomOf="@id/iv_pencil"
+                tools:ignore="SmallSp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -134,20 +140,22 @@
                 app:layout_constraintBottom_toTopOf="@+id/tv_delete"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/delete" />
 
             <TextView
                 android:id="@+id/tv_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Delete"
+                android:text="@string/delete"
                 android:textColor="@color/black_two"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_bin" />
+                app:layout_constraintTop_toBottomOf="@id/iv_bin"
+                tools:ignore="SmallSp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

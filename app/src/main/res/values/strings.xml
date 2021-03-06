@@ -2,4 +2,27 @@
     <string name="app_name">ContactsExchangeJava</string>
     <string name="home_cards">My Cards</string>
     <string name="cards_text">Organization</string>
+    <string name="create_new_card">Create new card</string>
+    <string name="edit_your_card">Edit your card</string>
+    <string name="create">Create</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="full_name">Full Name</string>
+    <string name="company">Company</string>
+    <string name="position">Position</string>
+    <string name="email">Email</string>
+    <string name="tel">Tel</string>
+    <string name="tel_office">Tel Office</string>
+    <string name="color">Color</string>
+    <string name="fab_add">Add Card</string>
+    <string name="find_contact">Find Contact</string>
+    <string name="contact_list">Contact list</string>
+    <string name="test_name">John Doe</string>
+    <string name="test_position">UI/UX Designer</string>
+    <string name="test_email">j.doe@gau.edu.ge</string>
+    <string name="test_mobile">+995 555 09 09 70</string>
+    <string name="test_office">+995 032 295 12 32</string>
+    <string name="test_initials">JD</string>
+    <string name="test_date">25 Jan</string>
 </resources>
