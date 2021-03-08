@@ -1,4 +1,4 @@
-package com.example.contactsexchangejava.ui;
+package com.example.contactsexchangejava.ui.fragments;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;

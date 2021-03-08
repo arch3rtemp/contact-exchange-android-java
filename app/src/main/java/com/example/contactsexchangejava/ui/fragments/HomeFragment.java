@@ -1,7 +1,7 @@
-package com.example.contactsexchangejava.ui;
+package com.example.contactsexchangejava.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactsexchangejava.R;
+import com.example.contactsexchangejava.ui.activities.CardActivity;
 import com.example.contactsexchangejava.ui.adapter.ContactRecyclerAdapter;
 import com.example.contactsexchangejava.ui.model.Contact;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -56,12 +57,9 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
 
     private void setListeners() {
         fab.setOnClickListener(v -> {
-            CreateOrEditCardFragment createCardFragment = new CreateOrEditCardFragment(true);
-
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_container, createCardFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            Intent intent = new Intent(getContext(), CardActivity.class);
+            intent.putExtra("isCreate", true);
+            startActivity(intent);
         });
     }
 
@@ -137,16 +135,11 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
 
     @Override
     public void contactClicked(Contact contact, int contactPosition) {
-        CardFragment cardFragment;
-        if (contact.getMe()) {
-            cardFragment = new CardFragment(true);
-        } else {
-            cardFragment = CardFragment.getInstance();
-        }
+        
+        Intent intent = new Intent(getContext(), CardActivity.class);
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, cardFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        intent.putExtra("isMe", contact.getMe());
+
+        startActivity(intent);
     }
 }

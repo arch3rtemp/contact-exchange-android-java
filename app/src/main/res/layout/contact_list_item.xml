@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
@@ -19,14 +20,14 @@
             android:layout_height="25dp"
             android:gravity="center"
             android:fontFamily="@font/poppins"
-            android:text="NG"
+            android:text="@string/test_initials"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_weight="1"
@@ -37,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="John Parker"
+            android:text="@string/test_name"
             android:textColor="@color/black_two"
             android:textSize="12sp" />
 
@@ -46,9 +47,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Project Manager"
+            android:text="@string/test_position"
             android:textColor="@color/warm_grey_two"
-            android:textSize="9sp" />
+            android:textSize="9sp"
+            tools:ignore="SmallSp" />
 
     </LinearLayout>
 
@@ -58,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:fontFamily="@font/poppins_medium"
-        android:text="28 Jan"
+        android:text="@string/test_date"
         android:textColor="@color/black_two"
         android:textSize="12sp" />
 

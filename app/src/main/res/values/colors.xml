@@ -24,4 +24,7 @@
     <color name="black_three">#363636</color>
     <color name="pumpkin">#e38100</color>
     <color name="hospital_green">#84e397</color>
+    <color name="pastel_red">#e46363</color>
+    <color name="pinkish_grey">#bdbdbd</color>
+    <color name="dark_green">#2BB673</color>
 </resources>
