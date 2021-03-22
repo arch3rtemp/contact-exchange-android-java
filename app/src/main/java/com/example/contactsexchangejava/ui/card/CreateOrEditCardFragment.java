@@ -58,14 +58,9 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     String email;
     String phoneMobile;
     String phoneOffice;
-    ICreateOrEditCardContract.Presenter presenter;
+//    ICreateOrEditCardContract.Presenter presenter;
+    CreateOrEditCardPresenter presenter;
 
-
-
-
-    public CreateOrEditCardFragment(boolean isCreate) {
-        this.isCreate = isCreate;
-    }
 
     @Nullable
     @Override
@@ -81,12 +76,14 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     }
 
     public void initUI() {
-        setPresenter(new CreateOrEditCardPresenter(this));
+        presenter = new CreateOrEditCardPresenter(this);
+//        setPresenter(new CreateOrEditCardPresenter(this));
         presenter.onViewCreated(Objects.requireNonNull(getActivity()));
         clColorPalette = view.findViewById(R.id.cl_color_palette);
         clCreateOrEdit = view.findViewById(R.id.cl_create_or_edit);
         tvCardHeader = view.findViewById(R.id.tv_card_header);
         btnCreateOrSave = view.findViewById(R.id.btn_create_or_save);
+        isCreate = getArguments().getBoolean("isCreate", false);
         initEditTextFields();
 
         if (!isCreate) {
@@ -108,8 +105,8 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         etCompany = view.findViewById(R.id.et_company);
         etPosition = view.findViewById(R.id.et_position);
         etEmail = view.findViewById(R.id.et_email);
-        etPhoneMobile = view.findViewById(R.id.tv_phone_mobile);
-        etPhoneOffice = view.findViewById(R.id.tv_phone_office);
+        etPhoneMobile = view.findViewById(R.id.et_tel);
+        etPhoneOffice = view.findViewById(R.id.et_tel_office);
     }
 
     private void initColorsView() {
@@ -177,21 +174,21 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             if (cardBackground instanceof ColorDrawable)
                 color = ((ColorDrawable) cardBackground).getColor();
 
-            firstName = etFullName.toString();
+            firstName = etFullName.getText().toString();
             lastName = "";
             if (firstName.contains(" ")) {
                 lastName = firstName.substring(firstName.indexOf(" "), firstName.length());
                 firstName = firstName.substring(0, firstName.indexOf(" "));
             }
 
-            company = etCompany.toString();
-            position = etPosition.toString();
-            email = etEmail.toString();
-            phoneMobile = etPhoneMobile.toString();
-            phoneOffice = etPhoneOffice.toString();
+            company = etCompany.getText().toString();
+            position = etPosition.getText().toString();
+            email = etEmail.getText().toString();
+            phoneMobile = etPhoneMobile.getText().toString();
+            phoneOffice = etPhoneOffice.getText().toString();
 
             if (isCreate) {
-                dataManager.createContact(new Contact(
+                presenter.insert(new Contact(
                         firstName, lastName, company, position, email, phoneMobile, phoneOffice, color, isMe
                 ));
                 showToastMessage("Contact created");
@@ -241,6 +238,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void setPresenter(ICreateOrEditCardContract.Presenter presenter) {
-        this.presenter = presenter;
+//        this.presenter = presenter;
     }
 }

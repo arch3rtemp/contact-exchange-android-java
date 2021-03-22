@@ -1,6 +1,7 @@
 package com.example.contactsexchangejava.db;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 

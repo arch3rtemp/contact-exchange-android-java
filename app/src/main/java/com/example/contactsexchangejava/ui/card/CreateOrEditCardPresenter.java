@@ -8,6 +8,7 @@ import android.graphics.drawable.ShapeDrawable;
 import android.util.Log;
 
 import com.example.contactsexchangejava.db.DataManager;
+import com.example.contactsexchangejava.db.models.Contact;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -37,6 +38,16 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
             ((ColorDrawable) background).setColor(color);
         else
             Log.w("TAG", "Not a valid background type");
+    }
+
+    public void insert(Contact contact) {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        dataManager.createContact(contact);
+                    }
+                }).start();
     }
 
     @Override

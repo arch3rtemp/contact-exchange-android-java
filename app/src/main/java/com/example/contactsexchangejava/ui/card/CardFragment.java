@@ -1,6 +1,8 @@
 package com.example.contactsexchangejava.ui.card;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,6 +39,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
     TextView tvPhoneMobile;
     TextView tvPhoneOffice;
     ICardContract.Presenter presenter;
+    AppCompatActivity activity;
 
     public CardFragment(Boolean isMe) {
         this.isMe = isMe;
@@ -68,6 +72,20 @@ public class CardFragment extends Fragment implements ICardContract.View {
         getCard(id);
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (AppCompatActivity) context;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        activity = null;
+        view = null;
+        presenter.onDestroy();
+    }
+
     private void getCard(int id) {
         presenter.getContactById(id);
     }
@@ -84,10 +102,12 @@ public class CardFragment extends Fragment implements ICardContract.View {
 
     private void setListeners() {
         clEdit.setOnClickListener(v -> {
-            CreateOrEditCardFragment editCardFragment = new CreateOrEditCardFragment(false);
-
+            CreateOrEditCardFragment editCardFragment = new CreateOrEditCardFragment();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isCreate", false);
+            editCardFragment.setArguments(bundle);
             FragmentTransaction transaction;
-            transaction = getParentFragmentManager().beginTransaction();
+            transaction = activity.getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.fl_main_frame_container, editCardFragment);
             transaction.addToBackStack(null);
             transaction.commit();
@@ -122,7 +142,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
 
         DeletedFragment deletedFragment = new DeletedFragment();
         FragmentTransaction transaction;
-        transaction = getParentFragmentManager().beginTransaction();
+        transaction = activity.getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_main_frame_container, deletedFragment);
         transaction.commit();
     }

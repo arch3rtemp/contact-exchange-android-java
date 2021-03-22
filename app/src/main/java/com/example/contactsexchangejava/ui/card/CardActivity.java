@@ -40,8 +40,10 @@ public class CardActivity extends AppCompatActivity {
     }
 
     private void initCreateCardFragment() {
-        CreateOrEditCardFragment createCardFragment = new CreateOrEditCardFragment(true);
-
+        CreateOrEditCardFragment createCardFragment = new CreateOrEditCardFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isCreate", true);
+        createCardFragment.setArguments(bundle);
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fl_main_frame_container, createCardFragment);
 //        transaction.addToBackStack(null);

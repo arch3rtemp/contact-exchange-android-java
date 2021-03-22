@@ -18,6 +18,7 @@ import com.example.contactsexchangejava.ui.card.CardActivity;
 import com.example.contactsexchangejava.db.models.Contact;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements ContactRecyclerAdapter.IContactClickListener, IHomeContract.View{
@@ -32,28 +33,27 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     LinearLayoutManager llCardManager;
     LinearLayoutManager llContactManager;
     IHomeContract.PresenterI presenter;
-    List<Contact> myCards;
-    List<Contact> contacts;
+    List<Contact> myCards = new ArrayList<>();
+    List<Contact> contacts = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        this.view = inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        this.view = view;
-        initUI(view);
+        initUI();
         setListeners();
 
         getMyCards();
         getContacts();
     }
 
-    private void initUI(View view) {
+    private void initUI() {
         fab = view.findViewById(R.id.fb_add);
         setPresenter(new HomePresenter(this));
         presenter.onViewCreated(getActivity());
@@ -145,6 +145,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     @Override
     public void onDestroy() {
         super.onDestroy();
+        view = null;
         presenter.onDestroy();
     }
 
