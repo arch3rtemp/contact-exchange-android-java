@@ -1,4 +1,4 @@
-package com.example.contactsexchangejava.ui.model;
+package com.example.contactsexchangejava.db.models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
-@Entity
+@Entity(tableName = "contact_table")
 public class Contact implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
@@ -41,16 +41,18 @@ public class Contact implements Serializable {
     @ColumnInfo(name = "is_me")
     private boolean isMe;
 
-    public Contact(String name, String surname, String job, String pos, String email, String phone1, String phone2, int color, boolean me) {
-        firstName = name;
-        lastName = surname;
+    public Contact() {}
+
+    public Contact(String firstName, String lastName, String job, String position, String email, String phoneMobile, String phoneOffice, int color, boolean isMe) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.job = job;
-        position = pos;
+        this.position = position;
         this.email = email;
-        phoneMobile = phone1;
-        phoneOffice = phone2;
+        this.phoneMobile = phoneMobile;
+        this.phoneOffice = phoneOffice;
         this.color = color;
-        this.isMe = me;
+        this.isMe = isMe;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             LocalDate today = LocalDate.now();
@@ -59,6 +61,50 @@ public class Contact implements Serializable {
             Calendar date = Calendar.getInstance();
             createDate = date.toString();
         }
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneMobile(String phoneMobile) {
+        this.phoneMobile = phoneMobile;
+    }
+
+    public void setPhoneOffice(String phoneOffice) {
+        this.phoneOffice = phoneOffice;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    public void setMe(boolean me) {
+        isMe = me;
     }
 
     public int getId() {

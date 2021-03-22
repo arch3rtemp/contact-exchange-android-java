@@ -1,4 +1,4 @@
-package com.example.contactsexchangejava.ui.adapter;
+package com.example.contactsexchangejava.ui.home;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactsexchangejava.R;
-import com.example.contactsexchangejava.ui.model.Contact;
+import com.example.contactsexchangejava.db.models.Contact;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.contactsexchangejava.ui.fragments;
+package com.example.contactsexchangejava.ui.card;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

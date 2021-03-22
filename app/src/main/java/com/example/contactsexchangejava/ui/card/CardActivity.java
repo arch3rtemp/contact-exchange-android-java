@@ -1,4 +1,4 @@
-package com.example.contactsexchangejava.ui.activities;
+package com.example.contactsexchangejava.ui.card;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 
 import com.example.contactsexchangejava.R;
-import com.example.contactsexchangejava.ui.fragments.CardFragment;
-import com.example.contactsexchangejava.ui.fragments.CreateOrEditCardFragment;
 
 public class CardActivity extends AppCompatActivity {
 

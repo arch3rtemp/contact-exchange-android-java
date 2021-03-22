@@ -1,4 +1,4 @@
-package com.example.contactsexchangejava.ui.fragments;
+package com.example.contactsexchangejava.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,21 +10,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactsexchangejava.R;
-import com.example.contactsexchangejava.ui.activities.CardActivity;
-import com.example.contactsexchangejava.ui.adapter.ContactRecyclerAdapter;
-import com.example.contactsexchangejava.ui.model.Contact;
+import com.example.contactsexchangejava.ui.card.CardActivity;
+import com.example.contactsexchangejava.db.models.Contact;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements ContactRecyclerAdapter.IContactClickListener {
+public class HomeFragment extends Fragment implements ContactRecyclerAdapter.IContactClickListener, IHomeContract.View{
 
+    View view;
     TextView card;
     RecyclerView rvCards;
     RecyclerView rvContacts;
@@ -33,6 +31,9 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     ContactRecyclerAdapter rvContactAdapter;
     LinearLayoutManager llCardManager;
     LinearLayoutManager llContactManager;
+    IHomeContract.PresenterI presenter;
+    List<Contact> myCards;
+    List<Contact> contacts;
 
     @Nullable
     @Override
@@ -44,15 +45,18 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        this.view = view;
         initUI(view);
         setListeners();
-        createCardRecyclerView(view);
-        createContactRecyclerView(view);
 
+        getMyCards();
+        getContacts();
     }
 
     private void initUI(View view) {
         fab = view.findViewById(R.id.fb_add);
+        setPresenter(new HomePresenter(this));
+        presenter.onViewCreated(getActivity());
     }
 
     private void setListeners() {
@@ -63,10 +67,10 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         });
     }
 
-    public void createCardRecyclerView(View view) {
+    private void createCardRecyclerView(View view) {
         card = view.findViewById(R.id.tv_card);
         rvCards = view.findViewById(R.id.rv_cards);
-        rvCardAdapter = new ContactRecyclerAdapter(getMyCards());
+        rvCardAdapter = new ContactRecyclerAdapter(myCards);
         llCardManager = new LinearLayoutManager(getContext());
         llCardManager.setOrientation(RecyclerView.HORIZONTAL);
         rvCards.setLayoutManager(llCardManager);
@@ -76,7 +80,18 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
 //        rvCardAdapter.addContacts(getMyCards());
     }
 
-    public void observeRecyclerListener() {
+    private void createContactRecyclerView(View view) {
+        rvContacts = view.findViewById(R.id.rv_contacts);
+        rvContactAdapter = new ContactRecyclerAdapter(contacts);
+        llContactManager = new LinearLayoutManager(getContext());
+        llContactManager.setOrientation(RecyclerView.VERTICAL);
+        rvContacts.setLayoutManager(llContactManager);
+        rvContacts.setAdapter(rvContactAdapter);
+        rvContactAdapter.setContactClickListener(this);
+//        rvContactAdapter.addContacts(getContacts());
+    }
+
+    private void observeRecyclerListener() {
         rvCards.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -97,35 +112,12 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         });
     }
 
-    public void createContactRecyclerView(View view) {
-        rvContacts = view.findViewById(R.id.rv_contacts);
-        rvContactAdapter = new ContactRecyclerAdapter(getContacts());
-        llContactManager = new LinearLayoutManager(getContext());
-        llContactManager.setOrientation(RecyclerView.VERTICAL);
-        rvContacts.setLayoutManager(llContactManager);
-        rvContacts.setAdapter(rvContactAdapter);
-        rvContactAdapter.setContactClickListener(this);
-//        rvContactAdapter.addContacts(getContacts());
-
+    private void getMyCards() {
+        presenter.getMyCards();
     }
 
-    private List<Contact> getMyCards() {
-        List<Contact> cards = new ArrayList<>();
-        cards.add(new Contact("Archil", "Asanishvili","Georgian-American University", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", getResources().getColor(R.color.light_navy), true));
-        cards.add(new Contact("Archil", "Asanishvili","Terabank", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", getResources().getColor(R.color.purple), true));
-//        cards.add(new Contact("Archil", "Asanishvili","Terabank", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", getResources().getColor(R.color.purple), true));
-        return cards;
-    }
-
-    private List<Contact> getContacts() {
-        List<Contact> contacts = new ArrayList<>();
-        contacts.add(new Contact("John", "Parker", "GAU", "Project Manager", "parker@gau.ge", "+995 577 783189", "+995 598 48 84 34", getResources().getColor(R.color.clay_warm), false));
-        contacts.add(new Contact("Alice", "Worth", "GAU", "Office Manager", "worth@gau.ge", "+995 577 783189", "+995 598 48 84 34", getResources().getColor(R.color.clay), false));
-        contacts.add(new Contact("Brad", "Wilson", "GAU", "Graphic Designer", "wilson@gau.ge", "+995 577 783189", "+995 598 48 84 34", getResources().getColor(R.color.dusky_rose), false));
-        contacts.add(new Contact("Jack", "Jackson", "GAU", "Art Director", "jackson@gau.ge", "+995 577 783189", "+995 598 48 84 34", getResources().getColor(R.color.soft_green),false));
-//        contacts.addAll(contacts);
-//        contacts.addAll(contacts);
-        return contacts;
+    private void getContacts() {
+        presenter.getContacts();
     }
 
     public static HomeFragment getInstance() {
@@ -139,7 +131,32 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         Intent intent = new Intent(getContext(), CardActivity.class);
 
         intent.putExtra("isMe", contact.getMe());
+        intent.putExtra("id", contact.getId());
+        intent.putExtra("contact", contact);
 
         startActivity(intent);
+    }
+
+    @Override
+    public void setPresenter(IHomeContract.PresenterI presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
+
+    @Override
+    public void onGetMyCards(List<Contact> cards) {
+        myCards.addAll(cards);
+        createCardRecyclerView(view);
+    }
+
+    @Override
+    public void onGetContacts(List<Contact> contacts) {
+        this.contacts.addAll(contacts);
+        createContactRecyclerView(view);
     }
 }

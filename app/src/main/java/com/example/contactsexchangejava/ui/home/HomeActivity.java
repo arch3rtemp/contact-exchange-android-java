@@ -1,17 +1,15 @@
-package com.example.contactsexchangejava.ui.activities;
+package com.example.contactsexchangejava.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.contactsexchangejava.R;
-import com.example.contactsexchangejava.ui.fragments.HomeFragment;
 
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     FragmentManager manager = getSupportFragmentManager();
 
@@ -34,8 +32,4 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    void startCardActivity() {
-        Intent intent = new Intent(this, CardActivity.class);
-        startActivity(intent);
-    }
 }
