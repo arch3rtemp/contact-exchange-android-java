@@ -19,6 +19,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.db.models.Contact;
 
+import java.util.Objects;
+
 public class CardFragment extends Fragment implements ICardContract.View {
 
     View view;
@@ -62,7 +64,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
         clDelete = view.findViewById(R.id.cl_delete);
         setPresenter(new CardPresenter(this));
         presenter.onViewCreated(getActivity());
-        int id = getActivity().getIntent().getIntExtra("id", 0);
+        int id = Objects.requireNonNull(getActivity()).getIntent().getIntExtra("id", 0);
         getCard(id);
     }
 
@@ -91,9 +93,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
             transaction.commit();
         });
 
-        clDelete.setOnClickListener(v -> {
-            createDeleteDialog(v);
-        });
+        clDelete.setOnClickListener(v -> createDeleteDialog(v));
     }
 
     private void createDeleteDialog(View v) {
