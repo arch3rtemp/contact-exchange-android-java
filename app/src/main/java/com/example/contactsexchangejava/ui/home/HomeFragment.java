@@ -32,7 +32,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     ContactRecyclerAdapter rvContactAdapter;
     LinearLayoutManager llCardManager;
     LinearLayoutManager llContactManager;
-    IHomeContract.PresenterI presenter;
+    IHomeContract.Presenter presenter;
     List<Contact> myCards = new ArrayList<>();
     List<Contact> contacts = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         });
     }
 
-    private void createCardRecyclerView(View view) {
+    private void createCardRecyclerView() {
         card = view.findViewById(R.id.tv_card);
         rvCards = view.findViewById(R.id.rv_cards);
         rvCardAdapter = new ContactRecyclerAdapter(myCards);
@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
 //        rvCardAdapter.addContacts(getMyCards());
     }
 
-    private void createContactRecyclerView(View view) {
+    private void createContactRecyclerView() {
         rvContacts = view.findViewById(R.id.rv_contacts);
         rvContactAdapter = new ContactRecyclerAdapter(contacts);
         llContactManager = new LinearLayoutManager(getContext());
@@ -138,8 +138,15 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     }
 
     @Override
-    public void setPresenter(IHomeContract.PresenterI presenter) {
+    public void setPresenter(IHomeContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        rvContactAdapter.clearAdapter();
+        rvCardAdapter.clearAdapter();
     }
 
     @Override
@@ -152,12 +159,12 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     @Override
     public void onGetMyCards(List<Contact> cards) {
         myCards.addAll(cards);
-        createCardRecyclerView(view);
+        createCardRecyclerView();
     }
 
     @Override
     public void onGetContacts(List<Contact> contacts) {
         this.contacts.addAll(contacts);
-        createContactRecyclerView(view);
+        createContactRecyclerView();
     }
 }

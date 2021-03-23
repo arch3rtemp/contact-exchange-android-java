@@ -23,6 +23,7 @@ public class DataManager implements DataCallBack{
 
     private Context context;
     private AppDatabase appDatabase;
+    private static DataManager dataManager;
 
     public DataManager(Context context) {
         this.context = context;

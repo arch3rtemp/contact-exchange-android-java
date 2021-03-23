@@ -30,7 +30,6 @@ public class CardFragment extends Fragment implements ICardContract.View {
     private ConstraintLayout clEdit;
     private ConstraintLayout clDelete;
     private boolean isMe;
-    AlertDialog deleteDialog;
     Button delete;
     Button cancel;
     TextView tvName;
@@ -40,9 +39,12 @@ public class CardFragment extends Fragment implements ICardContract.View {
     TextView tvPhoneOffice;
     ICardContract.Presenter presenter;
     AppCompatActivity activity;
+    int id;
 
-    public CardFragment(Boolean isMe) {
-        this.isMe = isMe;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        activity = (AppCompatActivity) context;
     }
 
     @Nullable
@@ -55,7 +57,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initUI(view);
+        initUI();
         setListeners();
         if (!isMe) {
             clEdit = view.findViewById(R.id.cl_edit);
@@ -63,27 +65,35 @@ public class CardFragment extends Fragment implements ICardContract.View {
         }
     }
 
-    private void initUI(View view) {
+    private void initUI() {
+        tvName = view.findViewById(R.id.tv_name);
+        tvPosition = view.findViewById(R.id.tv_position);
+        tvEmail = view.findViewById(R.id.tv_email);
+        tvPhoneMobile = view.findViewById(R.id.tv_phone_mobile);
+        tvPhoneOffice = view.findViewById(R.id.tv_phone_office);
         clEdit = view.findViewById(R.id.cl_edit);
         clDelete = view.findViewById(R.id.cl_delete);
         setPresenter(new CardPresenter(this));
         presenter.onViewCreated(getActivity());
-        int id = Objects.requireNonNull(getActivity()).getIntent().getIntExtra("id", 0);
+        isMe = getArguments().getBoolean("isMe", false);
+        id = getArguments().getInt("id", -1);
         getCard(id);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        activity = (AppCompatActivity) context;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        activity = null;
-        view = null;
-        presenter.onDestroy();
+    private void setListeners() {
+        clEdit.setOnClickListener(v -> {
+            CreateOrEditCardFragment editCardFragment = new CreateOrEditCardFragment();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isCreate", false);
+            bundle.putInt("id", id);
+            editCardFragment.setArguments(bundle);
+            FragmentTransaction transaction;
+            transaction = activity.getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fl_main_frame_container, editCardFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+        clDelete.setOnClickListener(v -> createDeleteDialog(v));
     }
 
     private void getCard(int id) {
@@ -100,24 +110,8 @@ public class CardFragment extends Fragment implements ICardContract.View {
         tvPhoneOffice.setText(card.getPhoneOffice());
     }
 
-    private void setListeners() {
-        clEdit.setOnClickListener(v -> {
-            CreateOrEditCardFragment editCardFragment = new CreateOrEditCardFragment();
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("isCreate", false);
-            editCardFragment.setArguments(bundle);
-            FragmentTransaction transaction;
-            transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fl_main_frame_container, editCardFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        });
-
-        clDelete.setOnClickListener(v -> createDeleteDialog(v));
-    }
-
     private void createDeleteDialog(View v) {
-        deleteDialog = new AlertDialog.Builder(getContext()).create();
+        AlertDialog deleteDialog = new AlertDialog.Builder(getContext()).create();
         final View deletePopup = LayoutInflater.from(getContext()).inflate(R.layout.delete_popup, null, false);
 
         deleteDialog.setView(deletePopup);
@@ -128,8 +122,8 @@ public class CardFragment extends Fragment implements ICardContract.View {
 
 
         delete.setOnClickListener(d -> {
-
             deleteDialog.dismiss();
+            presenter.deleteContact(id);
             createDeletedFragment();
         });
 
@@ -148,11 +142,19 @@ public class CardFragment extends Fragment implements ICardContract.View {
     }
 
     public static CardFragment getInstance() {
-        return new CardFragment(false);
+        return new CardFragment();
     }
 
     @Override
     public void setPresenter(ICardContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        activity = null;
+        view = null;
+        presenter.onDestroy();
     }
 }

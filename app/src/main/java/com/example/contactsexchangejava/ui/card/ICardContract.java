@@ -8,6 +8,7 @@ public interface ICardContract {
 
     interface Presenter extends IBasePresenter {
         void getContactById(int id);
+        void deleteContact(int id);
     }
 
     interface View extends IBaseView<Presenter> {

@@ -14,7 +14,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class HomePresenter implements IHomeContract.PresenterI {
+public class HomePresenter implements IHomeContract.Presenter {
 
     private IHomeContract.View view;
     private DataManager dataManager;
@@ -56,9 +56,6 @@ public class HomePresenter implements IHomeContract.PresenterI {
 
                     }
                 });
-//        cards.add(new Contact("Archil", "Asanishvili","Georgian-American University", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", R.color.light_navy, true));
-//        cards.add(new Contact("Archil", "Asanishvili","Terabank", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", R.color.purple, true));
-//        cards.add(new Contact("Archil", "Asanishvili","Terabank", "Android Developer", "a.asanishvili@gau.ge", "+995 571 85 98 85", "+995 032 254 84 78", R.color.purple, true));
     }
 
     @Override
@@ -87,10 +84,6 @@ public class HomePresenter implements IHomeContract.PresenterI {
 
                     }
                 });
-//        contacts.add(new Contact("John", "Parker", "GAU", "Project Manager", "parker@gau.ge", "+995 577 783189", "+995 598 48 84 34", R.color.clay_warm, false));
-//        contacts.add(new Contact("Alice", "Worth", "GAU", "Office Manager", "worth@gau.ge", "+995 577 783189", "+995 598 48 84 34", R.color.clay, false));
-//        contacts.add(new Contact("Brad", "Wilson", "GAU", "Graphic Designer", "wilson@gau.ge", "+995 577 783189", "+995 598 48 84 34", R.color.dusky_rose, false));
-//        contacts.add(new Contact("Jack", "Jackson", "GAU", "Art Director", "jackson@gau.ge", "+995 577 783189", "+995 598 48 84 34", R.color.soft_green,false));
     }
 
     @Override

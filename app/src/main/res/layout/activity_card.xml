@@ -37,6 +37,7 @@
             android:layout_weight="1" />
 
         <LinearLayout
+            android:id="@+id/ll_initials"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:gravity="center"

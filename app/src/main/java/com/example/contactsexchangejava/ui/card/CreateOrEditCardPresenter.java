@@ -26,6 +26,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
     @Override
     public void onViewCreated(Context context) {
         dataManager = new DataManager(context.getApplicationContext());
+        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -40,7 +41,8 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
             Log.w("TAG", "Not a valid background type");
     }
 
-    public void insert(Contact contact) {
+    @Override
+    public void createContact(Contact contact) {
         new Thread(
                 new Runnable() {
                     @Override
@@ -48,6 +50,18 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
                         dataManager.createContact(contact);
                     }
                 }).start();
+    }
+
+    @Override
+    public void editContact(Contact contact) {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        dataManager.editContact(contact);
+                    }
+                }
+        ).start();
     }
 
     @Override

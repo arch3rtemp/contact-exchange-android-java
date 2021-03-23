@@ -25,6 +25,7 @@ public class CardPresenter implements ICardContract.Presenter {
     @Override
     public void onViewCreated(Context context) {
         dataManager = new DataManager(context.getApplicationContext());
+        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -55,11 +56,23 @@ public class CardPresenter implements ICardContract.Presenter {
                 });
     }
 
+    @Override
+    public void deleteContact(int id) {
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        dataManager.deleteContact(id);
+                    }
+                }
+        ).start();
+    }
 
     @Override
     public void onDestroy() {
         this.view = null;
         compositeDisposable.clear();
+        this.dataManager = null;
     }
 
 

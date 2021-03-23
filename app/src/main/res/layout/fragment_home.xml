@@ -11,20 +11,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginVertical="30dp"
         android:backgroundTint="@color/light_navy"
+        android:contentDescription="@string/fab_add"
         android:src="@drawable/ic_plus"
         app:fabCustomSize="34dp"
         app:layout_constraintBottom_toBottomOf="@id/rv_cards"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/rv_cards"
         app:maxImageSize="16dp"
-        app:tint="@android:color/white"
-        android:contentDescription="@string/fab_add" />
+        app:tint="@android:color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_cards"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="168dp"
         android:layout_marginTop="5dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
@@ -35,6 +36,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_contacts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"
@@ -47,15 +49,15 @@
             android:id="@+id/ll_contact_search"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="20dp"
             android:text="@string/contact_list"
-            android:fontFamily="@font/poppins_medium"
-            android:textSize="16sp"
             android:textColor="@color/black_two"
-            app:layout_constraintTop_toTopOf="parent"
-            app:drawableEndCompat="@drawable/ic_search" />
+            android:textSize="16sp"
+            app:drawableEndCompat="@drawable/ic_search"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"

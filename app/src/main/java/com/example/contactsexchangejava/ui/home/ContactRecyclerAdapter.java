@@ -44,8 +44,6 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
     @NonNull
     @Override
     public ContactHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        RecyclerView.ViewHolder viewHolder;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view;
 
@@ -74,8 +72,13 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
     }
 
     public void addContacts(List<Contact> contacts) {
+        this.contacts.clear();
         this.contacts.addAll(contacts);
         notifyDataSetChanged();
+    }
+
+    public void clearAdapter() {
+        contacts.clear();
     }
 
     class ContactHolder extends RecyclerView.ViewHolder {
@@ -111,13 +114,20 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
 
             String name = contact.getFirstName() + " " + contact.getLastName();
             tvName.setText(name);
-            String initials = contact.getFirstName().substring(0, 1) + contact.getLastName().substring(0, 1);
+            String initials = getInitials(contact.getFirstName(), contact.getLastName());
             tvInitials.setText(initials);
             tvPosition.setText(contact.getPosition());
             tvAddDate.setText(contact.getCreateDate());
             itemView.setOnClickListener(v -> clickListener.contactClicked(contact, getAdapterPosition()));
             Drawable background = llInitials.getBackground();
             setBackgroundColorAndRetainShape(contact.getColor(), background);
+        }
+
+        private String getInitials(String firstName, String lastName) {
+            if (lastName == null)
+                return firstName.substring(0, 1);
+            else
+                return firstName.substring(0, 1) + lastName.substring(0, 1);
         }
 
         private void setBackgroundColorAndRetainShape(final int color, final Drawable background) {

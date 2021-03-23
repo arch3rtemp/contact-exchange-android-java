@@ -1,9 +1,12 @@
 package com.example.contactsexchangejava.ui.card;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +21,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.example.contactsexchangejava.R;
-import com.example.contactsexchangejava.db.AppDatabase;
-import com.example.contactsexchangejava.db.DataManager;
 import com.example.contactsexchangejava.db.models.Contact;
 
 import java.util.Objects;
@@ -41,8 +42,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private TextView tvPumpkin;
     private TextView tvPurple;
     Drawable cardBackground;
-
-    private DataManager dataManager;
     private EditText etFullName;
     private EditText etCompany;
     private EditText etPosition;
@@ -50,7 +49,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private EditText etPhoneMobile;
     private EditText etPhoneOffice;
     private int color;
-    private boolean isMe;
     String firstName;
     String lastName;
     String company;
@@ -58,8 +56,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     String email;
     String phoneMobile;
     String phoneOffice;
-//    ICreateOrEditCardContract.Presenter presenter;
-    CreateOrEditCardPresenter presenter;
+    ICreateOrEditCardContract.Presenter presenter;
 
 
     @Nullable
@@ -76,8 +73,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     }
 
     public void initUI() {
-        presenter = new CreateOrEditCardPresenter(this);
-//        setPresenter(new CreateOrEditCardPresenter(this));
+        setPresenter(new CreateOrEditCardPresenter(this));
         presenter.onViewCreated(Objects.requireNonNull(getActivity()));
         clColorPalette = view.findViewById(R.id.cl_color_palette);
         clCreateOrEdit = view.findViewById(R.id.cl_create_or_edit);
@@ -91,6 +87,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             clColorPalette.setVisibility(View.GONE);
             tvCardHeader.setText(getResources().getText(R.string.edit_your_card));
             btnCreateOrSave.setText(getResources().getString(R.string.save));
+            btnCreateOrSave.setOnClickListener(this);
 
         } else {
 
@@ -137,8 +134,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         btnCreateOrSave.setOnClickListener(this);
     }
 
-
-
     @Override
     public void onClick(View v) {
         defaultColorsView();
@@ -171,13 +166,17 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         } else if (id == R.id.btn_create_or_save) {
 
             color = Color.TRANSPARENT;
-            if (cardBackground instanceof ColorDrawable)
-                color = ((ColorDrawable) cardBackground).getColor();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                ColorStateList colorStateList = ((GradientDrawable) cardBackground).getColor();
+                color = colorStateList.getDefaultColor();
+                Log.e("TAG", String.valueOf(color));
+            }
+
 
             firstName = etFullName.getText().toString();
             lastName = "";
             if (firstName.contains(" ")) {
-                lastName = firstName.substring(firstName.indexOf(" "), firstName.length());
+                lastName = firstName.substring(firstName.indexOf(" "));
                 firstName = firstName.substring(0, firstName.indexOf(" "));
             }
 
@@ -187,17 +186,18 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             phoneMobile = etPhoneMobile.getText().toString();
             phoneOffice = etPhoneOffice.getText().toString();
 
+            Contact contact = new Contact(firstName, lastName, company, position, email, phoneMobile, phoneOffice, color, true);
+
             if (isCreate) {
-                presenter.insert(new Contact(
-                        firstName, lastName, company, position, email, phoneMobile, phoneOffice, color, isMe
-                ));
+                presenter.createContact(contact);
                 showToastMessage("Contact created");
             }
 
-            else
-                dataManager.editContact(new Contact());
-
-
+            else {
+                contact.setId(id);
+                presenter.editContact(contact);
+                showToastMessage("Contact edited");
+            }
         }
     }
 
@@ -225,19 +225,12 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
     }
 
-
-    public void editContact() {
-        showToastMessage("Contact edited");
-    }
-
-
-
     private void showToastMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void setPresenter(ICreateOrEditCardContract.Presenter presenter) {
-//        this.presenter = presenter;
+        this.presenter = presenter;
     }
 }

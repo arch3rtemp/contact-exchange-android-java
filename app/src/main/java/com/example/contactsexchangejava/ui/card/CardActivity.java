@@ -52,7 +52,11 @@ public class CardActivity extends AppCompatActivity {
 
     private void initCardFragment() {
         Boolean isMe = intent.getBooleanExtra("isMe", false);
-        CardFragment cardFragment = new CardFragment(isMe);
+        CardFragment cardFragment = CardFragment.getInstance();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isMe", isMe);
+        bundle.putInt("id", intent.getIntExtra("id", -1));
+        cardFragment.setArguments(bundle);
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fl_main_frame_container, cardFragment);
 //        transaction.addToBackStack(null);
