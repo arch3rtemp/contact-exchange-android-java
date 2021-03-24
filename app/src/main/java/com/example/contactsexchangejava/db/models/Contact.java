@@ -4,10 +4,19 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.internal.$Gson$Preconditions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Iterator;
 
 @Entity(tableName = "contact_table")
 public class Contact implements Serializable {
@@ -61,6 +70,18 @@ public class Contact implements Serializable {
             Calendar date = Calendar.getInstance();
             createDate = date.toString();
         }
+    }
+
+    public Contact(JSONObject jsonData) throws JSONException {
+        this(jsonData.getString("firstName"),
+                jsonData.getString("lastName"),
+                jsonData.getString("job"),
+                jsonData.getString("position"),
+                jsonData.getString("email"),
+                jsonData.getString("phoneMobile"),
+                jsonData.getString("phoneOffice"),
+                jsonData.getInt("color"),
+                false);
     }
 
     public void setId(int id) {
@@ -148,4 +169,32 @@ public class Contact implements Serializable {
     }
 
     public boolean getMe() { return isMe; }
+
+    @Override
+    public String toString() {
+//        return "Contact{" +
+//                "id=" + id +
+//                ", firstName='" + firstName + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", job='" + job + '\'' +
+//                ", position='" + position + '\'' +
+//                ", email='" + email + '\'' +
+//                ", phoneMobile='" + phoneMobile + '\'' +
+//                ", phoneOffice='" + phoneOffice + '\'' +
+//                ", createDate='" + createDate + '\'' +
+//                ", color=" + color +
+//                ", isMe=" + isMe +
+//                '}';
+
+        return new Gson().toJson(this);
+    }
+
+    public String serialize() {
+        return new Gson().toJson(this);
+    }
+
+//    public static Contact deserialize(String jsonString) {
+//        return new Gson().fromJson(jsonStr, Contact.class);
+//    }
+
 }

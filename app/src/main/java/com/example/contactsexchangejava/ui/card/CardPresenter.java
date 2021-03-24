@@ -58,21 +58,21 @@ public class CardPresenter implements ICardContract.Presenter {
 
     @Override
     public void deleteContact(int id) {
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        dataManager.deleteContact(id);
-                    }
-                }
+        new Thread(() -> dataManager.deleteContact(id)
         ).start();
     }
 
     @Override
+    public void createContact(Contact contact) {
+        new Thread(() -> dataManager.createContact(contact)
+        );
+    }
+
+    @Override
     public void onDestroy() {
-        this.view = null;
         compositeDisposable.clear();
-        this.dataManager = null;
+        dataManager = null;
+        this.view = null;
     }
 
 

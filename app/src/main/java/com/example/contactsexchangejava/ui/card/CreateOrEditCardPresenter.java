@@ -1,6 +1,7 @@
 package com.example.contactsexchangejava.ui.card;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -18,6 +19,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
     private CompositeDisposable compositeDisposable;
     private DataManager dataManager;
     private boolean isCreate;
+
 
     public CreateOrEditCardPresenter(ICreateOrEditCardContract.View view) {
         this.view = view;
@@ -43,30 +45,20 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
 
     @Override
     public void createContact(Contact contact) {
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        dataManager.createContact(contact);
-                    }
-                }).start();
+        new Thread(() -> dataManager.createContact(contact)
+        ).start();
     }
 
     @Override
     public void editContact(Contact contact) {
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        dataManager.editContact(contact);
-                    }
-                }
+        new Thread(() -> dataManager.editContact(contact)
         ).start();
     }
 
     @Override
     public void onDestroy() {
-        this.view = null;
         compositeDisposable.clear();
+        dataManager = null;
+        this.view = null;
     }
 }

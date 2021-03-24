@@ -109,22 +109,25 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
                 Drawable background = tvCard.getBackground();
                 setBackgroundColorAndRetainShape(contact.getColor(), background);
                 tvCard.setOnClickListener(v -> clickListener.contactClicked(contact, getAdapterPosition()));
-                return;
             }
 
-            String name = contact.getFirstName() + " " + contact.getLastName();
-            tvName.setText(name);
-            String initials = getInitials(contact.getFirstName(), contact.getLastName());
-            tvInitials.setText(initials);
-            tvPosition.setText(contact.getPosition());
-            tvAddDate.setText(contact.getCreateDate());
-            itemView.setOnClickListener(v -> clickListener.contactClicked(contact, getAdapterPosition()));
-            Drawable background = llInitials.getBackground();
-            setBackgroundColorAndRetainShape(contact.getColor(), background);
+            else {
+//                if (contact == null)
+//                    return;
+                String name = contact.getFirstName() + " " + contact.getLastName();
+                tvName.setText(name);
+                String initials = getInitials(contact.getFirstName(), contact.getLastName());
+                tvInitials.setText(initials);
+                tvPosition.setText(contact.getPosition());
+                tvAddDate.setText(contact.getCreateDate());
+                itemView.setOnClickListener(v -> clickListener.contactClicked(contact, getAdapterPosition()));
+                Drawable background = llInitials.getBackground();
+                setBackgroundColorAndRetainShape(contact.getColor(), background);
+            }
         }
 
         private String getInitials(String firstName, String lastName) {
-            if (lastName == null)
+            if (lastName.equals("N/A"))
                 return firstName.substring(0, 1);
             else
                 return firstName.substring(0, 1) + lastName.substring(0, 1);

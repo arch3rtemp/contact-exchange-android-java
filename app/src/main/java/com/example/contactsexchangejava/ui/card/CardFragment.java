@@ -3,13 +3,20 @@ package com.example.contactsexchangejava.ui.card;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,8 +28,23 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.db.models.Contact;
+import com.example.contactsexchangejava.ui.qr.QrActivity;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.Writer;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.oned.Code128Writer;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import java.util.Hashtable;
 import java.util.Objects;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.WINDOW_SERVICE;
 
 public class CardFragment extends Fragment implements ICardContract.View {
 
@@ -40,6 +62,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
     ICardContract.Presenter presenter;
     AppCompatActivity activity;
     int id;
+    ImageView ivQr;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -73,6 +96,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
         tvPhoneOffice = view.findViewById(R.id.tv_phone_office);
         clEdit = view.findViewById(R.id.cl_edit);
         clDelete = view.findViewById(R.id.cl_delete);
+        ivQr = view.findViewById(R.id.iv_bar_code);
         setPresenter(new CardPresenter(this));
         presenter.onViewCreated(getActivity());
         isMe = getArguments().getBoolean("isMe", false);
@@ -108,6 +132,26 @@ public class CardFragment extends Fragment implements ICardContract.View {
         tvEmail.setText(card.getEmail());
         tvPhoneMobile.setText(card.getPhoneMobile());
         tvPhoneOffice.setText(card.getPhoneOffice());
+
+        WindowManager manager = (WindowManager) getActivity().getSystemService(WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        int width = point.x;
+        int height = point.y;
+        int smallerDimension = width < height ? width : height;
+        smallerDimension = smallerDimension * 3 / 4;
+
+        QRGEncoder qrgEncoder = new QRGEncoder(card.toString(), null, QRGContents.Type.TEXT, smallerDimension);
+        try {
+            // Getting QR-Code as Bitmap
+            Bitmap bitmap = qrgEncoder.encodeAsBitmap();
+            // Setting Bitmap to ImageView
+            ivQr.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            Log.v("TAG", e.toString());
+        }
+
     }
 
     private void createDeleteDialog(View v) {
@@ -127,9 +171,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
             createDeletedFragment();
         });
 
-        cancel.setOnClickListener(c -> {
-            deleteDialog.dismiss();
-        });
+        cancel.setOnClickListener(c -> deleteDialog.dismiss());
     }
 
     private void createDeletedFragment() {

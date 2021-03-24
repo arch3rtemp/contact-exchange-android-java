@@ -1,5 +1,6 @@
 package com.example.contactsexchangejava.ui.card;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.db.models.Contact;
+import com.example.contactsexchangejava.ui.home.HomeActivity;
 
 import java.util.Objects;
 
@@ -29,6 +31,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
 
     private boolean isCreate;
+    private int contactId;
     private View view;
     private ConstraintLayout clColorPalette;
     private ConstraintLayout clCreateOrEdit;
@@ -80,6 +83,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         tvCardHeader = view.findViewById(R.id.tv_card_header);
         btnCreateOrSave = view.findViewById(R.id.btn_create_or_save);
         isCreate = getArguments().getBoolean("isCreate", false);
+        contactId = getArguments().getInt("id", -1);
         initEditTextFields();
 
         if (!isCreate) {
@@ -140,30 +144,43 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
         cardBackground = clCreateOrEdit.getBackground();
 
-        int id = v.getId();
+        int clickedId = v.getId();
 
-        if (id == R.id.tv_color_light_navy) {
+        if (clickedId == R.id.tv_color_light_navy) {
             tvNavy.setBackgroundResource(R.drawable.selected_card_color_light_navy_shape_bg);
             presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.light_navy), cardBackground);
-        } else if (id == R.id.tv_color_aqua_marine) {
+        } else if (clickedId == R.id.tv_color_aqua_marine) {
             tvAqua.setBackgroundResource(R.drawable.selected_card_color_aqua_marine_shape_bg);
             presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.aqua_marine), cardBackground);
-        } else if (id == R.id.tv_color_ugly_yellow) {
+        } else if (clickedId == R.id.tv_color_ugly_yellow) {
             tvYellow.setBackgroundResource(R.drawable.selected_card_color_ugly_yellow_shape_bg);
             presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.ugly_yellow), cardBackground);
-        } else if (id == R.id.tv_color_shamrock_green) {
+        } else if (clickedId == R.id.tv_color_shamrock_green) {
             tvGreen.setBackgroundResource(R.drawable.selected_card_color_shamrock_green_shape_bg);
             presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.shamrock_green), cardBackground);
-        } else if (id == R.id.tv_color_black_three) {
+        } else if (clickedId == R.id.tv_color_black_three) {
             tvBlack.setBackgroundResource(R.drawable.selected_card_color_black_shape_bg);
             presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.black_three), cardBackground);
-        } else if (id == R.id.tv_color_pumpkin) {
+        } else if (clickedId == R.id.tv_color_pumpkin) {
             tvPumpkin.setBackgroundResource(R.drawable.selected_card_color_pumpkin_shape_bg);
             presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.pumpkin), cardBackground);
-        } else if (id == R.id.tv_color_darkish_purple) {
+        } else if (clickedId == R.id.tv_color_darkish_purple) {
             tvPurple.setBackgroundResource(R.drawable.selected_card_color_darkish_purple_shape_bg);
             presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.darkish_purple), cardBackground);
-        } else if (id == R.id.btn_create_or_save) {
+        } else if (clickedId == R.id.btn_create_or_save) {
+
+            if (isEmptyField(etFullName))
+                return;
+            if (isEmptyField(etCompany))
+                return;
+            if (isEmptyField(etPosition))
+                return;
+            if (isEmptyField(etEmail))
+                return;
+            if (isEmptyField(etPhoneMobile))
+                return;
+            if (isEmptyField(etPhoneOffice))
+                return;
 
             color = Color.TRANSPARENT;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -174,7 +191,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
 
             firstName = etFullName.getText().toString();
-            lastName = "";
+            lastName = "N/A";
             if (firstName.contains(" ")) {
                 lastName = firstName.substring(firstName.indexOf(" "));
                 firstName = firstName.substring(0, firstName.indexOf(" "));
@@ -194,10 +211,12 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             }
 
             else {
-                contact.setId(id);
+                contact.setId(contactId);
                 presenter.editContact(contact);
                 showToastMessage("Contact edited");
             }
+
+            startHomeActivity();
         }
     }
 
@@ -225,8 +244,20 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
     }
 
+    private boolean isEmptyField(EditText editText) {
+        boolean result = editText.getText().toString().length() <= 0;
+        if (result)
+            showToastMessage("Fill all fields!");
+        return result;
+    }
+
     private void showToastMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void startHomeActivity() {
+        Intent intent = new Intent(getContext(), HomeActivity.class);
+        getActivity().startActivity(intent);
     }
 
     @Override

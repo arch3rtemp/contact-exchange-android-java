@@ -16,7 +16,7 @@ import io.reactivex.Observable;
 @Dao
 public interface ContactDao {
 
-    @Query("SELECT * FROM contact_table WHERE is_me == 0 ORDER BY last_name ASC")
+    @Query("SELECT * FROM contact_table WHERE first_name != null ORDER BY last_name ASC")
     Observable<List<Contact>> getAllContacts();
 
     @Query("SELECT * FROM contact_table WHERE is_me == 1 ORDER BY job ASC")

@@ -88,7 +88,8 @@ public class HomePresenter implements IHomeContract.Presenter {
 
     @Override
     public void onDestroy() {
-        this.view = null;
         compositeDisposable.clear();
+        dataManager = null;
+        this.view = null;
     }
 }

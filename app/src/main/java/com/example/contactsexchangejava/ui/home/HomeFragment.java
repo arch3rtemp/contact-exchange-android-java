@@ -48,7 +48,11 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         super.onViewCreated(view, savedInstanceState);
         initUI();
         setListeners();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         getMyCards();
         getContacts();
     }
@@ -143,10 +147,12 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         rvContactAdapter.clearAdapter();
         rvCardAdapter.clearAdapter();
+        rvCardAdapter.addContacts(myCards);
+        rvContactAdapter.addContacts(contacts);
     }
 
     @Override
