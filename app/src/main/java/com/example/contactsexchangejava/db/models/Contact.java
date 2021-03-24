@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.contactsexchangejava.constants.IsMe;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.internal.$Gson$Preconditions;
@@ -48,11 +49,11 @@ public class Contact implements Serializable {
     private int color;
 
     @ColumnInfo(name = "is_me")
-    private boolean isMe;
+    private int isMe;
 
     public Contact() {}
 
-    public Contact(String firstName, String lastName, String job, String position, String email, String phoneMobile, String phoneOffice, int color, boolean isMe) {
+    public Contact(String firstName, String lastName, String job, String position, String email, String phoneMobile, String phoneOffice, int color, int isMe) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.job = job;
@@ -81,7 +82,7 @@ public class Contact implements Serializable {
                 jsonData.getString("phoneMobile"),
                 jsonData.getString("phoneOffice"),
                 jsonData.getInt("color"),
-                false);
+                IsMe.NOT_ME);
     }
 
     public void setId(int id) {
@@ -124,8 +125,8 @@ public class Contact implements Serializable {
         this.color = color;
     }
 
-    public void setMe(boolean me) {
-        isMe = me;
+    public void setIsMe(int isMe) {
+        this.isMe = isMe;
     }
 
     public int getId() {
@@ -168,7 +169,9 @@ public class Contact implements Serializable {
         return color;
     }
 
-    public boolean getMe() { return isMe; }
+    public int getIsMe() {
+        return isMe;
+    }
 
     @Override
     public String toString() {
@@ -188,13 +191,4 @@ public class Contact implements Serializable {
 
         return new Gson().toJson(this);
     }
-
-    public String serialize() {
-        return new Gson().toJson(this);
-    }
-
-//    public static Contact deserialize(String jsonString) {
-//        return new Gson().fromJson(jsonStr, Contact.class);
-//    }
-
 }

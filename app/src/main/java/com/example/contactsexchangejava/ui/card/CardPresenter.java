@@ -1,6 +1,11 @@
 package com.example.contactsexchangejava.ui.card;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.util.Log;
 
 import com.example.contactsexchangejava.db.DataManager;
 import com.example.contactsexchangejava.db.models.Contact;
@@ -54,6 +59,18 @@ public class CardPresenter implements ICardContract.Presenter {
 
                     }
                 });
+    }
+
+    @Override
+    public void setBackgroundColorAndRetainShape(final int color, final Drawable background) {
+        if (background instanceof ShapeDrawable)
+            ((ShapeDrawable) background.mutate()).getPaint().setColor(color);
+        else if (background instanceof GradientDrawable)
+            ((GradientDrawable) background.mutate()).setColor(color);
+        else if (background instanceof ColorDrawable)
+            ((ColorDrawable) background).setColor(color);
+        else
+            Log.w("TAG", "Not a valid background type");
     }
 
     @Override

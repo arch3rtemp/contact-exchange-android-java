@@ -12,9 +12,10 @@ public interface ICreateOrEditCardContract {
         void setBackgroundColorAndRetainShape(final int color, final Drawable background);
         void createContact(Contact contact);
         void editContact(Contact contact);
+        void getContactById(int id);
     }
 
     interface View extends IBaseView<Presenter> {
-
+        void onGetContactById(Contact contact);
     }
 }

@@ -11,7 +11,12 @@ import android.util.Log;
 import com.example.contactsexchangejava.db.DataManager;
 import com.example.contactsexchangejava.db.models.Contact;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Presenter {
 
@@ -53,6 +58,36 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
     public void editContact(Contact contact) {
         new Thread(() -> dataManager.editContact(contact)
         ).start();
+    }
+
+    @Override
+    public void getContactById(int id) {
+        dataManager.loadContactById(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Contact>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Contact contact) {
+                        view.onGetContactById(contact);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
     }
 
     @Override

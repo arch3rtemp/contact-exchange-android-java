@@ -8,7 +8,7 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:id="@+id/ll_initials"
+        android:id="@+id/ll_qr_card"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/contact_list_item_shape_bg"

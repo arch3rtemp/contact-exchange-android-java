@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         
         Intent intent = new Intent(getContext(), CardActivity.class);
 
-        intent.putExtra("isMe", contact.getMe());
+        intent.putExtra("isMe", contact.getIsMe());
         intent.putExtra("id", contact.getId());
         intent.putExtra("contact", contact);
 
@@ -151,8 +151,15 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         super.onPause();
         rvContactAdapter.clearAdapter();
         rvCardAdapter.clearAdapter();
-        rvCardAdapter.addContacts(myCards);
-        rvContactAdapter.addContacts(contacts);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (rvContactAdapter != null)
+            rvContactAdapter.clearAdapter();
+        if (rvCardAdapter != null)
+            rvCardAdapter.clearAdapter();
     }
 
     @Override

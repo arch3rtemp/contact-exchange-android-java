@@ -11,8 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.contactsexchangejava.R;
-import com.example.contactsexchangejava.db.DataManager;
-import com.example.contactsexchangejava.db.models.Contact;
 import com.example.contactsexchangejava.ui.qr.QrActivity;
 
 
@@ -32,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        llScan = findViewById(R.id.ll_initials);
+        llScan = findViewById(R.id.ll_qr_home);
         initHomeFragment();
     }
 

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.contactsexchangejava.R;
+import com.example.contactsexchangejava.constants.IsMe;
 import com.example.contactsexchangejava.db.models.Contact;
 
 import java.util.List;
@@ -23,22 +24,26 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
 
     private List<Contact> contacts;
     private final int ME = 0, NOT_ME = 1;
-    private boolean isMe = false;
+    private int isMe = 0;
 
     public ContactRecyclerAdapter(List<Contact> contacts) {
+        if (this.contacts != null)
+            this.contacts.clear();
         this.contacts = contacts;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (contacts.get(position).getMe()) {
-            isMe = true;
+        if (contacts.get(position).getIsMe() == IsMe.ME) {
+            isMe = IsMe.ME;
             return ME;
         }
-        else if (!contacts.get(position).getMe())
+        else if (contacts.get(position).getIsMe() == IsMe.NOT_ME) {
+            isMe = IsMe.NOT_ME;
             return NOT_ME;
+        }
         else
-            return -1;
+            return 0;
     }
 
     @NonNull
@@ -92,19 +97,19 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
 
         public ContactHolder(@NonNull View itemView) {
             super(itemView);
-            if (isMe) {
+            if (isMe == IsMe.ME) {
                 tvCard = itemView.findViewById(R.id.tv_card);
                 return;
             }
             tvInitials = itemView.findViewById(R.id.tv_contact_initials);
-            llInitials = itemView.findViewById(R.id.ll_initials);
+            llInitials = itemView.findViewById(R.id.ll_qr_card);
             tvName = itemView.findViewById(R.id.tv_contact_name);
             tvPosition = itemView.findViewById(R.id.tv_contact_position);
             tvAddDate = itemView.findViewById(R.id.tv_contact_add_date);
         }
 
         public void setData(Contact contact) {
-            if (isMe) {
+            if (isMe == IsMe.ME) {
                 tvCard.setText(contact.getJob());
                 Drawable background = tvCard.getBackground();
                 setBackgroundColorAndRetainShape(contact.getColor(), background);

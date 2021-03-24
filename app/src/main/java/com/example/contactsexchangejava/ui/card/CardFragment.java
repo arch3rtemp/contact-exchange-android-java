@@ -1,13 +1,12 @@
 package com.example.contactsexchangejava.ui.card;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -27,23 +26,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.contactsexchangejava.R;
+import com.example.contactsexchangejava.constants.IsMe;
 import com.example.contactsexchangejava.db.models.Contact;
-import com.example.contactsexchangejava.ui.qr.QrActivity;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.oned.Code128Writer;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-
-import java.util.Hashtable;
-import java.util.Objects;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.WINDOW_SERVICE;
 
 public class CardFragment extends Fragment implements ICardContract.View {
@@ -51,7 +40,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
     View view;
     private ConstraintLayout clEdit;
     private ConstraintLayout clDelete;
-    private boolean isMe;
+    private int isMe;
     Button delete;
     Button cancel;
     TextView tvName;
@@ -63,6 +52,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
     AppCompatActivity activity;
     int id;
     ImageView ivQr;
+    ConstraintLayout clCard;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -82,14 +72,15 @@ public class CardFragment extends Fragment implements ICardContract.View {
         super.onViewCreated(view, savedInstanceState);
         initUI();
         setListeners();
-        if (!isMe) {
+        if (isMe == IsMe.NOT_ME) {
             clEdit = view.findViewById(R.id.cl_edit);
             clEdit.setVisibility(View.GONE);
         }
     }
 
     private void initUI() {
-        tvName = view.findViewById(R.id.tv_name);
+        clCard = view.findViewById(R.id.cl_card);
+        tvName = view.findViewById(R.id.iv_qr);
         tvPosition = view.findViewById(R.id.tv_position);
         tvEmail = view.findViewById(R.id.tv_email);
         tvPhoneMobile = view.findViewById(R.id.tv_phone_mobile);
@@ -99,7 +90,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
         ivQr = view.findViewById(R.id.iv_bar_code);
         setPresenter(new CardPresenter(this));
         presenter.onViewCreated(getActivity());
-        isMe = getArguments().getBoolean("isMe", false);
+        isMe = getArguments().getInt("isMe", 0);
         id = getArguments().getInt("id", -1);
         getCard(id);
     }
@@ -126,6 +117,8 @@ public class CardFragment extends Fragment implements ICardContract.View {
 
     @Override
     public void onCardLoaded(Contact card) {
+        Drawable cardBackground = clCard.getBackground();
+        presenter.setBackgroundColorAndRetainShape(card.getColor(), cardBackground);
         String name = card.getFirstName() + " " + card.getLastName();
         tvName.setText(name);
         tvPosition.setText(card.getPosition());

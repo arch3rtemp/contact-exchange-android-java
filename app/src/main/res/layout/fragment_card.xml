@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cv_card"
+        android:id="@+id/cl_card"
         android:layout_width="320dp"
         android:layout_height="168dp"
         android:layout_marginHorizontal="20dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/iv_qr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
@@ -40,7 +40,7 @@
             android:textColor="@color/white"
             android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            app:layout_constraintTop_toBottomOf="@+id/iv_qr"
             tools:ignore="SmallSp" />
 
         <TextView
