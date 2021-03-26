@@ -3,7 +3,6 @@ package com.example.contactsexchangejava.ui.card;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -34,9 +33,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private boolean isCreate;
     private int contactId;
     private View view;
-    private ConstraintLayout clColorPalette;
     private ConstraintLayout clCreateOrEdit;
-    private TextView tvCardHeader;
     private Button btnCreateOrSave;
     private TextView tvNavy;
     private TextView tvAqua;
@@ -61,7 +58,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     String phoneMobile;
     String phoneOffice;
     ICreateOrEditCardContract.Presenter presenter;
-    Contact contact;
+    Contact card;
 
 
     @Nullable
@@ -80,25 +77,26 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     public void initUI() {
         setPresenter(new CreateOrEditCardPresenter(this));
         presenter.onViewCreated(Objects.requireNonNull(getActivity()));
-        clColorPalette = view.findViewById(R.id.cl_color_palette);
         clCreateOrEdit = view.findViewById(R.id.cl_create_or_edit);
-        tvCardHeader = view.findViewById(R.id.tv_card_header);
         btnCreateOrSave = view.findViewById(R.id.btn_create_or_save);
         isCreate = getArguments().getBoolean("isCreate", false);
         initEditTextFields();
 
         if (!isCreate) {
-
+            contactId = getArguments().getInt("id", -1);
+            presenter.getContactById(contactId);
+            ConstraintLayout clColorPalette = view.findViewById(R.id.cl_color_palette);
+            TextView tvCardHeader = view.findViewById(R.id.tv_card_header);
             clColorPalette.setVisibility(View.GONE);
             tvCardHeader.setText(getResources().getText(R.string.edit_your_card));
             btnCreateOrSave.setText(getResources().getString(R.string.save));
             btnCreateOrSave.setOnClickListener(this);
-            contactId = getArguments().getInt("id", -1);
-            presenter.getContactById(contactId);
 
         } else {
             initColorsView();
+            cardBackground = clCreateOrEdit.getBackground();
             tvNavy.setBackgroundResource(R.drawable.selected_card_color_light_navy_shape_bg);
+            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.light_navy), cardBackground);
             setListeners();
         }
     }
@@ -112,19 +110,24 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         etPhoneOffice = view.findViewById(R.id.et_tel_office);
     }
 
-    private void setDataEditTextFields(Contact contact) {
-        this.contact = contact;
-        etFullName.setText(contact.getFirstName() + " " + contact.getLastName());
-        etCompany.setText(contact.getJob());
-        etPosition.setText(contact.getPosition());
-        etEmail.setText(contact.getEmail());
-        etPhoneMobile.setText(contact.getPhoneMobile());
-        etPhoneOffice.setText(contact.getPhoneOffice());
+    private void setDataEditTextFields() {
+        if (card.getLastName().equals("N/A"))
+            etFullName.setText(card.getFirstName());
+        else
+            etFullName.setText(String.format("%s %s", card.getFirstName(), card.getLastName()));
+        etCompany.setText(card.getJob());
+        etPosition.setText(card.getPosition());
+        etEmail.setText(card.getEmail());
+        etPhoneMobile.setText(card.getPhoneMobile());
+        etPhoneOffice.setText(card.getPhoneOffice());
     }
 
     @Override
-    public void onGetContactById(Contact contact) {
-         setDataEditTextFields(contact);
+    public void onGetContactById(Contact card) {
+        this.card = card;
+        Drawable cardBackground = clCreateOrEdit.getBackground();
+        presenter.setBackgroundColorAndRetainShape(card.getColor(), cardBackground);
+        setDataEditTextFields();
     }
 
     private void initColorsView() {
@@ -160,8 +163,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         if (isCreate) {
             defaultColorsView();
         }
-
-        cardBackground = clCreateOrEdit.getBackground();
 
         int clickedId = v.getId();
 
@@ -234,15 +235,15 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             }
 
             else {
-                contact.setId(contactId);
-                contact.setFirstName(firstName);
-                contact.setLastName(lastName);
-                contact.setJob(company);
-                contact.setPosition(position);
-                contact.setEmail(email);
-                contact.setPhoneMobile(phoneMobile);
-                contact.setPhoneOffice(phoneOffice);
-                presenter.editContact(contact);
+                card.setId(contactId);
+                card.setFirstName(firstName);
+                card.setLastName(lastName);
+                card.setJob(company);
+                card.setPosition(position);
+                card.setEmail(email);
+                card.setPhoneMobile(phoneMobile);
+                card.setPhoneOffice(phoneOffice);
+                presenter.editContact(card);
                 showToastMessage("Contact edited");
             }
 

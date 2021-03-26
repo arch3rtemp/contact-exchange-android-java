@@ -2,12 +2,15 @@ package com.example.contactsexchangejava.ui.card;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.util.Log;
 
+import com.example.contactsexchangejava.db.AppDatabase;
 import com.example.contactsexchangejava.db.DataManager;
 import com.example.contactsexchangejava.db.models.Contact;
 
@@ -22,8 +25,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
 
     private ICreateOrEditCardContract.View view;
     private CompositeDisposable compositeDisposable;
-    private DataManager dataManager;
-    private boolean isCreate;
+    private AppDatabase appDatabase;
 
 
     public CreateOrEditCardPresenter(ICreateOrEditCardContract.View view) {
@@ -32,7 +34,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
 
     @Override
     public void onViewCreated(Context context) {
-        dataManager = new DataManager(context.getApplicationContext());
+        appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
         compositeDisposable = new CompositeDisposable();
     }
 
@@ -50,19 +52,17 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
 
     @Override
     public void createContact(Contact contact) {
-        new Thread(() -> dataManager.createContact(contact)
-        ).start();
+        new Thread(() -> appDatabase.contactDao().insert(contact)).start();
     }
 
     @Override
     public void editContact(Contact contact) {
-        new Thread(() -> dataManager.editContact(contact)
-        ).start();
+        new Thread(() -> appDatabase.contactDao().update(contact)).start();
     }
 
     @Override
     public void getContactById(int id) {
-        dataManager.loadContactById(id)
+        appDatabase.contactDao().getContactById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Contact>() {
@@ -93,7 +93,6 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
     @Override
     public void onDestroy() {
         compositeDisposable.clear();
-        dataManager = null;
         this.view = null;
     }
 }

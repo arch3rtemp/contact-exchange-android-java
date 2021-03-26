@@ -2,11 +2,15 @@ package com.example.contactsexchangejava.ui.card;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -28,6 +32,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.constants.IsMe;
 import com.example.contactsexchangejava.db.models.Contact;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.shape.CornerSize;
+import com.google.android.material.shape.CornerTreatment;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.zxing.WriterException;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -73,21 +82,20 @@ public class CardFragment extends Fragment implements ICardContract.View {
         initUI();
         setListeners();
         if (isMe == IsMe.NOT_ME) {
-            clEdit = view.findViewById(R.id.cl_edit);
             clEdit.setVisibility(View.GONE);
         }
     }
 
     private void initUI() {
         clCard = view.findViewById(R.id.cl_card);
-        tvName = view.findViewById(R.id.iv_qr);
+        tvName = view.findViewById(R.id.tv_name);
         tvPosition = view.findViewById(R.id.tv_position);
         tvEmail = view.findViewById(R.id.tv_email);
         tvPhoneMobile = view.findViewById(R.id.tv_phone_mobile);
         tvPhoneOffice = view.findViewById(R.id.tv_phone_office);
         clEdit = view.findViewById(R.id.cl_edit);
         clDelete = view.findViewById(R.id.cl_delete);
-        ivQr = view.findViewById(R.id.iv_bar_code);
+        ivQr = view.findViewById(R.id.iv_qr);
         setPresenter(new CardPresenter(this));
         presenter.onViewCreated(getActivity());
         isMe = getArguments().getInt("isMe", 0);
@@ -108,7 +116,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
             transaction.addToBackStack(null);
             transaction.commit();
         });
-        clDelete.setOnClickListener(v -> createDeleteDialog(v));
+        clDelete.setOnClickListener(this::createDeleteDialog);
     }
 
     private void getCard(int id) {
@@ -119,8 +127,10 @@ public class CardFragment extends Fragment implements ICardContract.View {
     public void onCardLoaded(Contact card) {
         Drawable cardBackground = clCard.getBackground();
         presenter.setBackgroundColorAndRetainShape(card.getColor(), cardBackground);
-        String name = card.getFirstName() + " " + card.getLastName();
-        tvName.setText(name);
+        if (card.getLastName().equals("N/A"))
+            tvName.setText(card.getFirstName());
+        else
+            tvName.setText(String.format("%s %s", card.getFirstName(), card.getLastName()));
         tvPosition.setText(card.getPosition());
         tvEmail.setText(card.getEmail());
         tvPhoneMobile.setText(card.getPhoneMobile());
@@ -132,7 +142,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
         display.getSize(point);
         int width = point.x;
         int height = point.y;
-        int smallerDimension = width < height ? width : height;
+        int smallerDimension = Math.min(width, height);
         smallerDimension = smallerDimension * 3 / 4;
 
         QRGEncoder qrgEncoder = new QRGEncoder(card.toString(), null, QRGContents.Type.TEXT, smallerDimension);

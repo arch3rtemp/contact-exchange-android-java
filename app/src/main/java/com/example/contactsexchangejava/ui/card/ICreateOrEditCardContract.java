@@ -1,5 +1,6 @@
 package com.example.contactsexchangejava.ui.card;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import com.example.contactsexchangejava.db.models.Contact;

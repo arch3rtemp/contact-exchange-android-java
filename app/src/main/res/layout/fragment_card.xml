@@ -21,60 +21,60 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/iv_qr"
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/test_name"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/test_name" />
 
         <TextView
             android:id="@+id/tv_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/test_position"
             android:textColor="@color/white"
             android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_qr"
-            tools:ignore="SmallSp" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:ignore="SmallSp"
+            tools:text="@string/test_position" />
 
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/test_email"
             android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_phone_mobile"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/test_email" />
 
         <TextView
             android:id="@+id/tv_phone_mobile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/test_mobile"
             android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_phone_office"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/test_mobile" />
 
         <TextView
             android:id="@+id/tv_phone_office"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/test_office"
             android:textColor="@color/white"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/test_office" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -173,20 +173,29 @@
         android:text="@string/scan_qr"
         android:textColor="@color/black_two"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/iv_bar_code"
+        app:layout_constraintBottom_toTopOf="@id/ll_qr"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
-    <ImageView
-        android:id="@+id/iv_bar_code"
+    <LinearLayout
+        android:id="@+id/ll_qr"
         android:layout_width="144dp"
         android:layout_height="144dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/qr_shape_bg"
-        android:contentDescription="@string/scan_qr"
+        android:gravity="center"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_qr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/scan_qr" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

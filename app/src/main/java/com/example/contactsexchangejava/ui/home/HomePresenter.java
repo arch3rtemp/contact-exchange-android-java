@@ -2,6 +2,7 @@ package com.example.contactsexchangejava.ui.home;
 
 import android.content.Context;
 
+import com.example.contactsexchangejava.db.AppDatabase;
 import com.example.contactsexchangejava.db.DataManager;
 import com.example.contactsexchangejava.db.models.Contact;
 
@@ -17,7 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 public class HomePresenter implements IHomeContract.Presenter {
 
     private IHomeContract.View view;
-    private DataManager dataManager;
+    private AppDatabase appDatabase;
     private CompositeDisposable compositeDisposable;
 
     public HomePresenter(IHomeContract.View view) {
@@ -26,13 +27,13 @@ public class HomePresenter implements IHomeContract.Presenter {
 
     @Override
     public void onViewCreated(Context context) {
-        dataManager = new DataManager(context.getApplicationContext());
+        appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
         compositeDisposable = new CompositeDisposable();
     }
 
     @Override
     public void getMyCards() {
-        dataManager.loadMyCards()
+        appDatabase.contactDao().getAllMyCards()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Contact>>() {
@@ -60,7 +61,7 @@ public class HomePresenter implements IHomeContract.Presenter {
 
     @Override
     public void getContacts() {
-        dataManager.loadContacts()
+        appDatabase.contactDao().getAllContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Contact>>() {
@@ -89,7 +90,6 @@ public class HomePresenter implements IHomeContract.Presenter {
     @Override
     public void onDestroy() {
         compositeDisposable.clear();
-        dataManager = null;
         this.view = null;
     }
 }

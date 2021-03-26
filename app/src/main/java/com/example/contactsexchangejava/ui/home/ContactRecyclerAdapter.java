@@ -117,25 +117,19 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
             }
 
             else {
-//                if (contact == null)
-//                    return;
-                String name = contact.getFirstName() + " " + contact.getLastName();
-                tvName.setText(name);
-                String initials = getInitials(contact.getFirstName(), contact.getLastName());
-                tvInitials.setText(initials);
+                if (contact.getLastName().equals("N/A")) {
+                    tvName.setText(contact.getFirstName());
+                    tvInitials.setText(contact.getFirstName().substring(0, 1));
+                } else {
+                    tvName.setText(String.format("%s %s", contact.getFirstName(), contact.getLastName()));
+                    tvInitials.setText(String.format("%s%s", contact.getFirstName().substring(0, 1), contact.getLastName().substring(0, 1)));
+                }
                 tvPosition.setText(contact.getPosition());
                 tvAddDate.setText(contact.getCreateDate());
                 itemView.setOnClickListener(v -> clickListener.contactClicked(contact, getAdapterPosition()));
                 Drawable background = llInitials.getBackground();
                 setBackgroundColorAndRetainShape(contact.getColor(), background);
             }
-        }
-
-        private String getInitials(String firstName, String lastName) {
-            if (lastName.equals("N/A"))
-                return firstName.substring(0, 1);
-            else
-                return firstName.substring(0, 1) + lastName.substring(0, 1);
         }
 
         private void setBackgroundColorAndRetainShape(final int color, final Drawable background) {

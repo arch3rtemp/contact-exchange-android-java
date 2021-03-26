@@ -2,13 +2,14 @@ package com.example.contactsexchangejava.ui.qr;
 
 import android.content.Context;
 
+import com.example.contactsexchangejava.db.AppDatabase;
 import com.example.contactsexchangejava.db.DataManager;
 import com.example.contactsexchangejava.db.models.Contact;
 
 public class QrPresenter implements IQrContract.Presenter {
 
     IQrContract.View view;
-    DataManager dataManager;
+    AppDatabase appDatabase;
 
     public QrPresenter(IQrContract.View view) {
         this.view = view;
@@ -16,17 +17,16 @@ public class QrPresenter implements IQrContract.Presenter {
 
     @Override
     public void onViewCreated(Context context) {
-        dataManager = new DataManager(context.getApplicationContext());
+        appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
     }
 
     @Override
     public void createContact(Contact contact) {
-        new Thread(() -> dataManager.createContact(contact)).start();
+        new Thread(() -> appDatabase.contactDao().insert(contact)).start();
     }
 
     @Override
     public void onDestroy() {
         this.view = null;
-        dataManager = null;
     }
 }
