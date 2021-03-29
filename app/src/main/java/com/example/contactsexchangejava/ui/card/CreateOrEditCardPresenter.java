@@ -1,15 +1,23 @@
 package com.example.contactsexchangejava.ui.card;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.db.AppDatabase;
 import com.example.contactsexchangejava.db.DataManager;
 import com.example.contactsexchangejava.db.models.Contact;
@@ -39,15 +47,25 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
     }
 
     @Override
-    public void setBackgroundColorAndRetainShape(final int color, final Drawable background) {
-        if (background instanceof ShapeDrawable)
-            ((ShapeDrawable) background.mutate()).getPaint().setColor(color);
-        else if (background instanceof GradientDrawable)
-            ((GradientDrawable) background.mutate()).setColor(color);
-        else if (background instanceof ColorDrawable)
-            ((ColorDrawable) background).setColor(color);
-        else
-            Log.w("TAG", "Not a valid background type");
+    public void setBackgroundColorWithAnimationAndRetainShape(final int currentColor, final int finalColor, final Drawable background) {
+
+        ValueAnimator valueAnimator = ValueAnimator.ofArgb(currentColor, finalColor);
+        valueAnimator.setDuration(200);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                if (background instanceof ShapeDrawable)
+                    ((ShapeDrawable) background.mutate()).getPaint().setColor((Integer) valueAnimator.getAnimatedValue());
+                else if (background instanceof GradientDrawable)
+                    ((GradientDrawable) background.mutate()).setColor((Integer) valueAnimator.getAnimatedValue());
+                else if (background instanceof ColorDrawable)
+                    ((ColorDrawable) background).setColor((Integer) valueAnimator.getAnimatedValue());
+                else
+                    Log.w("TAG", "Not a valid background type");
+            }
+        });
+        valueAnimator.start();
+
     }
 
     @Override

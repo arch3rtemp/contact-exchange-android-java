@@ -72,6 +72,7 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/card_edit_text_shape_bg"
             android:hint="@string/email"
+            android:inputType="textEmailAddress"
             android:paddingHorizontal="20dp"
             android:textColor="@color/black_two"
             android:textSize="11sp"

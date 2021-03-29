@@ -1,5 +1,8 @@
 package com.example.contactsexchangejava.ui.card;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -39,6 +42,9 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.zxing.WriterException;
 
+import java.time.Clock;
+import java.util.Objects;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
@@ -47,6 +53,7 @@ import static android.content.Context.WINDOW_SERVICE;
 public class CardFragment extends Fragment implements ICardContract.View {
 
     View view;
+    private ConstraintLayout clCard;
     private ConstraintLayout clEdit;
     private ConstraintLayout clDelete;
     private int isMe;
@@ -60,8 +67,8 @@ public class CardFragment extends Fragment implements ICardContract.View {
     ICardContract.Presenter presenter;
     AppCompatActivity activity;
     int id;
+    Contact card;
     ImageView ivQr;
-    ConstraintLayout clCard;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -98,25 +105,17 @@ public class CardFragment extends Fragment implements ICardContract.View {
         ivQr = view.findViewById(R.id.iv_qr);
         setPresenter(new CardPresenter(this));
         presenter.onViewCreated(getActivity());
-        isMe = getArguments().getInt("isMe", 0);
+        isMe = Objects.requireNonNull(getArguments()).getInt("isMe", 0);
         id = getArguments().getInt("id", -1);
         getCard(id);
     }
 
     private void setListeners() {
         clEdit.setOnClickListener(v -> {
-            CreateOrEditCardFragment editCardFragment = new CreateOrEditCardFragment();
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("isCreate", false);
-            bundle.putInt("id", id);
-            editCardFragment.setArguments(bundle);
-            FragmentTransaction transaction;
-            transaction = activity.getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fl_main_frame_container, editCardFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            createEditFragment();
         });
         clDelete.setOnClickListener(this::createDeleteDialog);
+
     }
 
     private void getCard(int id) {
@@ -125,6 +124,28 @@ public class CardFragment extends Fragment implements ICardContract.View {
 
     @Override
     public void onCardLoaded(Contact card) {
+        this.card = card;
+        setCardData();
+        generateQr();
+    }
+
+
+
+    private void createEditFragment() {
+        CreateOrEditCardFragment editCardFragment = new CreateOrEditCardFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("isCreate", false);
+        bundle.putInt("id", id);
+        editCardFragment.setArguments(bundle);
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.card_scale_up, 0, 0, R.anim.card_scale_down)
+                .replace(R.id.fl_main_frame_container, editCardFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void setCardData() {
         Drawable cardBackground = clCard.getBackground();
         presenter.setBackgroundColorAndRetainShape(card.getColor(), cardBackground);
         if (card.getLastName().equals("N/A"))
@@ -135,8 +156,10 @@ public class CardFragment extends Fragment implements ICardContract.View {
         tvEmail.setText(card.getEmail());
         tvPhoneMobile.setText(card.getPhoneMobile());
         tvPhoneOffice.setText(card.getPhoneOffice());
+    }
 
-        WindowManager manager = (WindowManager) getActivity().getSystemService(WINDOW_SERVICE);
+    private void generateQr() {
+        WindowManager manager = (WindowManager) Objects.requireNonNull(getActivity()).getSystemService(WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         Point point = new Point();
         display.getSize(point);
@@ -154,7 +177,6 @@ public class CardFragment extends Fragment implements ICardContract.View {
         } catch (WriterException e) {
             Log.v("TAG", e.toString());
         }
-
     }
 
     private void createDeleteDialog(View v) {
@@ -171,19 +193,56 @@ public class CardFragment extends Fragment implements ICardContract.View {
         delete.setOnClickListener(d -> {
             deleteDialog.dismiss();
             presenter.deleteContact(id);
-            createDeletedFragment();
+            cardDeletionAnimation();
+
         });
 
         cancel.setOnClickListener(c -> deleteDialog.dismiss());
     }
 
-    private void createDeletedFragment() {
+    private void cardDeletionAnimation() {
+        ObjectAnimator moveY = ObjectAnimator.ofFloat(clCard, View.Y, clCard.getY(), clCard.getY()+700 );
+        ObjectAnimator moveX = ObjectAnimator.ofFloat(clCard, View.X, clCard.getX(), clCard.getX()+0 );
 
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(clCard, View.SCALE_Y, 1f, 0.2f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(clCard, View.SCALE_X, 1f, 0.2f);
+
+        ObjectAnimator alpha = ObjectAnimator.ofFloat(clCard, View.ALPHA, 1f,0f);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                createDeletedFragment();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+        animatorSet.setDuration(1000);
+        animatorSet.play(moveX).with(moveY).with(scaleX).with(scaleY).with(alpha);
+        animatorSet.start();
+    }
+
+    private void createDeletedFragment() {
         DeletedFragment deletedFragment = new DeletedFragment();
-        FragmentTransaction transaction;
-        transaction = activity.getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_main_frame_container, deletedFragment);
-        transaction.commit();
+        activity.getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.slide_in, 0)
+                .replace(R.id.fl_main_frame_container, deletedFragment)
+                .commit();
     }
 
     public static CardFragment getInstance() {

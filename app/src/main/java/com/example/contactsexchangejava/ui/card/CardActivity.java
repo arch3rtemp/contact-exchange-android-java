@@ -1,12 +1,15 @@
 package com.example.contactsexchangejava.ui.card;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -16,6 +19,7 @@ import com.example.contactsexchangejava.ui.qr.QrActivity;
 public class CardActivity extends AppCompatActivity {
 
     FragmentManager manager;
+    CardFragment cardFragment;
     Intent intent;
     LinearLayout back;
     LinearLayout llScan;
@@ -35,14 +39,24 @@ public class CardActivity extends AppCompatActivity {
         intent = getIntent();
         setListeners();
         boolean isCreate = intent.getBooleanExtra("isCreate", false);
-        if (isCreate)
+        if (isCreate) {
             initCreateCardFragment();
-        else
-            initCardFragment();
+        }
+        else {
+            Bundle bundle = new Bundle();
+            bundle.putInt("isMe", intent.getIntExtra("isMe", 0));
+            bundle.putInt("id", intent.getIntExtra("id", -1));
+            initCardFragment(bundle);
+        }
     }
 
     private void setListeners() {
-        back.setOnClickListener(v -> onBackPressed());
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         llScan.setOnClickListener(v -> {
             Intent intent = new Intent(this, QrActivity.class);
@@ -71,18 +85,12 @@ public class CardActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private void initCardFragment() {
-        int isMe = intent.getIntExtra("isMe", 0);
+    private void initCardFragment(Bundle bundle) {
         CardFragment cardFragment = CardFragment.getInstance();
-        Bundle bundle = new Bundle();
-        bundle.putInt("isMe", isMe);
-        bundle.putInt("id", intent.getIntExtra("id", -1));
         cardFragment.setArguments(bundle);
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fl_main_frame_container, cardFragment);
 //        transaction.addToBackStack(null);
         transaction.commit();
     }
-
-
 }

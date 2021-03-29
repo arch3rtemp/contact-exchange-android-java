@@ -1,12 +1,8 @@
 package com.example.contactsexchangejava.ui.card;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +46,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private EditText etPhoneMobile;
     private EditText etPhoneOffice;
     private int color;
+    private int currentColor;
     String firstName;
     String lastName;
     String company;
@@ -79,7 +76,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         presenter.onViewCreated(Objects.requireNonNull(getActivity()));
         clCreateOrEdit = view.findViewById(R.id.cl_create_or_edit);
         btnCreateOrSave = view.findViewById(R.id.btn_create_or_save);
-        isCreate = getArguments().getBoolean("isCreate", false);
+        isCreate = Objects.requireNonNull(getArguments()).getBoolean("isCreate", false);
         initEditTextFields();
 
         if (!isCreate) {
@@ -91,12 +88,13 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             tvCardHeader.setText(getResources().getText(R.string.edit_your_card));
             btnCreateOrSave.setText(getResources().getString(R.string.save));
             btnCreateOrSave.setOnClickListener(this);
-
         } else {
             initColorsView();
+            currentColor = getResources().getColor(R.color.light_navy);
+            color = currentColor;
             cardBackground = clCreateOrEdit.getBackground();
             tvNavy.setBackgroundResource(R.drawable.selected_card_color_light_navy_shape_bg);
-            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.light_navy), cardBackground);
+            presenter.setBackgroundColorWithAnimationAndRetainShape(getResources().getColor(R.color.light_navy), getResources().getColor(R.color.light_navy), cardBackground);
             setListeners();
         }
     }
@@ -126,7 +124,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     public void onGetContactById(Contact card) {
         this.card = card;
         Drawable cardBackground = clCreateOrEdit.getBackground();
-        presenter.setBackgroundColorAndRetainShape(card.getColor(), cardBackground);
+        presenter.setBackgroundColorWithAnimationAndRetainShape(card.getColor(), card.getColor(), cardBackground);
         setDataEditTextFields();
     }
 
@@ -167,26 +165,40 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         int clickedId = v.getId();
 
         if (clickedId == R.id.tv_color_light_navy) {
+            color = getResources().getColor(R.color.light_navy);
             tvNavy.setBackgroundResource(R.drawable.selected_card_color_light_navy_shape_bg);
-            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.light_navy), cardBackground);
+            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            currentColor = color;
         } else if (clickedId == R.id.tv_color_aqua_marine) {
+            color = getResources().getColor(R.color.aqua_marine);
             tvAqua.setBackgroundResource(R.drawable.selected_card_color_aqua_marine_shape_bg);
-            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.aqua_marine), cardBackground);
+            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            currentColor = color;
         } else if (clickedId == R.id.tv_color_ugly_yellow) {
+            color = getResources().getColor(R.color.ugly_yellow);
             tvYellow.setBackgroundResource(R.drawable.selected_card_color_ugly_yellow_shape_bg);
-            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.ugly_yellow), cardBackground);
+            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            currentColor = color;
         } else if (clickedId == R.id.tv_color_shamrock_green) {
+            color = getResources().getColor(R.color.shamrock_green);
             tvGreen.setBackgroundResource(R.drawable.selected_card_color_shamrock_green_shape_bg);
-            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.shamrock_green), cardBackground);
+            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            currentColor = color;
         } else if (clickedId == R.id.tv_color_black_three) {
+            color = getResources().getColor(R.color.black_three);
             tvBlack.setBackgroundResource(R.drawable.selected_card_color_black_shape_bg);
-            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.black_three), cardBackground);
+            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            currentColor = color;
         } else if (clickedId == R.id.tv_color_pumpkin) {
+            color = getResources().getColor(R.color.pumpkin);
             tvPumpkin.setBackgroundResource(R.drawable.selected_card_color_pumpkin_shape_bg);
-            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.pumpkin), cardBackground);
+            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            currentColor = color;
         } else if (clickedId == R.id.tv_color_darkish_purple) {
+            color = getResources().getColor(R.color.darkish_purple);
             tvPurple.setBackgroundResource(R.drawable.selected_card_color_darkish_purple_shape_bg);
-            presenter.setBackgroundColorAndRetainShape(getResources().getColor(R.color.darkish_purple), cardBackground);
+            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            currentColor = color;
         } else if (clickedId == R.id.btn_create_or_save) {
 
             if (isEmptyField(etFullName))
@@ -201,16 +213,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
                 return;
             if (isEmptyField(etPhoneOffice))
                 return;
-
-            if (isCreate) {
-                color = Color.TRANSPARENT;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                ColorStateList colorStateList = ((GradientDrawable) cardBackground).getColor();
-                color = colorStateList.getDefaultColor();
-                Log.e("TAG", String.valueOf(color));
-            }
-            }
-
 
             firstName = etFullName.getText().toString();
             lastName = "N/A";
@@ -289,7 +291,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
     private void startHomeActivity() {
         Intent intent = new Intent(getContext(), HomeActivity.class);
-        getActivity().startActivity(intent);
+        Objects.requireNonNull(getActivity()).startActivity(intent);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.example.contactsexchangejava.ui.card;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.example.contactsexchangejava.db.models.Contact;
 import com.example.contactsexchangejava.ui.IBasePresenter;
 import com.example.contactsexchangejava.ui.IBaseView;
