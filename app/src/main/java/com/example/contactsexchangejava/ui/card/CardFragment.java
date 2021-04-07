@@ -194,7 +194,6 @@ public class CardFragment extends Fragment implements ICardContract.View {
             deleteDialog.dismiss();
             presenter.deleteContact(id);
             cardDeletionAnimation();
-
         });
 
         cancel.setOnClickListener(c -> deleteDialog.dismiss());

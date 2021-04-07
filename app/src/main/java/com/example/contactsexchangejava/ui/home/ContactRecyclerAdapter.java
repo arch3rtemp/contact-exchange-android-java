@@ -18,18 +18,19 @@ import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.constants.IsMe;
 import com.example.contactsexchangejava.db.models.Contact;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecyclerAdapter.ContactHolder> {
 
-    private List<Contact> contacts;
+    private List<Contact> contacts = new ArrayList<>();
     private final int ME = 0, NOT_ME = 1;
     private int isMe = 0;
 
     public ContactRecyclerAdapter(List<Contact> contacts) {
         if (this.contacts != null)
             this.contacts.clear();
-        this.contacts = contacts;
+        this.contacts.addAll(contacts);
     }
 
     @Override

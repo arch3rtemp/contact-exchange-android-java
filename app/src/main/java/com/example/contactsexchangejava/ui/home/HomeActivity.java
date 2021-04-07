@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.contactsexchangejava.R;
@@ -19,6 +21,7 @@ public class HomeActivity extends AppCompatActivity {
     FragmentManager manager = getSupportFragmentManager();
     HomeFragment homeFragment;
     LinearLayout llScan;
+    TextView tvMyCards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initUI() {
         llScan = findViewById(R.id.ll_qr_home);
+        tvMyCards = findViewById(R.id.tv_my_cards);
         initHomeFragment();
     }
 
@@ -56,5 +60,20 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(this, "Contact added", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

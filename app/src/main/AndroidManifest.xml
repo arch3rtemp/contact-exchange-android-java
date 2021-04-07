@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactsExchangeJava">
+        <activity android:name=".ui.search.SearchActivity"></activity>
         <activity android:name=".ui.qr.QrActivity" />
         <activity
             android:name=".ui.card.CardActivity"

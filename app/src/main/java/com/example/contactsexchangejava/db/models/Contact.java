@@ -51,8 +51,6 @@ public class Contact implements Serializable {
     @ColumnInfo(name = "is_me")
     private int isMe;
 
-    public Contact() {}
-
     public Contact(String firstName, String lastName, String job, String position, String email, String phoneMobile, String phoneOffice, int color, int isMe) {
         this.firstName = firstName;
         this.lastName = lastName;
