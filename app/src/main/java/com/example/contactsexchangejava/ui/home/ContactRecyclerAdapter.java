@@ -24,12 +24,10 @@ import java.util.List;
 public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecyclerAdapter.ContactHolder> {
 
     private List<Contact> contacts = new ArrayList<>();
-    private final int ME = 0, NOT_ME = 1;
     private int isMe = 0;
 
     public ContactRecyclerAdapter(List<Contact> contacts) {
-        if (this.contacts != null)
-            this.contacts.clear();
+        this.contacts.clear();
         this.contacts.addAll(contacts);
     }
 
@@ -37,11 +35,11 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
     public int getItemViewType(int position) {
         if (contacts.get(position).getIsMe() == IsMe.ME) {
             isMe = IsMe.ME;
-            return ME;
+            return IsMe.ME;
         }
         else if (contacts.get(position).getIsMe() == IsMe.NOT_ME) {
             isMe = IsMe.NOT_ME;
-            return NOT_ME;
+            return IsMe.NOT_ME;
         }
         else
             return 0;
@@ -54,10 +52,10 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactRecycler
         View view;
 
         switch (viewType) {
-            case ME:
+            case IsMe.ME:
                 view = inflater.inflate(R.layout.card_list_item, parent, false);
                 break;
-            case NOT_ME:
+            case IsMe.NOT_ME:
                 view = inflater.inflate(R.layout.contact_list_item, parent, false);
                 break;
             default:

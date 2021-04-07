@@ -223,13 +223,6 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        rvContactAdapter.clearAdapter();
-        rvCardAdapter.clearAdapter();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (launchNextActivity) {
@@ -242,10 +235,6 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
             animator.playTogether(moveRightX, appear);
             animator.start();
         }
-        if (rvContactAdapter != null)
-            rvContactAdapter.clearAdapter();
-        if (rvCardAdapter != null)
-            rvCardAdapter.clearAdapter();
     }
 
     @Override
