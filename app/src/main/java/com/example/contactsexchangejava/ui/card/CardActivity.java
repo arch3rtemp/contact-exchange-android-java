@@ -1,6 +1,6 @@
 package com.example.contactsexchangejava.ui.card;
 
-import androidx.annotation.NonNull;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,11 +15,11 @@ import android.widget.Toast;
 
 import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.ui.qr.QrActivity;
+import com.example.contactsexchangejava.constants.FragmentType;
 
 public class CardActivity extends AppCompatActivity {
 
     FragmentManager manager;
-    CardFragment cardFragment;
     Intent intent;
     LinearLayout back;
     LinearLayout llScan;
@@ -38,25 +38,27 @@ public class CardActivity extends AppCompatActivity {
         manager = getSupportFragmentManager();
         intent = getIntent();
         setListeners();
-        boolean isCreate = intent.getBooleanExtra("isCreate", false);
-        if (isCreate) {
-            initCreateCardFragment();
-        }
-        else {
-            Bundle bundle = new Bundle();
-            bundle.putInt("isMe", intent.getIntExtra("isMe", 0));
-            bundle.putInt("id", intent.getIntExtra("id", -1));
-            initCardFragment(bundle);
+        int fragmentType = intent.getIntExtra("type", 0);
+        switch (fragmentType) {
+            case FragmentType.CREATE:
+                initCreateCardFragment();
+                break;
+            case FragmentType.CARD:
+                Bundle bundle = new Bundle();
+                bundle.putInt("isMe", intent.getIntExtra("isMe", 0));
+                bundle.putInt("id", intent.getIntExtra("id", -1));
+                initCardFragment(bundle);
+                break;
+            case FragmentType.DELETED:
+                createDeletedFragment();
+                break;
+            default:
+                break;
         }
     }
 
     private void setListeners() {
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        back.setOnClickListener(v -> onBackPressed());
 
         llScan.setOnClickListener(v -> {
             Intent intent = new Intent(this, QrActivity.class);
@@ -92,5 +94,14 @@ public class CardActivity extends AppCompatActivity {
         transaction.replace(R.id.fl_main_frame_container, cardFragment);
 //        transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void createDeletedFragment() {
+        DeletedFragment deletedFragment = new DeletedFragment();
+        this.getSupportFragmentManager()
+                .beginTransaction()
+//                .setCustomAnimations(R.anim.slide_in, 0)
+                .replace(R.id.fl_main_frame_container, deletedFragment)
+                .commit();
     }
 }

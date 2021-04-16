@@ -15,6 +15,7 @@ public interface IHomeContract {
     interface Presenter extends IBasePresenter {
         void getMyCards();
         void getContacts();
+        void deleteContact(int id);
     }
 
     interface View extends IBaseView<Presenter> {

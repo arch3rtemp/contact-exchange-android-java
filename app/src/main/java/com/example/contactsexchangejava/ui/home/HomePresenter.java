@@ -91,6 +91,11 @@ public class HomePresenter implements IHomeContract.Presenter {
     }
 
     @Override
+    public void deleteContact(int id) {
+        new Thread(() -> appDatabase.contactDao().delete(id)).start();
+    }
+
+    @Override
     public void onDestroy() {
         compositeDisposable.clear();
         this.view = null;

@@ -12,12 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactsExchangeJava">
-        <activity android:name=".ui.search.SearchActivity"></activity>
+        <activity android:name=".ui.search.SearchActivity"
+            android:screenOrientation="nosensor" />
         <activity android:name=".ui.qr.QrActivity" />
         <activity
             android:name=".ui.card.CardActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.home.HomeActivity">
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="nosensor" />
+        <activity android:name=".ui.home.HomeActivity"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

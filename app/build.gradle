@@ -58,4 +58,7 @@ dependencies {
 
     // Library for gson
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    // Library for swipe recyclerview
+    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 }

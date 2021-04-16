@@ -7,6 +7,8 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.app.SharedElementCallback;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +33,9 @@ import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.constants.FragmentType;
 import com.example.contactsexchangejava.ui.card.CardActivity;
 import com.example.contactsexchangejava.db.models.Contact;
+import com.example.contactsexchangejava.ui.home.ContactRecyclerAdapter;
+import com.example.contactsexchangejava.ui.home.HomePresenter;
+import com.example.contactsexchangejava.ui.home.IHomeContract;
 import com.example.contactsexchangejava.ui.search.SearchActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -36,10 +44,11 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-public class HomeFragment extends Fragment implements ContactRecyclerAdapter.IContactClickListener, IHomeContract.View{
+public class HomeFragment extends Fragment implements ContactRecyclerAdapter.IContactClickListener, ContactRecyclerAdapter.IDeleteClickListener, IHomeContract.View {
 
     View view;
     TextView card;
+    List<Contact> contacts;
     RecyclerView rvCards;
     RecyclerView rvContacts;
     FloatingActionButton fab;
@@ -50,8 +59,6 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     LinearLayoutManager llContactManager;
     ConstraintLayout clContacts;
     IHomeContract.Presenter presenter;
-    List<Contact> myCards = new ArrayList<>();
-    List<Contact> contacts = new ArrayList<>();
     TextView tvContactHeader;
     float startingPosition;
     AppCompatActivity activity;
@@ -75,13 +82,6 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         super.onViewCreated(view, savedInstanceState);
         initUI();
         setListeners();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        myCards.clear();
-        this.contacts.clear();
         getMyCards();
         getContacts();
     }
@@ -98,13 +98,11 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     private void setListeners() {
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), CardActivity.class);
-            intent.putExtra("isCreate", true);
+            intent.putExtra("type", FragmentType.CREATE);
             startActivity(intent);
         });
 
-        ivSearch.setOnClickListener(v -> {
-            animateSearchMenu();
-        });
+        ivSearch.setOnClickListener(v -> animateSearchMenu());
     }
 
     private void animateSearchMenu() {
@@ -125,7 +123,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
             public void onAnimationEnd(Animator animation) {
                 Intent intent = new Intent(activity, SearchActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(activity, clContacts, "transition_contacts");
+                        .makeSceneTransitionAnimation(activity, clContacts, clContacts.getTransitionName());
                 startActivityForResult(intent, 122, options.toBundle());
             }
 
@@ -140,6 +138,18 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
             }
         });
         animator.start();
+
+        setEnterSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                super.onSharedElementStart(sharedElementNames, sharedElements, sharedElementSnapshots);
+            }
+
+            @Override
+            public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots);
+            }
+        });
     }
 
     @Override
@@ -152,7 +162,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         }
     }
 
-    private void createCardRecyclerView() {
+    private void createCardRecyclerView(List<Contact> myCards) {
         card = view.findViewById(R.id.tv_card);
         rvCards = view.findViewById(R.id.rv_cards);
         rvCardAdapter = new ContactRecyclerAdapter(myCards);
@@ -165,14 +175,17 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
 //        rvCardAdapter.addContacts(getMyCards());
     }
 
-    private void createContactRecyclerView() {
+    private void createContactRecyclerView(List<Contact> contacts) {
+        this.contacts = contacts;
         rvContacts = view.findViewById(R.id.rv_contacts);
         rvContactAdapter = new ContactRecyclerAdapter(contacts);
+//        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rvContacts);
         llContactManager = new LinearLayoutManager(getContext());
         llContactManager.setOrientation(RecyclerView.VERTICAL);
         rvContacts.setLayoutManager(llContactManager);
         rvContacts.setAdapter(rvContactAdapter);
         rvContactAdapter.setContactClickListener(this);
+        rvContactAdapter.setDeleteClickListener(this);
 //        rvContactAdapter.addContacts(getContacts());
     }
 
@@ -210,10 +223,20 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
   
 
     @Override
-    public void contactClicked(Contact contact, int contactPosition) {
+    public void onContactClicked(Contact contact, int contactPosition) {
         Intent intent = new Intent(getContext(), CardActivity.class);
+        intent.putExtra("type", FragmentType.CARD);
         intent.putExtra("isMe", contact.getIsMe());
         intent.putExtra("id", contact.getId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onDeleteClicked(Contact contact, int contactPosition) {
+        rvContactAdapter.removeItem(contactPosition);
+        presenter.deleteContact(contact.getId());
+        Intent intent = new Intent(getContext(), CardActivity.class);
+        intent.putExtra("type", FragmentType.DELETED);
         startActivity(intent);
     }
 
@@ -227,6 +250,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         super.onResume();
         if (launchNextActivity) {
             launchNextActivity = false;
+
             ObjectAnimator moveRightX = ObjectAnimator.ofFloat(ivSearch, View.X, 0 - ivSearch.getTranslationX());
             moveRightX.setDuration(400)
                     .setInterpolator(new DecelerateInterpolator());
@@ -241,18 +265,18 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     public void onDestroy() {
         super.onDestroy();
         view = null;
+        rvCardAdapter = null;
+        rvContactAdapter = null;
         presenter.onDestroy();
     }
 
     @Override
     public void onGetMyCards(List<Contact> cards) {
-        myCards.addAll(cards);
-        createCardRecyclerView();
+        createCardRecyclerView(cards);
     }
 
     @Override
     public void onGetContacts(List<Contact> contacts) {
-        this.contacts.addAll(contacts);
-        createContactRecyclerView();
+        createContactRecyclerView(contacts);
     }
 }

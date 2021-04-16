@@ -1,67 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.chauthai.swipereveallayout.SwipeRevealLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
-    android:orientation="horizontal">
+    app:dragEdge="right"
+    app:mode="same_level">
 
+    <!--  Swipe Layout  -->
     <LinearLayout
-        android:id="@+id/ll_qr_card"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/contact_list_item_shape_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:gravity="center">
 
-        <TextView
-            android:id="@+id/tv_contact_initials"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
+        <LinearLayout
+            android:id="@+id/ll_delete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="25dp"
             android:gravity="center"
-            android:fontFamily="@font/poppins"
-            android:text="@string/test_initials"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:background="@drawable/ll_delete_shape_bg">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tint="@color/white"
+                android:contentDescription="@string/delete"
+                android:src="@drawable/ic_android_delete" />
+        </LinearLayout>
     </LinearLayout>
 
+    <!--  Main Layout  -->
     <LinearLayout
-        android:layout_width="0dp"
+        android:id="@+id/ll_item_root"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_qr_card"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/contact_list_item_shape_bg"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_contact_initials"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:fontFamily="@font/poppins"
+                android:gravity="center"
+                android:text="@string/test_initials"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_contact_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/test_name"
+                android:textColor="@color/black_two"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_contact_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/test_position"
+                android:textColor="@color/warm_grey_two"
+                android:textSize="9sp"
+                tools:ignore="SmallSp" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_contact_name"
+            android:id="@+id/tv_contact_add_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/test_name"
+            android:text="@string/test_date"
             android:textColor="@color/black_two"
             android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/tv_contact_position"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/test_position"
-            android:textColor="@color/warm_grey_two"
-            android:textSize="9sp"
-            tools:ignore="SmallSp" />
-
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_contact_add_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:fontFamily="@font/poppins_medium"
-        android:text="@string/test_date"
-        android:textColor="@color/black_two"
-        android:textSize="12sp" />
-
-</LinearLayout>
+</com.chauthai.swipereveallayout.SwipeRevealLayout>

@@ -9,8 +9,11 @@ import androidx.transition.Transition;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 
 import com.example.contactsexchangejava.R;
 import com.example.contactsexchangejava.db.models.Contact;
@@ -29,7 +32,7 @@ public class SearchActivity extends AppCompatActivity implements ISearchContract
     ContactRecyclerAdapter rvContactAdapter;
     LinearLayoutManager llContactManager;
     ConstraintLayout clContacts;
-
+    EditText etSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class SearchActivity extends AppCompatActivity implements ISearchContract
         setContentView(R.layout.activity_search);
 
         initUI();
+        setListeners();
         getContacts();
     }
 
@@ -48,10 +52,30 @@ public class SearchActivity extends AppCompatActivity implements ISearchContract
         setPresenter(new SearchPresenter(this));
         presenter.onViewCreated(this);
         clContacts = findViewById(R.id.cl_contacts_search);
+        etSearch = findViewById(R.id.et_search);
+    }
+
+    private void setListeners() {
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                rvContactAdapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override
-    public void contactClicked(Contact contact, int contactPosition) {
+    public void onContactClicked(Contact contact, int contactPosition) {
         Intent intent = new Intent(this, CardActivity.class);
         intent.putExtra("isMe", contact.getIsMe());
         intent.putExtra("id", contact.getId());
@@ -79,6 +103,7 @@ public class SearchActivity extends AppCompatActivity implements ISearchContract
     public void onBackPressed() {
         Intent intent = getIntent();
         setResult(RESULT_OK, intent);
+        finishAfterTransition();
         super.onBackPressed();
     }
 
