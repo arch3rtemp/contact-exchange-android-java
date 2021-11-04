@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/contact_list_shape_bg"
+        android:background="@drawable/shape_contact_list_bg"
         android:paddingHorizontal="20dp"
         android:transitionName="@string/transition_contacts_name"
         app:layout_constraintBottom_toBottomOf="parent"

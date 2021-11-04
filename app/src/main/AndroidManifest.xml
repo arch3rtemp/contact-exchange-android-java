@@ -20,7 +20,8 @@
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="nosensor" />
         <activity android:name=".ui.home.HomeActivity"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

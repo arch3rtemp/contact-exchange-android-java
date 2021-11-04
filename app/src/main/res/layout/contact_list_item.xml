@@ -23,7 +23,7 @@
             android:layout_height="40dp"
             android:layout_marginStart="25dp"
             android:gravity="center"
-            android:background="@drawable/ll_delete_shape_bg">
+            android:background="@drawable/shape_delete_button_bg">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
             android:id="@+id/ll_qr_card"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/contact_list_item_shape_bg"
+            android:background="@drawable/shape_contact_list_item_bg"
             android:gravity="center">
 
             <TextView

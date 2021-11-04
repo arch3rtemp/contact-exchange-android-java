@@ -13,5 +13,5 @@
         android:text="@string/cards_text"
         android:textColor="@color/white"
         android:gravity="center"
-        android:background="@drawable/card_shape_bg" />
+        android:background="@drawable/shape_card_bg" />
 </LinearLayout>
