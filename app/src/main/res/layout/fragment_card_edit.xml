@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".presentation.edit.EditCardFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/shape_card_create_or_edit_bg"
+        android:paddingHorizontal="22dp"
+        android:paddingVertical="17dp">
+
+        <TextView
+            android:id="@+id/tv_card_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/edit_your_card"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="@+id/cl_edit"
+            app:layout_constraintTop_toTopOf="@+id/cl_edit" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/full_name"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_card_header"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_company"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/company"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_full_name"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_position"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/position"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_company"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_position"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_tel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/tel"
+            android:inputType="phone"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_email"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_tel_office"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/tel_office"
+            android:inputType="phone"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_tel"
+            tools:ignore="SmallSp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_update"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_button_create_or_save_bg"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/update"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_tel_office" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

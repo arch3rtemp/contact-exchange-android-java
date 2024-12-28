@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">ContactsExchangeJava</string>
+    <string name="app_name">Contact Exchange</string>
+
     <string name="home_cards">My Cards</string>
     <string name="cards_text">Organization</string>
     <string name="create_new_card">Create new card</string>
     <string name="edit_your_card">Edit your card</string>
     <string name="create">Create</string>
-    <string name="save">Save</string>
+    <string name="update">Update</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
@@ -17,7 +18,6 @@
     <string name="tel_office">Tel Office</string>
     <string name="color">Color</string>
     <string name="fab_add">Add Card</string>
-    <string name="find_contact">Find Contact</string>
     <string name="contact_list">Contact list</string>
     <string name="test_name">John Doe</string>
     <string name="test_position">UI/UX Designer</string>
@@ -26,11 +26,21 @@
     <string name="test_office">+995 032 295 12 32</string>
     <string name="test_initials">JD</string>
     <string name="test_date">25 Jan</string>
-    <string name="deleted_successfully">Deleted Successfully</string>
     <string name="back_arrow">Back Arrow</string>
-    <string name="delete_confirmation">Are you sure you want to delete?</string>
+    <string name="prompt_delete_confirmation">Are you sure you want to delete?</string>
     <string name="scan_qr">Scan QR</string>
+    <string name="qr">QR</string>
     <string name="search">Search</string>
-    <string name="transition_contacts_name">transition_contacts</string>
-    <string name="transition_search_name">transition_search</string>
+    <string name="error">Error</string>
+    <string name="empty">Empty</string>
+
+    <!--    Messages-->
+    <string name="msg_deleted_successfully">Deleted Successfully</string>
+    <string name="msg_contact_added">Contact Added</string>
+    <string name="msg_contact_deleted">Contact Deleted</string>
+    <string name="msg_undo">Undo</string>
+    <string name="msg_error_unspecified">Unspecified error occurred</string>
+    <string name="msg_scan_cancelled">Scan cancelled</string>
+    <string name="msg_all_fields_required">Please fill in all fields</string>
+    <string name="msg_could_not_save">Changes could not be saved</string>
 </resources>

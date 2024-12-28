@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_primary">#FF121212</color>
+    <color name="background_secondary">#FF1E1E1E</color>
+    <color name="button_primary">#FF69F0AE</color>
+    <color name="button_secondary">#FF2962FF</color>
+    <color name="text_primary">@color/white</color>
+    <color name="text_secondary">#FFBDBDBD</color>
+    <color name="icon_primary">@color/white</color>
+    <color name="icon_secondary">#FF616161</color>
+
+    <color name="aqua_marine">#FF64FFDA</color>
+    <color name="ugly_yellow">#FFFFEE58</color>
+    <color name="shamrock_green">#FF69F0AE</color>
+    <color name="black_three">#FFEEEEEE</color>
+    <color name="pumpkin">#FFFFB74D</color>
+    <color name="darkish_purple">#FFCE93D8</color>
+    <color name="purple">#FFBA68C8</color>
+    <color name="pastel_red">#FFCF6679</color>
+</resources>

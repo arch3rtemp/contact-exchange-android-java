@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".presentation.create.CreateCardFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/shape_card_create_or_edit_bg"
+        android:paddingHorizontal="22dp"
+        android:paddingVertical="17dp">
+
+        <TextView
+            android:id="@+id/tv_card_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/create_new_card"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintStart_toStartOf="@+id/cl_create"
+            app:layout_constraintTop_toTopOf="@+id/cl_create" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/full_name"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_card_header"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_company"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/company"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_full_name"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_position"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/position"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_company"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_position"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_tel"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/tel"
+            android:inputType="phone"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_email"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_tel_office"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_card_edit_text_bg"
+            android:hint="@string/tel_office"
+            android:inputType="phone"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            app:layout_constraintTop_toBottomOf="@id/et_tel"
+            tools:ignore="SmallSp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_color_palette"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/et_tel_office">
+
+            <TextView
+                android:id="@+id/tv_color_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/color"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_color_light_navy"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/tv_color_light_navy"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/shape_default_card_color_light_navy_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_color_aqua_marine"
+                app:layout_constraintStart_toEndOf="@id/tv_color_header"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_color_aqua_marine"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/shape_default_card_color_aqua_marine_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_color_ugly_yellow"
+                app:layout_constraintStart_toEndOf="@id/tv_color_light_navy"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_color_ugly_yellow"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/shape_default_card_color_ugly_yellow_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_color_shamrock_green"
+                app:layout_constraintStart_toEndOf="@id/tv_color_aqua_marine"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_color_shamrock_green"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/shape_default_card_color_shamrock_green_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_color_black_three"
+                app:layout_constraintStart_toEndOf="@id/tv_color_ugly_yellow"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_color_black_three"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/shape_default_card_color_black_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_color_pumpkin"
+                app:layout_constraintStart_toEndOf="@id/tv_color_shamrock_green"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_color_pumpkin"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/shape_default_card_color_pumpkin_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_color_darkish_purple"
+                app:layout_constraintStart_toEndOf="@id/tv_color_black_three"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tv_color_darkish_purple"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/shape_default_card_color_darkish_purple_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_color_pumpkin"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_create"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_button_create_or_save_bg"
+            android:fontFamily="@font/poppins_medium"
+            android:text="@string/create"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_color_palette" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

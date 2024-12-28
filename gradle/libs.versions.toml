@@ -1,0 +1,63 @@
+[versions]
+#Gradle
+gradle-plugin = "8.7.3"
+#Jetpack
+core = "1.13.1"
+appcompat = "1.7.0"
+room = "2.6.1"
+fragment = "1.8.5"
+navigation = "2.8.5"
+splash = "1.0.1"
+#Google
+material = "1.12.0"
+gson = "2.11.0"
+hilt = "2.53"
+play-services-code-scanner = "16.1.0"
+#Rx
+rxjava = "3.1.10"
+rxandroid = "3.0.2"
+#Misc
+desugar = "2.1.4"
+qrgenerator = "1.0.1"
+swipereveallayout = "1.4.0"
+timber = "5.0.1"
+#Testing
+junit = "4.13.2"
+junit-ext = "1.2.1"
+espresso = "3.6.1"
+
+[libraries]
+#Jetpack
+core = { group = "androidx.core", name = "core", version.ref = "core" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
+core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splash" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "room" }
+navigation-fragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigation" }
+navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigation" }
+#Google
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+play-services-code-scanner = { module = "com.google.android.gms:play-services-code-scanner", version.ref = "play-services-code-scanner" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+#Rx
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
+#Misc
+desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
+swipereveallayout = { module = "com.github.hydrated:swipereveallayout", version.ref = "swipereveallayout" }
+qrgenerator = { module = "com.github.androidmads:qrgenerator", version.ref = "qrgenerator" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+#Testing
+junit = { module = "junit:junit", version.ref = "junit" }
+ext-junit = { module = "androidx.test.ext:junit", version.ref = "junit-ext" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "gradle-plugin" }
+androidLibrary = { id = "com.android.library", version.ref = "gradle-plugin" }
+navigationSafeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation" }
+daggerHiltAndroid = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

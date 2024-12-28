@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/delete_confirmation_inset">
+    android:background="@drawable/inset_delete_confirmation">
 
     <TextView
         android:id="@+id/tv_delete_confirmation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
-        android:text="@string/delete_confirmation"
-        android:textColor="@color/black_two"
+        android:text="@string/prompt_delete_confirmation"
+        android:textColor="@color/text_primary"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,7 @@
             android:id="@+id/btn_delete"
             android:layout_width="126dp"
             android:layout_height="34dp"
-            android:background="@drawable/delete_confirmation_button_delete_shape_bg"
+            android:background="@drawable/shape_delete_confirmation_button_delete_bg"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/delete"
             android:textAllCaps="false"
@@ -46,7 +47,7 @@
             android:id="@+id/btn_cancel"
             android:layout_width="126dp"
             android:layout_height="34dp"
-            android:background="@drawable/delete_confirmation_button_cancel_shape_bg"
+            android:background="@drawable/shape_delete_confirmation_button_cancel_bg"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/cancel"
             android:textAllCaps="false"

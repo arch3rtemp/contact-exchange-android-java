@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="dev.arch3rtemp.contactexchange.presentation.home.HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_createCardFragment"
+            app:destination="@id/createCardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_cardFragment"
+            app:destination="@id/cardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createCardFragment"
+        android:name="dev.arch3rtemp.contactexchange.presentation.create.CreateCardFragment"
+        tools:layout="@layout/fragment_card_create" />
+
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="dev.arch3rtemp.contactexchange.presentation.card.CardFragment"
+        tools:layout="@layout/fragment_card">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_cardFragment_to_editCardFragment"
+            app:destination="@id/editCardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editCardFragment"
+        android:name="dev.arch3rtemp.contactexchange.presentation.edit.EditCardFragment"
+        tools:layout="@layout/fragment_card_edit">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
+</navigation>
