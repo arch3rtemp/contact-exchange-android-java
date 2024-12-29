@@ -1,5 +1,6 @@
 package dev.arch3rtemp.contactexchange.presentation.ui;
 
+import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.ui.base.UiEffect;
 import dev.arch3rtemp.ui.base.UiEvent;
 import dev.arch3rtemp.ui.base.UiState;
@@ -8,9 +9,9 @@ public interface MainContract {
 
     sealed interface MainEvent extends UiEvent permits MainEvent.OnQrScanComplete, MainEvent.OnQrScanCanceled, MainEvent.OnQrScanFail, MainEvent.OnJsonParseFail {
 
-        record OnQrScanComplete(String cardJson) implements MainEvent {}
+        record OnQrScanComplete(Card card) implements MainEvent {}
 
-        final class OnQrScanCanceled implements MainEvent {}
+        record OnQrScanCanceled(String message) implements MainEvent {}
 
         record OnQrScanFail(String message) implements MainEvent {}
 

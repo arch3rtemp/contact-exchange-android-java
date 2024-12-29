@@ -9,13 +9,11 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.os.OperationCanceledException;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.google.mlkit.vision.barcode.common.Barcode;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
+import org.json.JSONException;
 
 import java.util.Objects;
 
@@ -24,7 +22,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.databinding.ActivityMainBinding;
-import io.reactivex.rxjava3.disposables.Disposable;
+import dev.arch3rtemp.contactexchange.domain.usecase.ScanQrUseCase;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
@@ -32,9 +31,10 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     @Inject
     MainPresenter presenter;
+    @Inject
+    ScanQrUseCase scanner;
     private NavController navController;
-    private Disposable disposable;
-    private GmsBarcodeScanner scanner;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         initNavigationWithToolbar();
         setListeners();
         setObservables();
-        initScanner();
     }
 
     private void initNavigationWithToolbar() {
@@ -87,9 +86,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setObservables() {
-        disposable = presenter
+        var disposable = presenter
                 .effectStream()
                 .subscribe(this::renderEffect);
+        disposables.add(disposable);
     }
 
     private void renderEffect(MainContract.MainEffect effect) {
@@ -98,31 +98,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initScanner() {
-        // TODO move to data layer
-        var options = new GmsBarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .enableAutoZoom()
-                .build();
-
-        scanner = GmsBarcodeScanning.getClient(this, options);
-    }
-
     private void startScanner() {
-        scanner.startScan()
-                .addOnSuccessListener(barcode -> {
-                    String value = barcode.getRawValue();
-                    presenter.setEvent(new MainContract.MainEvent.OnQrScanComplete(value));
-                }).addOnCanceledListener(() -> {
-                    presenter.setEvent(new MainContract.MainEvent.OnQrScanCanceled());
-                }).addOnFailureListener(e -> {
-                    presenter.setEvent(new MainContract.MainEvent.OnQrScanFail(e.getLocalizedMessage()));
-                });
+        var disposable = scanner.invoke().subscribe((card) -> {
+            presenter.setEvent(new MainContract.MainEvent.OnQrScanComplete(card));
+        }, throwable -> {
+            if (throwable instanceof OperationCanceledException error) {
+                presenter.setEvent(new MainContract.MainEvent.OnQrScanCanceled(error.getLocalizedMessage()));
+            } else if (throwable instanceof JSONException error) {
+                presenter.setEvent(new MainContract.MainEvent.OnJsonParseFail(error.getLocalizedMessage()));
+            } else {
+                presenter.setEvent(new MainContract.MainEvent.OnQrScanFail(throwable.getLocalizedMessage()));
+            }
+        });
+        disposables.add(disposable);
     }
 
     @Override
     protected void onDestroy() {
-        disposable.dispose();
+        disposables.clear();
         presenter.destroy();
         super.onDestroy();
     }

@@ -28,6 +28,9 @@ public class ScannedCardViewHolder extends BaseViewHolder {
             listener.onContactClick(card.id());
         }));
 
-        binding.llDelete.setOnClickListener((v -> listener.onDeleteClick(card)));
+        binding.llDelete.setOnClickListener((v -> {
+            binding.getRoot().close(true);
+            listener.onDeleteClick(card);
+        }));
     }
 }

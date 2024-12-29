@@ -34,14 +34,10 @@ public class MainPresenter extends BasePresenter<MainContract.MainEvent, MainCon
 
     @Override
     protected void handleEvent(MainContract.MainEvent mainEvent) {
-        if (mainEvent instanceof MainContract.MainEvent.OnQrScanCanceled) {
-            showMessage(resourceManager.string(R.string.msg_scan_cancelled));
+        if (mainEvent instanceof MainContract.MainEvent.OnQrScanCanceled onQrScanCanceled) {
+            showMessage(onQrScanCanceled.message());
         } else if (mainEvent instanceof MainContract.MainEvent.OnQrScanComplete onQrScanComplete) {
-            try {
-                createCard(mapper.fromJson(onQrScanComplete.cardJson()));
-            } catch (JSONException e) {
-                setEvent(new MainContract.MainEvent.OnJsonParseFail(e.getLocalizedMessage()));
-            }
+            createCard(onQrScanComplete.card());
         } else if (mainEvent instanceof MainContract.MainEvent.OnQrScanFail onQrScanFail) {
             showMessage(onQrScanFail.message());
         } else if (mainEvent instanceof MainContract.MainEvent.OnJsonParseFail onJsonParseFail) {

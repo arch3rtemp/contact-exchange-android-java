@@ -13,12 +13,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.databinding.FragmentHomeBinding;
-import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
-import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.CardsAdapter;
-import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.listener.CardClickListener;
-import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.listener.ContactClickListener;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
@@ -26,6 +20,12 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import dev.arch3rtemp.contactexchange.R;
+import dev.arch3rtemp.contactexchange.databinding.FragmentHomeBinding;
+import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
+import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.CardsAdapter;
+import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.listener.CardClickListener;
+import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.listener.ContactClickListener;
 import dev.arch3rtemp.ui.base.BaseFragment;
 import dev.arch3rtemp.ui.view.AppSearchView;
 
