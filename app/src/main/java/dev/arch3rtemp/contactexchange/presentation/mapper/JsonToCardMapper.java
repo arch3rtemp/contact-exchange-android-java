@@ -1,12 +1,12 @@
 package dev.arch3rtemp.contactexchange.presentation.mapper;
 
 import dev.arch3rtemp.contactexchange.domain.model.Card;
+import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
+
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -25,13 +25,13 @@ public class JsonToCardMapper {
                 cardJsonObj.getString("email"),
                 cardJsonObj.getString("phoneMobile"),
                 cardJsonObj.getString("phoneOffice"),
-                new Date(),
+                System.currentTimeMillis(),
                 cardJsonObj.getInt("color"),
                 false
         );
     }
 
-    public String toJson(Card card) {
+    public String toJson(CardUi card) {
         return new Gson().toJson(card);
     }
 }

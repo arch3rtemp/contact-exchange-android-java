@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.home.HomeFragment">
+    tools:context=".presentation.ui.home.HomeFragment">
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -48,17 +47,18 @@
         app:layout_constraintStart_toEndOf="@+id/fab_add"
         app:layout_constraintTop_toTopOf="@+id/rv_cards" />
 
-    <ImageView
-        android:id="@+id/iv_cards_error"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:contentDescription="@string/error"
-        android:src="@drawable/ic_error"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_cards_error_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="invisible"
+        app:drawableTopCompat="@drawable/ic_error"
         app:layout_constraintBottom_toBottomOf="@+id/rv_cards"
         app:layout_constraintEnd_toEndOf="@+id/rv_cards"
         app:layout_constraintStart_toEndOf="@+id/fab_add"
-        app:layout_constraintTop_toTopOf="@+id/rv_cards" />
+        app:layout_constraintTop_toTopOf="@+id/rv_cards"
+        tools:text="Data could not be loaded"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/iv_cards_empty"
@@ -102,40 +102,47 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_contacts"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/contact_list_item" />
+            android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progress_circular_contacts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:visibility="gone" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_contacts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/contact_list_item"
+                tools:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/iv_contacts_error"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/error"
-            android:src="@drawable/ic_error"
-            android:visibility="gone" />
+            <ProgressBar
+                android:id="@+id/progress_circular_contacts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/iv_contacts_empty"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/ic_empty"
-            android:visibility="gone" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_contacts_error_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:drawableTopCompat="@drawable/ic_error"
+                tools:text="Data could not be loaded"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_contacts_empty"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/ic_empty"
+                android:visibility="gone" />
+        </FrameLayout>
 
     </LinearLayout>
 

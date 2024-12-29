@@ -43,4 +43,5 @@
     <string name="msg_scan_cancelled">Scan cancelled</string>
     <string name="msg_all_fields_required">Please fill in all fields</string>
     <string name="msg_could_not_save">Changes could not be saved</string>
+    <string name="msg_could_not_load_data">Data could not be loaded</string>
 </resources>

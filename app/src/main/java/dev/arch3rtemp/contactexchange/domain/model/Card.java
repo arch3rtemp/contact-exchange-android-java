@@ -1,7 +1,5 @@
 package dev.arch3rtemp.contactexchange.domain.model;
 
-import java.util.Date;
-
 public record Card(
         int id,
         String name,
@@ -10,8 +8,7 @@ public record Card(
         String email,
         String phoneMobile,
         String phoneOffice,
-        Date createDate,
+        long createdAt,
         int color,
         boolean isMy
-) {
-}
+) {}

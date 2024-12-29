@@ -12,8 +12,7 @@ import javax.inject.Inject;
 public class CardEntityMapper {
 
     @Inject
-    public CardEntityMapper() {
-    }
+    public CardEntityMapper() {}
 
     public Card fromEntity(CardEntity entity) {
         return new Card(
@@ -24,7 +23,7 @@ public class CardEntityMapper {
                 entity.getEmail(),
                 entity.getPhoneMobile(),
                 entity.getPhoneOffice(),
-                entity.getCreateDate(),
+                entity.getCreatedAt(),
                 entity.getColor(),
                 entity.isMy()
         );
@@ -39,7 +38,7 @@ public class CardEntityMapper {
                 card.email(),
                 card.phoneMobile(),
                 card.phoneOffice(),
-                card.createDate(),
+                card.createdAt(),
                 card.color(),
                 card.isMy()
         );

@@ -5,7 +5,7 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.card.CardFragment">
+    tools:context=".presentation.ui.card.CardFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_card"

@@ -4,8 +4,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
 @Entity(tableName = "contact_table")
 public class CardEntity {
     @PrimaryKey(autoGenerate = true)
@@ -15,20 +13,16 @@ public class CardEntity {
     String position;
     String email;
     @ColumnInfo(name = "phone_mobile")
-    final
-    String phoneMobile;
+    final String phoneMobile;
     @ColumnInfo(name = "phone_office")
-    final
-    String phoneOffice;
-    @ColumnInfo(name = "create_date")
-    final
-    Date createDate;
+    final String phoneOffice;
+    @ColumnInfo(name = "created_at")
+    final long createdAt;
     final int color;
     @ColumnInfo(name = "is_my")
-    final
-    boolean isMy;
+    final boolean isMy;
 
-    public CardEntity(int id, String name, String job, String position, String email, String phoneMobile, String phoneOffice, Date createDate, int color, boolean isMy) {
+    public CardEntity(int id, String name, String job, String position, String email, String phoneMobile, String phoneOffice, long createdAt, int color, boolean isMy) {
         this.id = id;
         this.name = name;
         this.job = job;
@@ -36,7 +30,7 @@ public class CardEntity {
         this.email = email;
         this.phoneMobile = phoneMobile;
         this.phoneOffice = phoneOffice;
-        this.createDate = createDate;
+        this.createdAt = createdAt;
         this.color = color;
         this.isMy = isMy;
     }
@@ -89,8 +83,8 @@ public class CardEntity {
         return phoneOffice;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
     public int getColor() {

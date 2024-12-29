@@ -16,7 +16,23 @@ public final class UpdateCardUseCase {
         this.repository = repository;
     }
 
-    public Completable invoke(Card card) {
-        return repository.updateCard(card);
+    public Completable invoke(Card current, Card newCard) {
+        var mergedCard = mergeCard(current, newCard);
+        return repository.updateCard(mergedCard);
+    }
+
+    private Card mergeCard(Card current, Card newCard) {
+        return new Card(
+                current.id(),
+                newCard.name(),
+                newCard.job(),
+                newCard.position(),
+                newCard.email(),
+                newCard.phoneMobile(),
+                newCard.phoneOffice(),
+                current.createdAt(),
+                current.color(),
+                current.isMy()
+        );
     }
 }
