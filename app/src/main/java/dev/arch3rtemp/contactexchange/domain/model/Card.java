@@ -11,4 +11,8 @@ public record Card(
         long createdAt,
         int color,
         boolean isMy
-) {}
+) {
+    public boolean isNotBlank() {
+        return !(name().isBlank() && job().isBlank() && position().isBlank() && email().isBlank() && phoneMobile().isBlank() && phoneOffice().isBlank());
+    }
+}

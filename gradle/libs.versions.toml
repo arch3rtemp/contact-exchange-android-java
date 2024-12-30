@@ -48,7 +48,7 @@ rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 #Misc
 desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
-swipereveallayout = { module = "com.github.hydrated:swipereveallayout", version.ref = "swipereveallayout" }
+swipereveallayout = { module = "com.github.hydrated:swipereveallayout", version.ref = "swipereveallayout" } #TODO Legacy library to be replaced
 qrgenerator = { module = "com.github.androidmads:qrgenerator", version.ref = "qrgenerator" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 #Testing
