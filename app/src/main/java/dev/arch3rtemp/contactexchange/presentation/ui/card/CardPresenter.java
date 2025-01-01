@@ -41,11 +41,13 @@ public class CardPresenter extends BasePresenter<CardContract.CardEvent, CardCon
         var disposable = getCardById.invoke(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> {
+                    setEffect(() -> new CardContract.CardEffect.ShowError(throwable.getLocalizedMessage()));
+                })
                 .subscribe((card) -> {
                     setState((Card) -> new CardContract.CardState.Success(mapper.toUiModel(card)));
                 }, throwable -> {
                     setState((String) -> new CardContract.CardState.Error());
-                    setEffect(() -> new CardContract.CardEffect.ShowError(throwable.getLocalizedMessage()));
                 });
         disposables.add(disposable);
     }
@@ -54,8 +56,10 @@ public class CardPresenter extends BasePresenter<CardContract.CardEvent, CardCon
         var disposable = deleteCard.invoke(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> setEffect(CardContract.CardEffect.AnimateDeletion::new), throwable ->
-                        new CardContract.CardEffect.ShowError(throwable.getLocalizedMessage()));
+                .doOnError(throwable ->
+                        new CardContract.CardEffect.ShowError(throwable.getLocalizedMessage()))
+                .doOnComplete(() -> setEffect(CardContract.CardEffect.AnimateDeletion::new))
+                .subscribe();
         disposables.add(disposable);
     }
 }

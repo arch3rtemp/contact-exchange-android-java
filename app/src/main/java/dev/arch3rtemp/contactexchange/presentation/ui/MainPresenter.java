@@ -3,9 +3,6 @@ package dev.arch3rtemp.contactexchange.presentation.ui;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
-import dev.arch3rtemp.contactexchange.presentation.mapper.JsonToCardMapper;
-
-import org.json.JSONException;
 
 import javax.inject.Inject;
 
@@ -17,13 +14,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MainPresenter extends BasePresenter<MainContract.MainEvent, MainContract.MainEffect, MainContract.MainState> {
 
     private final SaveCardUseCase saveCardUseCase;
-    private final JsonToCardMapper mapper;
     private final StringResourceManager resourceManager;
 
     @Inject
-    public MainPresenter(SaveCardUseCase saveCardUseCase, JsonToCardMapper mapper, StringResourceManager resourceManager) {
+    public MainPresenter(SaveCardUseCase saveCardUseCase, StringResourceManager resourceManager) {
         this.saveCardUseCase = saveCardUseCase;
-        this.mapper = mapper;
         this.resourceManager = resourceManager;
     }
 
@@ -49,11 +44,9 @@ public class MainPresenter extends BasePresenter<MainContract.MainEvent, MainCon
         var disposable = saveCardUseCase.invoke(card)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    showMessage(resourceManager.string(R.string.msg_contact_added));
-                }, throwable -> {
-                    showMessage(throwable.getLocalizedMessage());
-                });
+                .doOnError(throwable -> showMessage(throwable.getLocalizedMessage()))
+                .doOnComplete(() -> showMessage(resourceManager.string(R.string.msg_contact_added)))
+                .subscribe();
         disposables.add(disposable);
     }
 

@@ -11,9 +11,9 @@ public interface CreateCardContract {
         record OnCreateButtonPressed(Card card) implements CreateCardEvent {}
     }
 
-    sealed interface CreateCardEffect extends UiEffect permits CreateCardEffect.Error, CreateCardEffect.Success {
-        record Error(String message) implements CreateCardEffect {}
-        final class Success implements CreateCardEffect {}
+    sealed interface CreateCardEffect extends UiEffect permits CreateCardEffect.ShowMessage, CreateCardEffect.NavigateOnSuccess {
+        record ShowMessage(String message) implements CreateCardEffect {}
+        final class NavigateOnSuccess implements CreateCardEffect {}
     }
 
     sealed interface CreateCardState extends UiState permits CreateCardState.Idle, CreateCardState.Error, CreateCardState.Success {

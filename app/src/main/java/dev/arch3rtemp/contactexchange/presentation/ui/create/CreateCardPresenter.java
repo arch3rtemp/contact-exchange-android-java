@@ -38,22 +38,15 @@ public class CreateCardPresenter extends BasePresenter<CreateCardContract.Create
             var disposable = saveCard.invoke(card)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::handleSuccess, throwable -> {
-                        handleError(throwable.getLocalizedMessage());
-                    });
+                    .doOnError(throwable -> setEffect(() -> new CreateCardContract.CreateCardEffect.ShowMessage(throwable.getLocalizedMessage())))
+                    .doOnComplete(() -> setEffect(CreateCardContract.CreateCardEffect.NavigateOnSuccess::new))
+                    .subscribe(
+                            () -> setState(current -> new CreateCardContract.CreateCardState.Success()),
+                            throwable -> setState(current -> new CreateCardContract.CreateCardState.Error())
+                    );
             disposables.add(disposable);
         } else {
-            handleError(stringResourceManager.string(R.string.msg_all_fields_required));
+            setEffect(() -> new CreateCardContract.CreateCardEffect.ShowMessage(stringResourceManager.string(R.string.msg_all_fields_required)));
         }
-    }
-
-    private void handleSuccess() {
-        setState((String) -> new CreateCardContract.CreateCardState.Success());
-        setEffect(CreateCardContract.CreateCardEffect.Success::new);
-    }
-
-    private void handleError(String message) {
-        setState((String) -> new CreateCardContract.CreateCardState.Error());
-        setEffect(() -> new CreateCardContract.CreateCardEffect.Error(message));
     }
 }

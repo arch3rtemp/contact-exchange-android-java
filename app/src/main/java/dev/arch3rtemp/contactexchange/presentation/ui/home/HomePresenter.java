@@ -66,6 +66,7 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
         var disposable = getMyCards.invoke()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
                 .subscribe(cards -> {
                     if (cards.isEmpty()) {
                         setState(currentState -> new HomeContract.HomeState(
@@ -86,7 +87,6 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
                             getCurrentState().scannedCards(),
                             getCurrentState().query()
                     ));
-                    setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage()));
                 });
 
         disposables.add(disposable);
@@ -96,6 +96,7 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
         var disposable = getScannedCards.invoke()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
                 .subscribe(contacts -> {
                     var uiModels = mapper.toUiModelList(contacts);
                     unfilteredContacts = uiModels;
@@ -118,7 +119,6 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
                             new HomeContract.ViewState.Error(resourceManager.string(R.string.msg_could_not_load_data)),
                             getCurrentState().query()
                     ));
-                    setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage()));
                 });
 
         disposables.add(disposable);
@@ -128,11 +128,8 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
         var disposable = saveCard.invoke(mapper.fromUiModel(card))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    // TODO
-                }, throwable -> {
-                    setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage()));
-                });
+                .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
+                .subscribe();
 
         disposables.add(disposable);
     }
@@ -141,11 +138,9 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
         var disposable = deleteCard.invoke(card.id())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    setEffect(() -> new HomeContract.HomeEffect.ShowUndo(card));
-                }, throwable -> {
-                    setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage()));
-                });
+                .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
+                .doOnComplete(() -> setEffect(() -> new HomeContract.HomeEffect.ShowUndo(card)))
+                .subscribe();
 
         disposables.add(disposable);
     }
@@ -153,6 +148,7 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
     private void subscribeToFilter() {
         var disposable = this.filterCards.init()
                 .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
                 .subscribe(cards -> {
                     if (cards.isEmpty()) {
                         setState(currentState -> new HomeContract.HomeState(
@@ -167,8 +163,6 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
                                 getCurrentState().query()
                         ));
                     }
-                }, throwable -> {
-                    setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage()));
                 });
 
         disposables.add(disposable);

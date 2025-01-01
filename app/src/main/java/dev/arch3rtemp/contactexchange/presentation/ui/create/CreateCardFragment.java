@@ -54,9 +54,9 @@ public class CreateCardFragment extends BaseFragment<CreateCardContract.CreateCa
 
     @Override
     protected void renderEffect(CreateCardContract.CreateCardEffect effect) {
-        if (effect instanceof CreateCardContract.CreateCardEffect.Error error) {
-            Toast.makeText(requireContext(), error.message(), Toast.LENGTH_SHORT).show();
-        } else if (effect instanceof CreateCardContract.CreateCardEffect.Success) {
+        if (effect instanceof CreateCardContract.CreateCardEffect.ShowMessage showMessage) {
+            Toast.makeText(requireContext(), showMessage.message(), Toast.LENGTH_SHORT).show();
+        } else if (effect instanceof CreateCardContract.CreateCardEffect.NavigateOnSuccess) {
             NavHostFragment.findNavController(this).navigateUp();
         }
     }

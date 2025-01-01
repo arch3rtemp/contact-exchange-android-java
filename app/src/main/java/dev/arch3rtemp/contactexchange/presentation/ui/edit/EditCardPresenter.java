@@ -46,12 +46,11 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
         var disposable = getCardById.invoke(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((card) -> {
-                    setState((Card) -> new EditCardContract.EditCardState.Success(mapper.toUiModel(card)));
-                }, throwable -> {
-                    setState((String) -> new EditCardContract.EditCardState.Error());
-                    setEffect(() -> new EditCardContract.EditCardEffect.ShowError(throwable.getLocalizedMessage()));
-                });
+                .doOnError(throwable -> setEffect(() -> new EditCardContract.EditCardEffect.ShowError(throwable.getLocalizedMessage())))
+                .subscribe(
+                        card -> setState(current -> new EditCardContract.EditCardState.Success(mapper.toUiModel(card))),
+                        throwable -> setState(current -> new EditCardContract.EditCardState.Error())
+                );
         disposables.add(disposable);
     }
 
@@ -62,11 +61,9 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
                 var disposable = updateCard.invoke(mapper.fromUiModel(current.card()), newCard)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                            setEffect(EditCardContract.EditCardEffect.Finish::new);
-                        }, throwable -> {
-                            setEffect(() -> new EditCardContract.EditCardEffect.ShowError(throwable.getLocalizedMessage()));
-                        });
+                        .doOnError(throwable -> setEffect(() -> new EditCardContract.EditCardEffect.ShowError(throwable.getLocalizedMessage())))
+                        .doOnComplete(() -> setEffect(EditCardContract.EditCardEffect.Finish::new))
+                        .subscribe();
                 disposables.add(disposable);
 
             } else {
