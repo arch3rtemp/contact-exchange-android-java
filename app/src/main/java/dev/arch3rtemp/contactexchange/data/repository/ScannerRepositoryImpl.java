@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.data.scanner;
+package dev.arch3rtemp.contactexchange.data.repository;
 
 import androidx.core.os.OperationCanceledException;
 
@@ -10,23 +10,25 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
+import dev.arch3rtemp.contactexchange.domain.repository.ScannerRepository;
 import dev.arch3rtemp.contactexchange.presentation.mapper.JsonToCardMapper;
 import dev.arch3rtemp.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.core.Single;
 
-public class QrScanner {
+public class ScannerRepositoryImpl implements ScannerRepository {
 
     private final GmsBarcodeScanner scanner;
     private final JsonToCardMapper mapper;
     private final StringResourceManager resourceManager;
 
     @Inject
-    public QrScanner(GmsBarcodeScanner scanner, JsonToCardMapper mapper, StringResourceManager resourceManager) {
+    public ScannerRepositoryImpl(GmsBarcodeScanner scanner, JsonToCardMapper mapper, StringResourceManager resourceManager) {
         this.scanner = scanner;
         this.mapper = mapper;
         this.resourceManager = resourceManager;
     }
 
+    @Override
     public Single<Card> scan() {
         return Single.create(emitter -> {
             scanner.startScan()

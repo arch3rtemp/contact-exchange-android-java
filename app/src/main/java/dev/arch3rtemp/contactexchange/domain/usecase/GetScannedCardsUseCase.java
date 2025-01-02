@@ -1,7 +1,7 @@
 package dev.arch3rtemp.contactexchange.domain.usecase;
 
 import dev.arch3rtemp.contactexchange.domain.model.Card;
-import dev.arch3rtemp.contactexchange.domain.repository.Repository;
+import dev.arch3rtemp.contactexchange.domain.repository.CardRepository;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import io.reactivex.rxjava3.core.Observable;
 
 public final class GetScannedCardsUseCase {
 
-    private final Repository repository;
+    private final CardRepository repository;
 
     @Inject
-    public GetScannedCardsUseCase(Repository repository) {
+    public GetScannedCardsUseCase(CardRepository repository) {
         this.repository = repository;
     }
 

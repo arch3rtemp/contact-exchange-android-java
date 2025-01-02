@@ -3,7 +3,7 @@ package dev.arch3rtemp.contactexchange.data.repository;
 import dev.arch3rtemp.contactexchange.data.db.CardDao;
 import dev.arch3rtemp.contactexchange.data.mapper.CardEntityMapper;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
-import dev.arch3rtemp.contactexchange.domain.repository.Repository;
+import dev.arch3rtemp.contactexchange.domain.repository.CardRepository;
 
 import java.util.List;
 
@@ -12,13 +12,13 @@ import javax.inject.Inject;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 
-public class RepositoryImpl implements Repository {
+public class CardRepositoryImpl implements CardRepository {
 
     private final CardDao cardDao;
     private final CardEntityMapper mapper;
 
     @Inject
-    public RepositoryImpl(CardDao cardDao, CardEntityMapper mapper) {
+    public CardRepositoryImpl(CardDao cardDao, CardEntityMapper mapper) {
         this.cardDao = cardDao;
         this.mapper = mapper;
     }

@@ -1,6 +1,7 @@
 package dev.arch3rtemp.contactexchange.presentation.ui.home;
 
 import dev.arch3rtemp.contactexchange.R;
+import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.usecase.DeleteCardUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.FilterCardsUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.GetMyCardsUseCase;
@@ -28,7 +29,7 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
     private final FilterCardsUseCase filterCards;
     private final StringResourceManager resourceManager;
     private final CardUiMapper mapper;
-    private List<CardUi> unfilteredContacts = new ArrayList<>();
+    private List<Card> unfilteredContacts = new ArrayList<>();
 
     @Inject
     public HomePresenter(GetMyCardsUseCase getMyCards, GetScannedCardsUseCase getScannedCards, DeleteCardUseCase deleteCard, SaveCardUseCase saveCard, FilterCardsUseCase filterCards, StringResourceManager resourceManager, CardUiMapper mapper) {
@@ -98,8 +99,8 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
                 .subscribe(contacts -> {
+                    unfilteredContacts = contacts;
                     var uiModels = mapper.toUiModelList(contacts);
-                    unfilteredContacts = uiModels;
                     if (contacts.isEmpty()) {
                         setState(currentState -> new HomeContract.HomeState(
                                 getCurrentState().myCards(),
@@ -146,7 +147,7 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
     }
 
     private void subscribeToFilter() {
-        var disposable = this.filterCards.init()
+        var disposable = this.filterCards.getFilteredCardsStream()
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
                 .subscribe(cards -> {
@@ -168,7 +169,7 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
         disposables.add(disposable);
     }
 
-    private void filterCards(String query, List<CardUi> unfiltered) {
-        filterCards.invoke(query, mapper.fromUiModelList(unfiltered));
+    private void filterCards(String query, List<Card> unfiltered) {
+        filterCards.invoke(query, unfiltered);
     }
 }

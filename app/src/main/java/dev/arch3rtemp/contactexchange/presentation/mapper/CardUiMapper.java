@@ -46,7 +46,12 @@ public class CardUiMapper {
                 card.phoneMobile(),
                 card.phoneOffice(),
                 card.createdAt(),
-                timeConverter.convertLongToDateString(card.createdAt(), DATE_PATTERN, Locale.getDefault(), ZoneId.systemDefault()),
+                timeConverter.convertLongToDateString(
+                        card.createdAt(),
+                        DATE_PATTERN,
+                        Locale.getDefault(),
+                        ZoneId.systemDefault()
+                ),
                 card.color(),
                 card.isMy()
         );

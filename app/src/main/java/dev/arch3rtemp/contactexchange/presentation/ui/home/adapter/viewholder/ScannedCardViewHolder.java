@@ -20,7 +20,6 @@ public class ScannedCardViewHolder extends BaseViewHolder {
         binding.tvContactInitials.setText(card.formatInitials());
         binding.tvContactPosition.setText(card.job());
         binding.tvContactAddDate.setText(card.formattedCreatedAt());
-        binding.tvContactName.setText(card.name());
         binding.llContactInitials.getBackground().setColorFilter(card.getSrcInColorFilter());
 
         binding.llItemRoot.setOnClickListener((v -> {

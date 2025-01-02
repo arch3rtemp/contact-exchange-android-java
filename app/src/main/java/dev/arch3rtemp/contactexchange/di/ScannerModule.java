@@ -9,15 +9,15 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 import dagger.Module;
 import dagger.Provides;
-import dagger.Reusable;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ActivityComponent;
+import dagger.hilt.android.scopes.ActivityScoped;
 
 @Module
 @InstallIn(ActivityComponent.class)
 public class ScannerModule {
 
-    @Reusable
+    @ActivityScoped
     @Provides
     GmsBarcodeScannerOptions provideGmsScannerOptions() {
         return new GmsBarcodeScannerOptions.Builder()
@@ -26,7 +26,7 @@ public class ScannerModule {
                 .build();
     }
 
-    @Reusable
+    @ActivityScoped
     @Provides
     GmsBarcodeScanner provideGmsScanner(Activity activity, GmsBarcodeScannerOptions options) {
         return GmsBarcodeScanning.getClient(activity, options);

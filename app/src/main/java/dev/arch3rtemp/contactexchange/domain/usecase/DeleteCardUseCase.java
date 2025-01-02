@@ -1,6 +1,6 @@
 package dev.arch3rtemp.contactexchange.domain.usecase;
 
-import dev.arch3rtemp.contactexchange.domain.repository.Repository;
+import dev.arch3rtemp.contactexchange.domain.repository.CardRepository;
 
 import javax.inject.Inject;
 
@@ -8,10 +8,10 @@ import io.reactivex.rxjava3.core.Completable;
 
 public final class DeleteCardUseCase {
 
-    private final Repository repository;
+    private final CardRepository repository;
 
     @Inject
-    public DeleteCardUseCase(Repository repository) {
+    public DeleteCardUseCase(CardRepository repository) {
         this.repository = repository;
     }
 

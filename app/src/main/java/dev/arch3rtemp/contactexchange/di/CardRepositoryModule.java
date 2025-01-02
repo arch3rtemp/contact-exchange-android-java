@@ -1,7 +1,7 @@
 package dev.arch3rtemp.contactexchange.di;
 
-import dev.arch3rtemp.contactexchange.data.repository.RepositoryImpl;
-import dev.arch3rtemp.contactexchange.domain.repository.Repository;
+import dev.arch3rtemp.contactexchange.data.repository.CardRepositoryImpl;
+import dev.arch3rtemp.contactexchange.domain.repository.CardRepository;
 
 import javax.inject.Singleton;
 
@@ -12,9 +12,9 @@ import dagger.hilt.components.SingletonComponent;
 
 @Module
 @InstallIn(SingletonComponent.class)
-public interface RepositoryModule {
+public interface CardRepositoryModule {
 
     @Binds
     @Singleton
-    Repository bindRepository(RepositoryImpl impl);
+    CardRepository bindRepository(CardRepositoryImpl impl);
 }

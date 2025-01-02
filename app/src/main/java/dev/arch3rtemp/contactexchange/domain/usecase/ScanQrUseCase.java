@@ -2,15 +2,16 @@ package dev.arch3rtemp.contactexchange.domain.usecase;
 
 import javax.inject.Inject;
 
-import dev.arch3rtemp.contactexchange.data.scanner.QrScanner;
+import dev.arch3rtemp.contactexchange.data.repository.ScannerRepositoryImpl;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
+import dev.arch3rtemp.contactexchange.domain.repository.ScannerRepository;
 import io.reactivex.rxjava3.core.Single;
 
 public class ScanQrUseCase {
 
-    private final QrScanner scanner;
+    private final ScannerRepository scanner;
     @Inject
-    public ScanQrUseCase(QrScanner scanner) {
+    public ScanQrUseCase(ScannerRepositoryImpl scanner) {
         this.scanner = scanner;
     }
 

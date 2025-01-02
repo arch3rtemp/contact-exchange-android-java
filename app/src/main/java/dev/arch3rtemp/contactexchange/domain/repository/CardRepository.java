@@ -7,7 +7,7 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 
-public interface Repository {
+public interface CardRepository {
     Observable<List<Card>> getMyCards();
     Observable<List<Card>> getScannedCards();
     Observable<Card> getCardById(int id);
