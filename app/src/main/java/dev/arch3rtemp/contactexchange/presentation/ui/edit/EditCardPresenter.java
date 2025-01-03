@@ -37,7 +37,7 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
     protected void handleEvent(EditCardContract.EditCardEvent event) {
         if (event instanceof EditCardContract.EditCardEvent.OnCardLoad onCardLoad) {
             getCard(onCardLoad.id());
-        } else if (event instanceof EditCardContract.EditCardEvent.OnUpdateButtonPressed onSaveButtonPressed) {
+        } else if (event instanceof EditCardContract.EditCardEvent.OnUpdateButtonPress onSaveButtonPressed) {
             updateCard(onSaveButtonPressed.card());
         }
     }
@@ -62,7 +62,7 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnError(throwable -> setEffect(() -> new EditCardContract.EditCardEffect.ShowError(throwable.getLocalizedMessage())))
-                        .doOnComplete(() -> setEffect(EditCardContract.EditCardEffect.Finish::new))
+                        .doOnComplete(() -> setEffect(EditCardContract.EditCardEffect.NavigateUp::new))
                         .subscribe();
                 disposables.add(disposable);
 

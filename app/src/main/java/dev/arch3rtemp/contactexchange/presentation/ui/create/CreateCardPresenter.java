@@ -39,7 +39,7 @@ public class CreateCardPresenter extends BasePresenter<CreateCardContract.Create
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnError(throwable -> setEffect(() -> new CreateCardContract.CreateCardEffect.ShowMessage(throwable.getLocalizedMessage())))
-                    .doOnComplete(() -> setEffect(CreateCardContract.CreateCardEffect.NavigateOnSuccess::new))
+                    .doOnComplete(() -> setEffect(CreateCardContract.CreateCardEffect.NavigateUp::new))
                     .subscribe(
                             () -> setState(current -> new CreateCardContract.CreateCardState.Success()),
                             throwable -> setState(current -> new CreateCardContract.CreateCardState.Error())

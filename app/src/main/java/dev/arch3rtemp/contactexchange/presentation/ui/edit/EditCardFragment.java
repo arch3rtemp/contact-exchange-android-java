@@ -45,26 +45,27 @@ public class EditCardFragment extends BaseFragment<EditCardContract.EditCardEven
 
     @Override
     protected void prepareView(@Nullable Bundle savedInstanceState) {
-        presenter.setEvent(new EditCardContract.EditCardEvent.OnCardLoad(args.getId()));
         setListeners();
     }
 
     private void setListeners() {
         getBinding().btnUpdate.setOnClickListener((v -> {
-            presenter.setEvent(new EditCardContract.EditCardEvent.OnUpdateButtonPressed(getDataFromFields()));
+            presenter.setEvent(new EditCardContract.EditCardEvent.OnUpdateButtonPress(getDataFromFields()));
         }));
     }
 
     @Override
     protected void renderState(EditCardContract.EditCardState state) {
-        if (state instanceof EditCardContract.EditCardState.Success success) {
+        if (state instanceof EditCardContract.EditCardState.Idle) {
+            presenter.setEvent(new EditCardContract.EditCardEvent.OnCardLoad(args.getId()));
+        } else if (state instanceof EditCardContract.EditCardState.Success success) {
             showCard(success.card());
         }
     }
 
     @Override
     protected void renderEffect(EditCardContract.EditCardEffect effect) {
-        if (effect instanceof EditCardContract.EditCardEffect.Finish) {
+        if (effect instanceof EditCardContract.EditCardEffect.NavigateUp) {
             NavHostFragment.findNavController(this).navigateUp();
         } else if (effect instanceof EditCardContract.EditCardEffect.ShowError showError) {
             Toast.makeText(requireContext(), showError.message(), Toast.LENGTH_SHORT).show();

@@ -10,12 +10,12 @@ public interface EditCardContract {
 
     sealed interface EditCardEvent extends UiEvent {
         record OnCardLoad(int id) implements EditCardEvent {}
-        record OnUpdateButtonPressed(Card card) implements EditCardEvent {}
+        record OnUpdateButtonPress(Card card) implements EditCardEvent {}
     }
 
     sealed interface EditCardEffect extends UiEffect {
         record ShowError(String message) implements EditCardEffect {}
-        final class Finish implements EditCardEffect {}
+        final class NavigateUp implements EditCardEffect {}
     }
 
     sealed interface EditCardState extends UiState {
