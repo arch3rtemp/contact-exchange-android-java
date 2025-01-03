@@ -49,8 +49,7 @@ public class CreateCardFragment extends BaseFragment<CreateCardContract.CreateCa
     }
 
     @Override
-    protected void renderState(CreateCardContract.CreateCardState state) {
-    }
+    protected void renderState(CreateCardContract.CreateCardState state) {}
 
     @Override
     protected void renderEffect(CreateCardContract.CreateCardEffect effect) {

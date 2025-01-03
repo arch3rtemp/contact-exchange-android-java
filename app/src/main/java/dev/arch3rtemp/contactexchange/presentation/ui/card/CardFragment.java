@@ -131,12 +131,11 @@ public class CardFragment extends BaseFragment<CardContract.CardEvent, CardContr
         getBinding().tvEmail.setText(card.email());
         getBinding().tvPhoneMobile.setText(card.phoneMobile());
         getBinding().tvPhoneOffice.setText(card.phoneOffice());
-        getBinding().clCard.getBackground().setColorFilter(new PorterDuffColorFilter(card.color(), PorterDuff.Mode.SRC_IN));
+        getBinding().clCard.getBackground().setColorFilter(card.getSrcInColorFilter());
     }
 
     private void generateQr(CardUi card) {
         var size = sizeResolver.resolve(requireActivity().getWindowManager());
-
         int smallerDimension = Math.min(size.first, size.second);
         smallerDimension = smallerDimension * 3 / 4;
 
