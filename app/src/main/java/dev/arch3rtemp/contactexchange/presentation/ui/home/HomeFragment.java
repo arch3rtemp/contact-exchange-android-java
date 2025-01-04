@@ -221,7 +221,7 @@ public class HomeFragment extends BaseFragment<HomeContract.HomeEvent, HomeContr
         getBinding().progressCircularContacts.setVisibility(View.GONE);
         getBinding().tvContactsErrorDesc.setVisibility(View.GONE);
         getBinding().rvContacts.setVisibility(View.GONE);
-        searchItem.setVisible(false);
+        searchItem.setVisible(true);
     }
 
     private void showContactsLoading() {
