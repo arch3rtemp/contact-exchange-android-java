@@ -6,6 +6,7 @@ import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
 
 import javax.inject.Inject;
 
+import dev.arch3rtemp.contactexchange.domain.usecase.ValidateCardUseCase;
 import dev.arch3rtemp.ui.base.BasePresenter;
 import dev.arch3rtemp.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -13,11 +14,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CreateCardPresenter extends BasePresenter<CreateCardContract.CreateCardEvent, CreateCardContract.CreateCardEffect, CreateCardContract.CreateCardState> {
     private final SaveCardUseCase saveCard;
+    private final ValidateCardUseCase validateCard;
     private final StringResourceManager stringResourceManager;
 
     @Inject
-    public CreateCardPresenter(SaveCardUseCase saveCard, StringResourceManager stringResourceManager) {
+    public CreateCardPresenter(SaveCardUseCase saveCard, ValidateCardUseCase validateCard, StringResourceManager stringResourceManager) {
         this.saveCard = saveCard;
+        this.validateCard = validateCard;
         this.stringResourceManager = stringResourceManager;
     }
 
@@ -34,7 +37,7 @@ public class CreateCardPresenter extends BasePresenter<CreateCardContract.Create
     }
 
     private void saveCard(Card card) {
-        if (card.isNotBlank()) {
+        if (validateCard.invoke(card)) {
             var disposable = saveCard.invoke(card)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

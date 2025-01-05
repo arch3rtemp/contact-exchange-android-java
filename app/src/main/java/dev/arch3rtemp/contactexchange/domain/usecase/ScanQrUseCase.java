@@ -7,7 +7,7 @@ import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.repository.ScannerRepository;
 import io.reactivex.rxjava3.core.Single;
 
-public class ScanQrUseCase {
+public final class ScanQrUseCase {
 
     private final ScannerRepository scanner;
     @Inject

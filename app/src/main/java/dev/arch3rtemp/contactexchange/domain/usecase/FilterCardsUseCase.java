@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
-public class FilterCardsUseCase {
+public final class FilterCardsUseCase {
 
     private final BehaviorSubject<Map.Entry<String, List<Card>>> querySubject;
 

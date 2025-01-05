@@ -4,6 +4,7 @@ import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.usecase.GetCardByIdUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.UpdateCardUseCase;
+import dev.arch3rtemp.contactexchange.domain.usecase.ValidateCardUseCase;
 import dev.arch3rtemp.contactexchange.presentation.mapper.CardUiMapper;
 
 import javax.inject.Inject;
@@ -17,13 +18,15 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
 
     private final GetCardByIdUseCase getCardById;
     private final UpdateCardUseCase updateCard;
+    private final ValidateCardUseCase validateCard;
     private final StringResourceManager resourceManager;
     private final CardUiMapper mapper;
 
     @Inject
-    public EditCardPresenter(GetCardByIdUseCase getCardById, UpdateCardUseCase updateCard, StringResourceManager resourceManager, CardUiMapper mapper) {
+    public EditCardPresenter(GetCardByIdUseCase getCardById, UpdateCardUseCase updateCard, ValidateCardUseCase validateCard, StringResourceManager resourceManager, CardUiMapper mapper) {
         this.getCardById = getCardById;
         this.updateCard = updateCard;
+        this.validateCard = validateCard;
         this.resourceManager = resourceManager;
         this.mapper = mapper;
     }
@@ -55,7 +58,7 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
     }
 
     private void updateCard(Card newCard) {
-        if (newCard.isNotBlank()) {
+        if (validateCard.invoke(newCard)) {
             if (getCurrentState() instanceof EditCardContract.EditCardState.Success current) {
 
                 var disposable = updateCard.invoke(mapper.fromUiModel(current.card()), newCard)
