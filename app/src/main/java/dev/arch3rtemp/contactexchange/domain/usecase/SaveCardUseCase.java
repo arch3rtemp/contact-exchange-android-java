@@ -1,5 +1,7 @@
 package dev.arch3rtemp.contactexchange.domain.usecase;
 
+import static dev.arch3rtemp.contactexchange.domain.util.ErrorMsgConstants.MSG_CARD_CANNOT_BE_NULL;
+
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.repository.CardRepository;
 
@@ -17,6 +19,9 @@ public final class SaveCardUseCase {
     }
 
     public Completable invoke(Card card) {
+        if (card == null) {
+            return Completable.error(new IllegalArgumentException(MSG_CARD_CANNOT_BE_NULL));
+        }
         return repository.addCard(card);
     }
 }

@@ -6,7 +6,7 @@ import org.junit.runner.Description;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class RxSchedulerWatcher extends TestWatcher {
+public class RxTrampolineRule extends TestWatcher {
 
     @Override
     protected void starting(Description description) {
