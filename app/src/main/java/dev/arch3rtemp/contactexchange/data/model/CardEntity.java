@@ -94,4 +94,37 @@ public class CardEntity {
     public boolean isMy() {
         return isMy;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CardEntity that = (CardEntity) o;
+        return id == that.id &&
+                createdAt == that.createdAt &&
+                color == that.color &&
+                isMy == that.isMy &&
+                name.equals(that.name) &&
+                job.equals(that.job) &&
+                position.equals(that.position) &&
+                email.equals(that.email) &&
+                phoneMobile.equals(that.phoneMobile) &&
+                phoneOffice.equals(that.phoneOffice);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Integer.hashCode(id);
+        result = 31 * result + name.hashCode();
+        result = 31 * result + job.hashCode();
+        result = 31 * result + position.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + phoneMobile.hashCode();
+        result = 31 * result + phoneOffice.hashCode();
+        result = 31 * result + Long.hashCode(createdAt);
+        result = 31 * result + Integer.hashCode(color);
+        result = 31 * result + Boolean.hashCode(isMy);
+        return result;
+    }
+
 }
