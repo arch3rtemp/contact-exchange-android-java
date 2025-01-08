@@ -6,8 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,8 +23,8 @@ import java.util.Objects;
 
 import dev.arch3rtemp.contactexchange.databinding.DeletePopupBinding;
 import dev.arch3rtemp.contactexchange.databinding.FragmentCardBinding;
-import dev.arch3rtemp.contactexchange.presentation.mapper.JsonToCardMapper;
 
+import dev.arch3rtemp.contactexchange.presentation.mapper.CardToJsonMapper;
 import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
 import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
@@ -46,7 +44,7 @@ public class CardFragment extends BaseFragment<CardContract.CardEvent, CardContr
     private CardFragmentArgs args;
 
     @Inject
-    JsonToCardMapper mapper;
+    CardToJsonMapper mapper;
 
     @Inject
     DeviceSizeResolver sizeResolver;

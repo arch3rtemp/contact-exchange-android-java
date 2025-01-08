@@ -9,9 +9,9 @@ import org.json.JSONException;
 import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.R;
+import dev.arch3rtemp.contactexchange.data.mapper.JsonToCardMapper;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.repository.ScannerRepository;
-import dev.arch3rtemp.contactexchange.presentation.mapper.JsonToCardMapper;
 import dev.arch3rtemp.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.core.Single;
 

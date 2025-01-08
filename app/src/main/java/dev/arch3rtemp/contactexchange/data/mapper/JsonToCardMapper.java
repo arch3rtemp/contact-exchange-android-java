@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.presentation.mapper;
+package dev.arch3rtemp.contactexchange.data.mapper;
 
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
@@ -31,7 +31,4 @@ public class JsonToCardMapper {
         );
     }
 
-    public String toJson(CardUi card) {
-        return new Gson().toJson(card);
-    }
 }
