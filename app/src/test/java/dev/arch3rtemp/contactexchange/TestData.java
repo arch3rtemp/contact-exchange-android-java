@@ -102,6 +102,19 @@ public class TestData {
             false
     );
 
+    public static CardEntity mergedCardEntity = new CardEntity(
+            9,
+            "Justin Doe",
+            "Microsoft",
+            "COO",
+            "justin@example.com",
+            "+15559879859",
+            "+15558797889",
+            SIMULATED_CREATED_TIME_1,
+            0xFF0000,
+            true
+    );
+
     public static List<CardEntity> testCardsEntity = List.of(testMyCardEntity, testScannedCardEntity);
 
     public static final String testMyCardJson = """
