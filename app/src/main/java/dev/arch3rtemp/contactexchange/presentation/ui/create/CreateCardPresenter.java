@@ -7,26 +7,27 @@ import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
 import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.domain.usecase.ValidateCardUseCase;
+import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.ui.base.BasePresenter;
 import dev.arch3rtemp.ui.util.StringResourceManager;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CreateCardPresenter extends BasePresenter<CreateCardContract.CreateCardEvent, CreateCardContract.CreateCardEffect, CreateCardContract.CreateCardState> {
     private final SaveCardUseCase saveCard;
     private final ValidateCardUseCase validateCard;
+    private final SchedulerProvider schedulerProvider;
     private final StringResourceManager stringResourceManager;
 
     @Inject
-    public CreateCardPresenter(SaveCardUseCase saveCard, ValidateCardUseCase validateCard, StringResourceManager stringResourceManager) {
+    public CreateCardPresenter(SaveCardUseCase saveCard, ValidateCardUseCase validateCard, SchedulerProvider schedulerProvider, StringResourceManager stringResourceManager) {
         this.saveCard = saveCard;
         this.validateCard = validateCard;
+        this.schedulerProvider = schedulerProvider;
         this.stringResourceManager = stringResourceManager;
     }
 
     @Override
     protected CreateCardContract.CreateCardState createInitialState() {
-        return new CreateCardContract.CreateCardState.Idle();
+        return new CreateCardContract.CreateCardState();
     }
 
     @Override
@@ -39,13 +40,11 @@ public class CreateCardPresenter extends BasePresenter<CreateCardContract.Create
     private void saveCard(Card card) {
         if (validateCard.invoke(card)) {
             var disposable = saveCard.invoke(card)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError(throwable -> setEffect(() -> new CreateCardContract.CreateCardEffect.ShowMessage(throwable.getLocalizedMessage())))
-                    .doOnComplete(() -> setEffect(CreateCardContract.CreateCardEffect.NavigateUp::new))
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.main())
                     .subscribe(
-                            () -> setState(current -> new CreateCardContract.CreateCardState.Success()),
-                            throwable -> setState(current -> new CreateCardContract.CreateCardState.Error())
+                            () -> setEffect(CreateCardContract.CreateCardEffect.NavigateUp::new),
+                            throwable -> setEffect(() -> new CreateCardContract.CreateCardEffect.ShowMessage(throwable.getLocalizedMessage()))
                     );
             disposables.add(disposable);
         } else {

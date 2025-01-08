@@ -90,7 +90,7 @@ public class CardPresenterTest {
         verify(deleteCard).invoke(TestData.testMyCard.id());
 
         effectObserver.assertValueCount(1)
-                .assertValueAt(0, new CardContract.CardEffect.AnimateDeletion());
+                .assertValue(new CardContract.CardEffect.AnimateDeletion());
     }
 
     @Test
@@ -103,6 +103,6 @@ public class CardPresenterTest {
         verify(deleteCard).invoke(TestData.testMyCard.id());
 
         effectObserver.assertValueCount(1)
-                .assertValueAt(0, new CardContract.CardEffect.ShowError(TestData.sqlException.getLocalizedMessage()));
+                .assertValue(new CardContract.CardEffect.ShowError(TestData.sqlException.getLocalizedMessage()));
     }
 }
