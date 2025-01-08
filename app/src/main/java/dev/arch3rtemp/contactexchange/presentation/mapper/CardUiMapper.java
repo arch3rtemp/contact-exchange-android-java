@@ -17,8 +17,8 @@ public class CardUiMapper {
     private final TimeConverter timeConverter;
 
     @Inject
-    public CardUiMapper(TimeConverter timeConverter, TimeConverter timeConverter1) {
-        this.timeConverter = timeConverter1;
+    public CardUiMapper(TimeConverter timeConverter) {
+        this.timeConverter = timeConverter;
     }
 
     public Card fromUiModel(CardUi uiModel) {

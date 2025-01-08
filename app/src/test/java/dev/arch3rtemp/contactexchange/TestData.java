@@ -146,11 +146,27 @@ public class TestData {
             "+15559879855",
             "+15558797882",
             SIMULATED_CREATED_TIME_1,
-            "06 Jan 24",
+            "06 Jan 25",
             0xFF0000,
             true
     );
 
-    public static final String testCardJsonCompact = "{\"id\":9,\"name\":\"John Doe\",\"job\":\"Job\",\"position\":\"Developer\",\"email\":\"john@example.com\",\"phoneMobile\":\"+15559879855\",\"phoneOffice\":\"+15558797882\",\"createdAt\":1736190485327,\"formattedCreatedAt\":\"06 Jan 24\",\"color\":16711680,\"isMy\":true}";
+    public static CardUi testScannedCardUi = new CardUi(
+            10,
+            "Jane Doe",
+            "JP Morgan",
+            "CEO",
+            "jane@example.com",
+            "+15559879853",
+            "+15558797884",
+            SIMULATED_CREATED_TIME_2,
+            "06 Jan 25",
+            0xFF00FF,
+            false
+    );
+
+    public static List<CardUi> testCardsUi = List.of(testMyCardUi, testScannedCardUi);
+
+    public static final String testCardJsonCompact = "{\"id\":9,\"name\":\"John Doe\",\"job\":\"Job\",\"position\":\"Developer\",\"email\":\"john@example.com\",\"phoneMobile\":\"+15559879855\",\"phoneOffice\":\"+15558797882\",\"createdAt\":1736190485327,\"formattedCreatedAt\":\"06 Jan 25\",\"color\":16711680,\"isMy\":true}";
 
 }
