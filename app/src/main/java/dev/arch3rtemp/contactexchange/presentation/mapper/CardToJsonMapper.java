@@ -8,10 +8,12 @@ import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
 
 public class CardToJsonMapper {
 
+    private final Gson gson = new Gson();
+
     @Inject
     public CardToJsonMapper() {}
 
     public String toJson(CardUi card) {
-        return new Gson().toJson(card);
+        return gson.toJson(card);
     }
 }

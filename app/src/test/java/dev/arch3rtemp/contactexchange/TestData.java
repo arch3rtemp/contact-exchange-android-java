@@ -6,6 +6,7 @@ import java.util.List;
 
 import dev.arch3rtemp.contactexchange.data.model.CardEntity;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
+import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
 
 public class TestData {
 
@@ -117,7 +118,7 @@ public class TestData {
 
     public static List<CardEntity> testCardsEntity = List.of(testMyCardEntity, testScannedCardEntity);
 
-    public static final String testMyCardJson = """
+    public static final String testCardJson = """
             {
               "id": 9,
               "name": "John Doe",
@@ -126,9 +127,30 @@ public class TestData {
               "email": "john@example.com",
               "phoneMobile": "+15559879855",
               "phoneOffice": "+15558797882",
-              "createdAt": 1736190485327L,
+              "createdAt": 1736190485327,
+              "formattedCreatedAt":"06 Jan 24",
               "color": 16711680,
               "isMy": true
             }
             """;
+
+    /**
+     * Presentation test data
+     */
+    public static final CardUi testMyCardUi = new CardUi(
+            9,
+            "John Doe",
+            "Job",
+            "Developer",
+            "john@example.com",
+            "+15559879855",
+            "+15558797882",
+            SIMULATED_CREATED_TIME_1,
+            "06 Jan 24",
+            0xFF0000,
+            true
+    );
+
+    public static final String testCardJsonCompact = "{\"id\":9,\"name\":\"John Doe\",\"job\":\"Job\",\"position\":\"Developer\",\"email\":\"john@example.com\",\"phoneMobile\":\"+15559879855\",\"phoneOffice\":\"+15558797882\",\"createdAt\":1736190485327,\"formattedCreatedAt\":\"06 Jan 24\",\"color\":16711680,\"isMy\":true}";
+
 }

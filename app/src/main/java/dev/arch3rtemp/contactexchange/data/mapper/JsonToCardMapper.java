@@ -1,9 +1,6 @@
 package dev.arch3rtemp.contactexchange.data.mapper;
 
 import dev.arch3rtemp.contactexchange.domain.model.Card;
-import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
-
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
