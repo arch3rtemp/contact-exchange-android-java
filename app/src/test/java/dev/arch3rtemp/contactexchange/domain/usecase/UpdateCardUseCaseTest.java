@@ -15,7 +15,7 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.Objects;
 
-import dev.arch3rtemp.contactexchange.RxTrampolineRule;
+import dev.arch3rtemp.contactexchange.rx.RxTrampolineRule;
 import dev.arch3rtemp.contactexchange.TestData;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.repository.CardRepository;

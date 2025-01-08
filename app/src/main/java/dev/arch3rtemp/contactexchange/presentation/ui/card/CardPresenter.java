@@ -5,22 +5,23 @@ import dev.arch3rtemp.contactexchange.domain.usecase.GetCardByIdUseCase;
 
 import javax.inject.Inject;
 
+import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.contactexchange.presentation.mapper.CardUiMapper;
 import dev.arch3rtemp.ui.base.BasePresenter;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CardPresenter extends BasePresenter<CardContract.CardEvent, CardContract.CardEffect, CardContract.CardState> {
 
-    private final DeleteCardUseCase deleteCard;
     private final GetCardByIdUseCase getCardById;
+    private final DeleteCardUseCase deleteCard;
     private final CardUiMapper mapper;
+    private final SchedulerProvider schedulerProvider;
 
     @Inject
-    public CardPresenter(DeleteCardUseCase deleteCard, GetCardByIdUseCase getCardById, CardUiMapper mapper) {
-        this.deleteCard = deleteCard;
+    public CardPresenter(GetCardByIdUseCase getCardById, DeleteCardUseCase deleteCard, CardUiMapper mapper, SchedulerProvider schedulerProvider) {
         this.getCardById = getCardById;
+        this.deleteCard = deleteCard;
         this.mapper = mapper;
+        this.schedulerProvider = schedulerProvider;
     }
 
     @Override
@@ -39,27 +40,28 @@ public class CardPresenter extends BasePresenter<CardContract.CardEvent, CardCon
 
     private void getCard(int id) {
         var disposable = getCardById.invoke(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
                 .doOnError(throwable -> {
                     setEffect(() -> new CardContract.CardEffect.ShowError(throwable.getLocalizedMessage()));
                 })
+                .doOnSubscribe(subscription -> setState(current -> new CardContract.CardState.Loading()))
                 .subscribe((card) -> {
-                    setState((Card) -> new CardContract.CardState.Success(mapper.toUiModel(card)));
+                    setState(current -> new CardContract.CardState.Success(mapper.toUiModel(card)));
                 }, throwable -> {
-                    setState((String) -> new CardContract.CardState.Error());
+                    setState(current -> new CardContract.CardState.Error());
                 });
         disposables.add(disposable);
     }
 
     private void deleteCard(int id) {
         var disposable = deleteCard.invoke(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(throwable ->
-                        new CardContract.CardEffect.ShowError(throwable.getLocalizedMessage()))
-                .doOnComplete(() -> setEffect(CardContract.CardEffect.AnimateDeletion::new))
-                .subscribe();
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
+                .subscribe(
+                        () -> setEffect(CardContract.CardEffect.AnimateDeletion::new),
+                        throwable -> setEffect(() -> new CardContract.CardEffect.ShowError(throwable.getLocalizedMessage()))
+                );
         disposables.add(disposable);
     }
 }

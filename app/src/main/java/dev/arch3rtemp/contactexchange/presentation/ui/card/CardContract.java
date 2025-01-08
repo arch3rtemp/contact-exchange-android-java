@@ -14,13 +14,13 @@ public interface CardContract {
 
     sealed interface CardEffect extends UiEffect {
         record ShowError(String message) implements CardEffect {}
-        final class AnimateDeletion implements CardEffect {}
+        record AnimateDeletion() implements CardEffect {}
     }
 
     sealed interface CardState extends UiState {
-        final class Idle implements CardState {}
-        final class Loading implements CardState {}
-        final class Error implements CardState {}
+        record Idle() implements CardState {}
+        record Loading() implements CardState {}
+        record Error() implements CardState {}
         record Success(CardUi card) implements CardState {}
     }
 }

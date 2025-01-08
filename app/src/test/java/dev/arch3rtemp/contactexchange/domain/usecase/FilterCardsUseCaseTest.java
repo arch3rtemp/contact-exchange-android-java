@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import dev.arch3rtemp.contactexchange.RxTestSchedulerRule;
+import dev.arch3rtemp.contactexchange.rx.RxTestSchedulerRule;
 import dev.arch3rtemp.contactexchange.TestData;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import io.reactivex.rxjava3.observers.TestObserver;

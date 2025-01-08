@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import dev.arch3rtemp.contactexchange.RxTrampolineRule;
+import dev.arch3rtemp.contactexchange.rx.RxTrampolineRule;
 import dev.arch3rtemp.contactexchange.TestData;
 import dev.arch3rtemp.contactexchange.data.db.CardDao;
 import dev.arch3rtemp.contactexchange.data.mapper.CardEntityMapper;

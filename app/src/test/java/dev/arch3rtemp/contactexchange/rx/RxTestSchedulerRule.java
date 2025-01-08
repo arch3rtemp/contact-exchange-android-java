@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange;
+package dev.arch3rtemp.contactexchange.rx;
 
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
