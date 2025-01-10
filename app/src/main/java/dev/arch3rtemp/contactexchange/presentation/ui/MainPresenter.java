@@ -45,9 +45,10 @@ public class MainPresenter extends BasePresenter<MainContract.MainEvent, MainCon
         var disposable = saveCardUseCase.invoke(card)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.main())
-                .doOnError(throwable -> showMessage(throwable.getLocalizedMessage()))
-                .doOnComplete(() -> showMessage(resourceManager.string(R.string.msg_contact_added)))
-                .subscribe();
+                .subscribe(
+                        () -> showMessage(resourceManager.string(R.string.msg_contact_added)),
+                        throwable -> showMessage(throwable.getLocalizedMessage())
+                );
         disposables.add(disposable);
     }
 

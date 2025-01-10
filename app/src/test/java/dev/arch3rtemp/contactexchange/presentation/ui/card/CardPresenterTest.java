@@ -50,7 +50,7 @@ public class CardPresenterTest {
     }
 
     @Test
-    public void testOnCardLoad_success_emitsSuccessState() {
+    public void loadCard_success_emitsSuccessState() {
         when(mockGetCardById.invoke(TestData.testMyCard.id()))
                 .thenReturn(Observable.just(TestData.testMyCard));
 
@@ -66,7 +66,7 @@ public class CardPresenterTest {
     }
 
     @Test
-    public void testOnCardLoad_error_emitsErrorState() {
+    public void loadCard_error_emitsErrorState() {
         when(mockGetCardById.invoke(TestData.testMyCard.id()))
                 .thenReturn(Observable.error(TestData.sqlException));
 
@@ -81,7 +81,7 @@ public class CardPresenterTest {
     }
 
     @Test
-    public void testOnCardDelete_success_emitsAnimationEffect() {
+    public void deleteCard_success_emitsAnimationEffect() {
         when(mockDeleteCard.invoke(TestData.testMyCard.id()))
                 .thenReturn(Completable.complete());
 
@@ -94,7 +94,7 @@ public class CardPresenterTest {
     }
 
     @Test
-    public void testOnCardDelete_error_emitsShowErrorEffect() {
+    public void deleteCard_error_emitsShowErrorEffect() {
         when(mockDeleteCard.invoke(TestData.testMyCard.id()))
                 .thenReturn(Completable.error(TestData.sqlException));
 

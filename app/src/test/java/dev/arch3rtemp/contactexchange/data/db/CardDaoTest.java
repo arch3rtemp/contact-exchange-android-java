@@ -39,7 +39,7 @@ public class CardDaoTest {
     }
 
     @Test
-    public void testSelectScannedCards_returnsValidData() {
+    public void selectScannedCards_returnsValidData() {
         cardDao.selectScannedCards()
                 .test()
                 .assertValueCount(1)
@@ -49,7 +49,7 @@ public class CardDaoTest {
     }
 
     @Test
-    public void testSelectMyCards_returnsValidData() {
+    public void selectMyCards_returnsValidData() {
         cardDao.selectMyCards()
                 .test()
                 .assertValueCount(1)
@@ -59,14 +59,14 @@ public class CardDaoTest {
     }
 
     @Test
-    public void testSelectCardById_returnsValidData() {
+    public void selectCardById_returnsValidData() {
         cardDao.selectCardById(TestData.testMyCard.id())
                 .test()
                 .assertValue(TestData.testMyCardEntity);
     }
 
     @Test
-    public void testUpdateAndRetrieve_returnsComplete() {
+    public void updateAndRetrieve_returnsComplete() {
         cardDao.update(TestData.mergedCardEntity).blockingAwait();
         cardDao.selectCardById(TestData.mergedCardEntity.getId())
                 .test()
@@ -74,7 +74,7 @@ public class CardDaoTest {
     }
 
     @Test
-    public void testDeleteAndCheck_returnsComplete() {
+    public void deleteAndCheck_returnsComplete() {
         cardDao.delete(TestData.testMyCardEntity.getId()).blockingAwait();
         cardDao.selectCardById(TestData.testMyCardEntity.getId())
                 .test()
