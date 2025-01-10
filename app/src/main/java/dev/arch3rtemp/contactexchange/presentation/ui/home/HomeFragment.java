@@ -118,7 +118,7 @@ public class HomeFragment extends BaseFragment<HomeContract.HomeEvent, HomeContr
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                presenter.setEvent(new HomeContract.HomeEvent.OnSearchTyped(newText));
+                presenter.setEvent(new HomeContract.HomeEvent.OnSearchQuery(newText));
                 return false;
             }
         });

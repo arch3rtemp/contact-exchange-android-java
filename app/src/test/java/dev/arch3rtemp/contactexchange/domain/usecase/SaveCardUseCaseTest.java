@@ -24,26 +24,26 @@ public class SaveCardUseCaseTest {
     public RxTrampolineRule rxTrampolineRule = new RxTrampolineRule();
 
     @Mock
-    private CardRepository repository;
+    private CardRepository mockRepository;
 
     @InjectMocks
     private SaveCardUseCase saveCard;
 
     @Test
     public void invokeWithValidCard_completesSuccessfully() {
-        when(repository.addCard(TestData.testScannedCard))
+        when(mockRepository.addCard(TestData.testScannedCard))
                 .thenReturn(Completable.complete());
 
         saveCard.invoke(TestData.testScannedCard)
                 .test()
                 .assertComplete();
 
-        verify(repository).addCard(TestData.testScannedCard);
+        verify(mockRepository).addCard(TestData.testScannedCard);
     }
 
     @Test
     public void invokeWhenRepositoryFails_emitsError() {
-        when(repository.addCard(TestData.testScannedCard))
+        when(mockRepository.addCard(TestData.testScannedCard))
                 .thenReturn(Completable.error(TestData.sqlException));
 
         saveCard.invoke(TestData.testScannedCard)

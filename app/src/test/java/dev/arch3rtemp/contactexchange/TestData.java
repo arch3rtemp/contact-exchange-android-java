@@ -70,6 +70,10 @@ public class TestData {
             true
     );
 
+    public static Card blankCard = new Card(
+            -1, "", "", "", "", "", "", -1, -1, false
+    );
+
     public static List<Card> testCards = List.of(testMyCard, testScannedCard);
 
     public static SQLException sqlException = new SQLException("Database error");
@@ -153,6 +157,20 @@ public class TestData {
 
     public static CardUi testScannedCardUi = new CardUi(
             10,
+            "Jane Doe",
+            "JP Morgan",
+            "CEO",
+            "jane@example.com",
+            "+15559879853",
+            "+15558797884",
+            SIMULATED_CREATED_TIME_2,
+            "06 Jan 25",
+            0xFF00FF,
+            false
+    );
+
+    public static CardUi testInvalidCardUi = new CardUi(
+            NEGATIVE_CARD_ID,
             "Jane Doe",
             "JP Morgan",
             "CEO",

@@ -11,16 +11,18 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
 public final class FilterCardsUseCase {
 
+    private final SchedulerProvider schedulerProvider;
     private final BehaviorSubject<Map.Entry<String, List<Card>>> querySubject;
 
     @Inject
-    public FilterCardsUseCase() {
+    public FilterCardsUseCase(SchedulerProvider schedulerProvider) {
+        this.schedulerProvider = schedulerProvider;
         querySubject = BehaviorSubject.create();
     }
 
@@ -34,7 +36,7 @@ public final class FilterCardsUseCase {
                 .distinctUntilChanged()
                 .switchMap(entry ->
                         Observable.fromCallable(() -> filterCards(entry.getKey(), entry.getValue()))
-                        .subscribeOn(Schedulers.computation()));
+                        .subscribeOn(schedulerProvider.computation()));
     }
 
     /**

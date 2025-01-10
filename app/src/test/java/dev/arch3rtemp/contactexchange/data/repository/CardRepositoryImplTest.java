@@ -27,65 +27,65 @@ public class CardRepositoryImplTest {
     public RxTrampolineRule trampolineRule = new RxTrampolineRule();
 
     @Mock
-    public CardDao cardDao;
+    public CardDao mockCardDao;
 
     private CardRepository repository;
 
     @Before
     public void setup() {
         CardEntityMapper mapper = new CardEntityMapper();
-        repository = new CardRepositoryImpl(cardDao, mapper);
+        repository = new CardRepositoryImpl(mockCardDao, mapper);
     }
 
     @Test
     public void invokeGetMyCards_mapsAndReturnsValidData() {
-        when(cardDao.selectMyCards()).thenReturn(Observable.just(TestData.testCardsEntity));
+        when(mockCardDao.selectMyCards()).thenReturn(Observable.just(TestData.testCardsEntity));
 
         repository.getMyCards()
                 .test()
                 .assertComplete()
                 .assertValue(TestData.testCards);
 
-        verify(cardDao).selectMyCards();
+        verify(mockCardDao).selectMyCards();
     }
 
     @Test
     public void invokeGetMyCards_failsDb() {
-        when(cardDao.selectMyCards()).thenReturn(Observable.error(TestData.sqlException));
+        when(mockCardDao.selectMyCards()).thenReturn(Observable.error(TestData.sqlException));
 
         repository.getMyCards()
                 .test()
                 .assertError(TestData.sqlException);
 
-        verify(cardDao).selectMyCards();
+        verify(mockCardDao).selectMyCards();
     }
 
     @Test
     public void invokeGetScannedCards_mapsAndReturnsValidData() {
-        when(cardDao.selectScannedCards()).thenReturn(Observable.just(TestData.testCardsEntity));
+        when(mockCardDao.selectScannedCards()).thenReturn(Observable.just(TestData.testCardsEntity));
 
         repository.getScannedCards()
                 .test()
                 .assertComplete()
                 .assertValue(TestData.testCards);
 
-        verify(cardDao).selectScannedCards();
+        verify(mockCardDao).selectScannedCards();
     }
 
     @Test
     public void invokeGetScannedCards_failsDb() {
-        when(cardDao.selectScannedCards()).thenReturn(Observable.error(TestData.sqlException));
+        when(mockCardDao.selectScannedCards()).thenReturn(Observable.error(TestData.sqlException));
 
         repository.getScannedCards()
                 .test()
                 .assertError(TestData.sqlException);
 
-        verify(cardDao).selectScannedCards();
+        verify(mockCardDao).selectScannedCards();
     }
 
     @Test
     public void invokeGetCardById_mapsAndReturnsValidData() {
-        when(cardDao.selectCardById(TestData.testMyCardEntity.getId()))
+        when(mockCardDao.selectCardById(TestData.testMyCardEntity.getId()))
                 .thenReturn(Observable.just(TestData.testMyCardEntity));
 
         repository.getCardById(TestData.testMyCardEntity.getId())
@@ -93,89 +93,89 @@ public class CardRepositoryImplTest {
                 .assertComplete()
                 .assertValue(TestData.testMyCard);
 
-        verify(cardDao).selectCardById(TestData.testMyCardEntity.getId());
+        verify(mockCardDao).selectCardById(TestData.testMyCardEntity.getId());
     }
 
     @Test
     public void invokeGetCardById_failsDb() {
-        when(cardDao.selectCardById(TestData.testMyCardEntity.getId()))
+        when(mockCardDao.selectCardById(TestData.testMyCardEntity.getId()))
                 .thenReturn(Observable.error(TestData.sqlException));
 
         repository.getCardById(TestData.testMyCardEntity.getId())
                 .test()
                 .assertError(TestData.sqlException);
 
-        verify(cardDao).selectCardById(TestData.testMyCardEntity.getId());
+        verify(mockCardDao).selectCardById(TestData.testMyCardEntity.getId());
     }
 
     @Test
     public void invokeAddCard_withValidCard_completesSuccessfully() {
-        when(cardDao.insert(TestData.testScannedCardEntity))
+        when(mockCardDao.insert(TestData.testScannedCardEntity))
                 .thenReturn(Completable.complete());
 
         repository.addCard(TestData.testScannedCard)
                 .test()
                 .assertComplete();
 
-        verify(cardDao).insert(TestData.testScannedCardEntity);
+        verify(mockCardDao).insert(TestData.testScannedCardEntity);
     }
 
     @Test
     public void invokeAddCard_withValidCard_throwsErrorDueToDbFailure() {
-        when(cardDao.insert(TestData.testScannedCardEntity))
+        when(mockCardDao.insert(TestData.testScannedCardEntity))
                 .thenReturn(Completable.error(TestData.sqlException));
 
         repository.addCard(TestData.testScannedCard)
                 .test()
                 .assertError(TestData.sqlException);
 
-        verify(cardDao).insert(TestData.testScannedCardEntity);
+        verify(mockCardDao).insert(TestData.testScannedCardEntity);
     }
 
     @Test
     public void invokeUpdateCard_withValidCard_completesSuccessfully() {
-        when(cardDao.update(TestData.testScannedCardEntity))
+        when(mockCardDao.update(TestData.testScannedCardEntity))
                 .thenReturn(Completable.complete());
 
         repository.updateCard(TestData.testScannedCard)
                 .test()
                 .assertComplete();
 
-        verify(cardDao).update(TestData.testScannedCardEntity);
+        verify(mockCardDao).update(TestData.testScannedCardEntity);
     }
 
     @Test
     public void invokeUpdateCard_withValidCard_throwsErrorDueToDbFailure() {
-        when(cardDao.update(TestData.testScannedCardEntity))
+        when(mockCardDao.update(TestData.testScannedCardEntity))
                 .thenReturn(Completable.error(TestData.sqlException));
 
         repository.updateCard(TestData.testScannedCard)
                 .test()
                 .assertError(TestData.sqlException);
 
-        verify(cardDao).update(TestData.testScannedCardEntity);
+        verify(mockCardDao).update(TestData.testScannedCardEntity);
     }
 
     @Test
     public void invokeDeleteCard_withValidId_completesSuccessfully() {
-        when(cardDao.delete(TestData.testMyCardEntity.getId())).thenReturn(Completable.complete());
+        when(mockCardDao.delete(TestData.testMyCardEntity.getId())).thenReturn(Completable.complete());
 
         repository.deleteCard(TestData.testMyCard.id())
                 .test()
                 .assertComplete();
 
-        verify(cardDao).delete(TestData.testMyCardEntity.getId());
+        verify(mockCardDao).delete(TestData.testMyCardEntity.getId());
     }
 
     @Test
     public void invokeDeleteCard_withValidId_throwsErrorDueToDbFailure() {
-        when(cardDao.delete(TestData.testMyCardEntity.getId()))
+        when(mockCardDao.delete(TestData.testMyCardEntity.getId()))
                 .thenReturn(Completable.error(TestData.sqlException));
 
         repository.deleteCard(TestData.testMyCard.id())
                 .test()
                 .assertError(TestData.sqlException);
 
-        verify(cardDao).delete(TestData.testMyCardEntity.getId());
+        verify(mockCardDao).delete(TestData.testMyCardEntity.getId());
     }
 }

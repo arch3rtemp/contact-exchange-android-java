@@ -30,35 +30,35 @@ public class CardPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    public GetCardByIdUseCase getCardById;
+    public GetCardByIdUseCase mockGetCardById;
 
     @Mock
-    public DeleteCardUseCase deleteCard;
+    public DeleteCardUseCase mockDeleteCard;
 
     private CardPresenter presenter;
 
-    private TestObserver<CardContract.CardState> stateObserver;
-    private TestObserver<CardContract.CardEffect> effectObserver;
+    private TestObserver<CardContract.CardState> testStateObserver;
+    private TestObserver<CardContract.CardEffect> testEffectObserver;
 
     @Before
     public void setup() {
         SchedulerProvider schedulerProvider = new TestSchedulerProvider();
         CardUiMapper mapper = new CardUiMapper(new TimeConverter());
-        presenter = new CardPresenter(getCardById, deleteCard, mapper, schedulerProvider);
-        stateObserver = presenter.stateStream().test();
-        effectObserver = presenter.effectStream().test();
+        presenter = new CardPresenter(mockGetCardById, mockDeleteCard, mapper, schedulerProvider);
+        testStateObserver = presenter.stateStream().test();
+        testEffectObserver = presenter.effectStream().test();
     }
 
     @Test
     public void testOnCardLoad_success_emitsSuccessState() {
-        when(getCardById.invoke(TestData.testMyCard.id()))
+        when(mockGetCardById.invoke(TestData.testMyCard.id()))
                 .thenReturn(Observable.just(TestData.testMyCard));
 
         presenter.setEvent(new CardContract.CardEvent.OnCardLoad(TestData.testMyCard.id()));
 
-        verify(getCardById).invoke(TestData.testMyCard.id());
+        verify(mockGetCardById).invoke(TestData.testMyCard.id());
 
-        stateObserver.assertNoErrors()
+        testStateObserver.assertNoErrors()
                 .assertValueCount(3)
                 .assertValueAt(0, new CardContract.CardState.Idle())
                 .assertValueAt(1, new CardContract.CardState.Loading())
@@ -67,14 +67,14 @@ public class CardPresenterTest {
 
     @Test
     public void testOnCardLoad_error_emitsErrorState() {
-        when(getCardById.invoke(TestData.testMyCard.id()))
+        when(mockGetCardById.invoke(TestData.testMyCard.id()))
                 .thenReturn(Observable.error(TestData.sqlException));
 
         presenter.setEvent(new CardContract.CardEvent.OnCardLoad(TestData.testMyCard.id()));
 
-        verify(getCardById).invoke(TestData.testMyCard.id());
+        verify(mockGetCardById).invoke(TestData.testMyCard.id());
 
-        stateObserver.assertValueCount(3)
+        testStateObserver.assertValueCount(3)
                 .assertValueAt(0, new CardContract.CardState.Idle())
                 .assertValueAt(1, new CardContract.CardState.Loading())
                 .assertValueAt(2, new CardContract.CardState.Error());
@@ -82,27 +82,27 @@ public class CardPresenterTest {
 
     @Test
     public void testOnCardDelete_success_emitsAnimationEffect() {
-        when(deleteCard.invoke(TestData.testMyCard.id()))
+        when(mockDeleteCard.invoke(TestData.testMyCard.id()))
                 .thenReturn(Completable.complete());
 
         presenter.setEvent(new CardContract.CardEvent.OnCardDelete(TestData.testMyCard.id()));
 
-        verify(deleteCard).invoke(TestData.testMyCard.id());
+        verify(mockDeleteCard).invoke(TestData.testMyCard.id());
 
-        effectObserver.assertValueCount(1)
+        testEffectObserver.assertValueCount(1)
                 .assertValue(new CardContract.CardEffect.AnimateDeletion());
     }
 
     @Test
     public void testOnCardDelete_error_emitsShowErrorEffect() {
-        when(deleteCard.invoke(TestData.testMyCard.id()))
+        when(mockDeleteCard.invoke(TestData.testMyCard.id()))
                 .thenReturn(Completable.error(TestData.sqlException));
 
         presenter.setEvent(new CardContract.CardEvent.OnCardDelete(TestData.testMyCard.id()));
 
-        verify(deleteCard).invoke(TestData.testMyCard.id());
+        verify(mockDeleteCard).invoke(TestData.testMyCard.id());
 
-        effectObserver.assertValueCount(1)
+        testEffectObserver.assertValueCount(1)
                 .assertValue(new CardContract.CardEffect.ShowError(TestData.sqlException.getLocalizedMessage()));
     }
 }

@@ -13,13 +13,14 @@ import java.util.concurrent.TimeUnit;
 import dev.arch3rtemp.contactexchange.rx.RxTestSchedulerRule;
 import dev.arch3rtemp.contactexchange.TestData;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
+import dev.arch3rtemp.contactexchange.rx.TestSchedulerProvider;
 import io.reactivex.rxjava3.observers.TestObserver;
 import io.reactivex.rxjava3.schedulers.TestScheduler;
 
 public class FilterCardsUseCaseTest {
 
     @Rule
-    public RxTestSchedulerRule rxTestSchedulerRule = new RxTestSchedulerRule();
+    public final RxTestSchedulerRule rxTestSchedulerRule = new RxTestSchedulerRule();
 
     private FilterCardsUseCase filterCards;
     private TestScheduler testScheduler;
@@ -28,7 +29,7 @@ public class FilterCardsUseCaseTest {
     @Before
     public void setup() {
         testScheduler = rxTestSchedulerRule.getTestScheduler();
-        filterCards = new FilterCardsUseCase();
+        filterCards = new FilterCardsUseCase(new TestSchedulerProvider());
         testObserver = filterCards.getFilteredCardsStream().test();
     }
 

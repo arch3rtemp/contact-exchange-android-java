@@ -24,32 +24,32 @@ public class GetMyCardsUseCaseTest {
     public RxTrampolineRule rxTrampolineRule = new RxTrampolineRule();
 
     @Mock
-    public CardRepository repository;
+    public CardRepository mockRepository;
 
     @InjectMocks
     private GetMyCardsUseCase getMyCards;
 
     @Test
     public void invoke_emitsValidData() {
-        when(repository.getMyCards()).thenReturn(Observable.just(TestData.testCards));
+        when(mockRepository.getMyCards()).thenReturn(Observable.just(TestData.testCards));
 
         getMyCards.invoke()
                 .test()
                 .assertComplete()
                 .assertValue(TestData.testCards);
 
-        verify(repository).getMyCards();
+        verify(mockRepository).getMyCards();
     }
 
     @Test
     public void invokeWhenRepositoryFails_emitsError() {
-        when(repository.getMyCards()).thenReturn(Observable.error(TestData.sqlException));
+        when(mockRepository.getMyCards()).thenReturn(Observable.error(TestData.sqlException));
 
         getMyCards.invoke()
                 .test()
                 .assertError(TestData.sqlException);
 
-        verify(repository).getMyCards();
+        verify(mockRepository).getMyCards();
     }
 
 }

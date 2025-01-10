@@ -15,13 +15,13 @@ public interface EditCardContract {
 
     sealed interface EditCardEffect extends UiEffect {
         record ShowError(String message) implements EditCardEffect {}
-        final class NavigateUp implements EditCardEffect {}
+        record NavigateUp() implements EditCardEffect {}
     }
 
     sealed interface EditCardState extends UiState {
-        final class Idle implements EditCardState {}
-        final class Loading implements EditCardState {}
-        final class Error implements EditCardState {}
+        record Idle() implements EditCardState {}
+        record Loading() implements EditCardState {}
+        record Error() implements EditCardState {}
         record Success(CardUi card) implements EditCardState {}
     }
 }

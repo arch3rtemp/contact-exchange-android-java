@@ -6,19 +6,20 @@ import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
 
 import javax.inject.Inject;
 
+import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.ui.base.BasePresenter;
 import dev.arch3rtemp.ui.util.StringResourceManager;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainPresenter extends BasePresenter<MainContract.MainEvent, MainContract.MainEffect, MainContract.MainState> {
 
     private final SaveCardUseCase saveCardUseCase;
+    private final SchedulerProvider schedulerProvider;
     private final StringResourceManager resourceManager;
 
     @Inject
-    public MainPresenter(SaveCardUseCase saveCardUseCase, StringResourceManager resourceManager) {
+    public MainPresenter(SaveCardUseCase saveCardUseCase, SchedulerProvider schedulerProvider, StringResourceManager resourceManager) {
         this.saveCardUseCase = saveCardUseCase;
+        this.schedulerProvider = schedulerProvider;
         this.resourceManager = resourceManager;
     }
 
@@ -42,8 +43,8 @@ public class MainPresenter extends BasePresenter<MainContract.MainEvent, MainCon
 
     private void createCard(Card card) {
         var disposable = saveCardUseCase.invoke(card)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
                 .doOnError(throwable -> showMessage(throwable.getLocalizedMessage()))
                 .doOnComplete(() -> showMessage(resourceManager.string(R.string.msg_contact_added)))
                 .subscribe();

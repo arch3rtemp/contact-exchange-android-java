@@ -5,14 +5,13 @@ import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.usecase.GetCardByIdUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.UpdateCardUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.ValidateCardUseCase;
+import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.contactexchange.presentation.mapper.CardUiMapper;
 
 import javax.inject.Inject;
 
 import dev.arch3rtemp.ui.base.BasePresenter;
 import dev.arch3rtemp.ui.util.StringResourceManager;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEvent, EditCardContract.EditCardEffect, EditCardContract.EditCardState> {
 
@@ -21,14 +20,16 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
     private final ValidateCardUseCase validateCard;
     private final StringResourceManager resourceManager;
     private final CardUiMapper mapper;
+    private final SchedulerProvider schedulerProvider;
 
     @Inject
-    public EditCardPresenter(GetCardByIdUseCase getCardById, UpdateCardUseCase updateCard, ValidateCardUseCase validateCard, StringResourceManager resourceManager, CardUiMapper mapper) {
+    public EditCardPresenter(GetCardByIdUseCase getCardById, UpdateCardUseCase updateCard, ValidateCardUseCase validateCard, StringResourceManager resourceManager, CardUiMapper mapper, SchedulerProvider schedulerProvider) {
         this.getCardById = getCardById;
         this.updateCard = updateCard;
         this.validateCard = validateCard;
         this.resourceManager = resourceManager;
         this.mapper = mapper;
+        this.schedulerProvider = schedulerProvider;
     }
 
     @Override
@@ -40,16 +41,17 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
     protected void handleEvent(EditCardContract.EditCardEvent event) {
         if (event instanceof EditCardContract.EditCardEvent.OnCardLoad onCardLoad) {
             getCard(onCardLoad.id());
-        } else if (event instanceof EditCardContract.EditCardEvent.OnUpdateButtonPress onSaveButtonPressed) {
-            updateCard(onSaveButtonPressed.card());
+        } else if (event instanceof EditCardContract.EditCardEvent.OnUpdateButtonPress onSaveButtonPress) {
+            updateCard(onSaveButtonPress.card());
         }
     }
 
     private void getCard(int id) {
         var disposable = getCardById.invoke(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
                 .doOnError(throwable -> setEffect(() -> new EditCardContract.EditCardEffect.ShowError(throwable.getLocalizedMessage())))
+                .doOnSubscribe(subscription -> setState(current -> new EditCardContract.EditCardState.Loading()))
                 .subscribe(
                         card -> setState(current -> new EditCardContract.EditCardState.Success(mapper.toUiModel(card))),
                         throwable -> setState(current -> new EditCardContract.EditCardState.Error())
@@ -62,11 +64,12 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
             if (getCurrentState() instanceof EditCardContract.EditCardState.Success current) {
 
                 var disposable = updateCard.invoke(mapper.fromUiModel(current.card()), newCard)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError(throwable -> setEffect(() -> new EditCardContract.EditCardEffect.ShowError(throwable.getLocalizedMessage())))
-                        .doOnComplete(() -> setEffect(EditCardContract.EditCardEffect.NavigateUp::new))
-                        .subscribe();
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.main())
+                        .subscribe(
+                                () -> setEffect(EditCardContract.EditCardEffect.NavigateUp::new),
+                                throwable -> setEffect(() -> new EditCardContract.EditCardEffect.ShowError(throwable.getLocalizedMessage()))
+                        );
                 disposables.add(disposable);
 
             } else {

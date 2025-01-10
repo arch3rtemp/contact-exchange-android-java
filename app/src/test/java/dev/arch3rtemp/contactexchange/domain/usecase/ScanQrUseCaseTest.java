@@ -26,44 +26,44 @@ public class ScanQrUseCaseTest {
     public RxTrampolineRule rxTrampolineRule = new RxTrampolineRule();
 
     @Mock
-    public ScannerRepository repository;
+    public ScannerRepository mockRepository;
 
     @InjectMocks
     private ScanQrUseCase scanQr;
 
     @Test
     public void invoke_emitsValidData() {
-        when(repository.scan()).thenReturn(Single.just(TestData.testScannedCard));
+        when(mockRepository.scan()).thenReturn(Single.just(TestData.testScannedCard));
 
         scanQr.invoke()
                 .test()
                 .assertComplete()
                 .assertValue(TestData.testScannedCard);
 
-        verify(repository).scan();
+        verify(mockRepository).scan();
     }
 
     @Test
     public void invoke_emitsCancellationError() {
-        when(repository.scan()).thenReturn(Single.error(new OperationCanceledException()));
+        when(mockRepository.scan()).thenReturn(Single.error(new OperationCanceledException()));
 
         scanQr.invoke()
                 .test()
                 .assertError(OperationCanceledException.class)
                 .assertNoValues();
 
-        verify(repository).scan();
+        verify(mockRepository).scan();
     }
 
     @Test
     public void invoke_emitsError() {
-        when(repository.scan()).thenReturn(Single.error(new Exception()));
+        when(mockRepository.scan()).thenReturn(Single.error(new Exception()));
 
         scanQr.invoke()
                 .test()
                 .assertError(Exception.class)
                 .assertNoValues();
 
-        verify(repository).scan();
+        verify(mockRepository).scan();
     }
 }

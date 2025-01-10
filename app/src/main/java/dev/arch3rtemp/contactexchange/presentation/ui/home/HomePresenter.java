@@ -13,12 +13,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.contactexchange.presentation.mapper.CardUiMapper;
 import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
 import dev.arch3rtemp.ui.base.BasePresenter;
 import dev.arch3rtemp.ui.util.StringResourceManager;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeContract.HomeEffect, HomeContract.HomeState> {
 
@@ -29,10 +28,11 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
     private final FilterCardsUseCase filterCards;
     private final StringResourceManager resourceManager;
     private final CardUiMapper mapper;
+    private final SchedulerProvider schedulerProvider;
     private List<Card> unfilteredContacts = new ArrayList<>();
 
     @Inject
-    public HomePresenter(GetMyCardsUseCase getMyCards, GetScannedCardsUseCase getScannedCards, DeleteCardUseCase deleteCard, SaveCardUseCase saveCard, FilterCardsUseCase filterCards, StringResourceManager resourceManager, CardUiMapper mapper) {
+    public HomePresenter(GetMyCardsUseCase getMyCards, GetScannedCardsUseCase getScannedCards, DeleteCardUseCase deleteCard, SaveCardUseCase saveCard, FilterCardsUseCase filterCards, StringResourceManager resourceManager, CardUiMapper mapper, SchedulerProvider schedulerProvider) {
         this.getMyCards = getMyCards;
         this.getScannedCards = getScannedCards;
         this.deleteCard = deleteCard;
@@ -40,11 +40,12 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
         this.filterCards = filterCards;
         this.resourceManager = resourceManager;
         this.mapper = mapper;
+        this.schedulerProvider = schedulerProvider;
     }
 
     @Override
     protected HomeContract.HomeState createInitialState() {
-        return new HomeContract.HomeState(new HomeContract.ViewState.Idle(), new HomeContract.ViewState.Idle(), "");
+        return new HomeContract.HomeState(new HomeContract.ViewState.Idle(), new HomeContract.ViewState.Idle());
     }
 
     @Override
@@ -58,35 +59,36 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
             deleteCard(onContactDeleted.card());
         } else if (homeEvent instanceof HomeContract.HomeEvent.OnContactSaved onContactSaved) {
             saveCard(onContactSaved.card());
-        } else if (homeEvent instanceof HomeContract.HomeEvent.OnSearchTyped onSearchTyped) {
-            filterCards(onSearchTyped.query(), unfilteredContacts);
+        } else if (homeEvent instanceof HomeContract.HomeEvent.OnSearchQuery onSearchQuery) {
+            filterCards(onSearchQuery.query(), unfilteredContacts);
         }
     }
 
     private void getMyCards() {
         var disposable = getMyCards.invoke()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
                 .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
+                .doOnSubscribe(subscription -> setState(current -> new HomeContract.HomeState(
+                        new HomeContract.ViewState.Loading(),
+                        getCurrentState().scannedCards()
+                )))
                 .subscribe(cards -> {
                     if (cards.isEmpty()) {
                         setState(currentState -> new HomeContract.HomeState(
                                 new HomeContract.ViewState.Empty(),
-                                getCurrentState().scannedCards(),
-                                getCurrentState().query()
+                                getCurrentState().scannedCards()
                         ));
                     } else {
                         setState(currentState -> new HomeContract.HomeState(
                                 new HomeContract.ViewState.Success(mapper.toUiModelList(cards)),
-                                getCurrentState().scannedCards(),
-                                getCurrentState().query()
+                                getCurrentState().scannedCards()
                         ));
                     }
                 }, throwable -> {
                     setState(currentState -> new HomeContract.HomeState(
                             new HomeContract.ViewState.Error(resourceManager.string(R.string.msg_could_not_load_data)),
-                            getCurrentState().scannedCards(),
-                            getCurrentState().query()
+                            getCurrentState().scannedCards()
                     ));
                 });
 
@@ -95,30 +97,31 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
 
     private void getScannedCards() {
         var disposable = getScannedCards.invoke()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
                 .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
+                .doOnSubscribe(subscription -> setState(currentState -> new HomeContract.HomeState(
+                        getCurrentState().myCards(),
+                        new HomeContract.ViewState.Loading()
+                )))
                 .subscribe(contacts -> {
                     unfilteredContacts = contacts;
                     var uiModels = mapper.toUiModelList(contacts);
                     if (contacts.isEmpty()) {
                         setState(currentState -> new HomeContract.HomeState(
                                 getCurrentState().myCards(),
-                                new HomeContract.ViewState.Empty(),
-                                getCurrentState().query()
+                                new HomeContract.ViewState.Empty()
                         ));
                     } else {
                         setState(currentState -> new HomeContract.HomeState(
                                 getCurrentState().myCards(),
-                                new HomeContract.ViewState.Success(uiModels),
-                                getCurrentState().query()
+                                new HomeContract.ViewState.Success(uiModels)
                         ));
                     }
                 }, throwable -> {
                     setState(currentState -> new HomeContract.HomeState(
                             getCurrentState().myCards(),
-                            new HomeContract.ViewState.Error(resourceManager.string(R.string.msg_could_not_load_data)),
-                            getCurrentState().query()
+                            new HomeContract.ViewState.Error(resourceManager.string(R.string.msg_could_not_load_data))
                     ));
                 });
 
@@ -127,44 +130,48 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
 
     private void saveCard(CardUi card) {
         var disposable = saveCard.invoke(mapper.fromUiModel(card))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
-                .subscribe();
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
+                .subscribe(
+                        () -> {},
+                        throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage()))
+                );
 
         disposables.add(disposable);
     }
 
     private void deleteCard(CardUi card) {
         var disposable = deleteCard.invoke(card.id())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
-                .doOnComplete(() -> setEffect(() -> new HomeContract.HomeEffect.ShowUndo(card)))
-                .subscribe();
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.main())
+                .subscribe(
+                        () -> setEffect(() -> new HomeContract.HomeEffect.ShowUndo(card)),
+                        throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage()))
+                );
 
         disposables.add(disposable);
     }
 
     private void subscribeToFilter() {
         var disposable = this.filterCards.getFilteredCardsStream()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(schedulerProvider.main())
                 .doOnError(throwable -> setEffect(() -> new HomeContract.HomeEffect.ShowError(throwable.getLocalizedMessage())))
                 .subscribe(cards -> {
                     if (cards.isEmpty()) {
                         setState(currentState -> new HomeContract.HomeState(
                                 getCurrentState().myCards(),
-                                new HomeContract.ViewState.Empty(),
-                                getCurrentState().query()
+                                new HomeContract.ViewState.Empty()
                         ));
                     } else {
                         setState(currentState -> new HomeContract.HomeState(
                                 getCurrentState().myCards(),
-                                new HomeContract.ViewState.Success(mapper.toUiModelList(cards)),
-                                getCurrentState().query()
+                                new HomeContract.ViewState.Success(mapper.toUiModelList(cards))
                         ));
                     }
-                });
+                }, throwable -> setState(current -> new HomeContract.HomeState(
+                        getCurrentState().myCards(),
+                        new HomeContract.ViewState.Error(throwable.getLocalizedMessage())
+                )));
 
         disposables.add(disposable);
     }

@@ -13,7 +13,6 @@ import org.mockito.junit.MockitoRule;
 
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.TestData;
-import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.ValidateCardUseCase;
 import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
@@ -28,59 +27,58 @@ public class CreateCardPresenterTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    public SaveCardUseCase saveCard;
+    public SaveCardUseCase mockSaveCard;
 
     public ValidateCardUseCase validateCard;
 
     @Mock
-    public StringResourceManager stringResourceManager;
+    public StringResourceManager mockStringManager;
 
     private CreateCardPresenter presenter;
 
-    private TestObserver<CreateCardContract.CreateCardEffect> effectObserver;
+    private TestObserver<CreateCardContract.CreateCardEffect> testEffectObserver;
 
     @Before
     public void setup() {
         validateCard = new ValidateCardUseCase();
         SchedulerProvider schedulerProvider = new TestSchedulerProvider();
-        presenter = new CreateCardPresenter(saveCard, validateCard, schedulerProvider, stringResourceManager);
-        effectObserver = presenter.effectStream().test();
+        presenter = new CreateCardPresenter(mockSaveCard, validateCard, schedulerProvider, mockStringManager);
+        testEffectObserver = presenter.effectStream().test();
     }
 
     @Test
     public void testOnCreateButtonPressed_withValidData_success_emitsNavigateUpEffect() {
-        when(saveCard.invoke(TestData.testMyCard)).thenReturn(Completable.complete());
+        when(mockSaveCard.invoke(TestData.testMyCard)).thenReturn(Completable.complete());
 
         presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPressed(TestData.testMyCard));
 
-        verify(saveCard).invoke(TestData.testMyCard);
+        verify(mockSaveCard).invoke(TestData.testMyCard);
 
-        effectObserver.assertValueCount(1)
+        testEffectObserver.assertValueCount(1)
                 .assertValue(new CreateCardContract.CreateCardEffect.NavigateUp());
     }
 
     @Test
     public void testOnCreateButtonPressed_withValidData_error_emitsShowErrorEffect() {
-        when(saveCard.invoke(TestData.testMyCard)).thenReturn(Completable.error(TestData.sqlException));
+        when(mockSaveCard.invoke(TestData.testMyCard)).thenReturn(Completable.error(TestData.sqlException));
 
         presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPressed(TestData.testMyCard));
 
-        verify(saveCard).invoke(TestData.testMyCard);
+        verify(mockSaveCard).invoke(TestData.testMyCard);
 
-        effectObserver.assertValueCount(1)
+        testEffectObserver.assertValueCount(1)
                 .assertValue(new CreateCardContract.CreateCardEffect.ShowMessage(TestData.sqlException.getLocalizedMessage()));
     }
 
     @Test
     public void testOnCreateButtonPressed_withInvalidData_error_emitsShowErrorEffect() {
-        when(stringResourceManager.string(R.string.msg_all_fields_required)).thenReturn("Please fill in all fields");
-        var blankCard = new Card(-1, "", "", "", "", "", "", -1, -1, false);
+        when(mockStringManager.string(R.string.msg_all_fields_required)).thenReturn("Please fill in all fields");
 
-        presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPressed(blankCard));
+        presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPressed(TestData.blankCard));
 
-        verifyNoInteractions(saveCard);
+        verifyNoInteractions(mockSaveCard);
 
-        effectObserver.assertValueCount(1)
+        testEffectObserver.assertValueCount(1)
                 .assertValue(new CreateCardContract.CreateCardEffect.ShowMessage("Please fill in all fields"));
     }
 }

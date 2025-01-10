@@ -24,21 +24,21 @@ public class DeleteCardUseCaseTest {
     public RxTrampolineRule rxTrampolineRule = new RxTrampolineRule();
 
     @Mock
-    private CardRepository repository;
+    private CardRepository mockRepository;
 
     @InjectMocks
     private DeleteCardUseCase deleteCard;
 
     @Test
     public void invokeWithValidId_emitsComplete() {
-        when(repository.deleteCard(TestData.testMyCard.id()))
+        when(mockRepository.deleteCard(TestData.testMyCard.id()))
                 .thenReturn(Completable.complete());
 
         deleteCard.invoke(TestData.testMyCard.id())
                 .test()
                 .assertComplete();
 
-        verify(repository).deleteCard(TestData.testMyCard.id());
+        verify(mockRepository).deleteCard(TestData.testMyCard.id());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class DeleteCardUseCaseTest {
 
     @Test
     public void invokeWhenRepositoryFails_emitsError() {
-        when(repository.deleteCard(TestData.testMyCard.id()))
+        when(mockRepository.deleteCard(TestData.testMyCard.id()))
                 .thenReturn(Completable.error(TestData.sqlException));
 
         deleteCard.invoke(TestData.testMyCard.id())

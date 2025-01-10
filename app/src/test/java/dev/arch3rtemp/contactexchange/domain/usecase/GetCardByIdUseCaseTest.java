@@ -25,14 +25,14 @@ public class GetCardByIdUseCaseTest {
     public RxTrampolineRule rxTrampolineRule = new RxTrampolineRule();
 
     @Mock
-    public CardRepository repository;
+    public CardRepository mockRepository;
 
     @InjectMocks
     private GetCardByIdUseCase getCardById;
 
     @Test
     public void invokeWithValidId_emitsData() {
-        when(repository.getCardById(TestData.testScannedCard.id()))
+        when(mockRepository.getCardById(TestData.testScannedCard.id()))
                 .thenReturn(Observable.just(TestData.testScannedCard));
 
         getCardById.invoke(TestData.testScannedCard.id())
@@ -40,7 +40,7 @@ public class GetCardByIdUseCaseTest {
                 .assertComplete()
                 .assertValue(TestData.testScannedCard);
 
-        verify(repository).getCardById(TestData.testScannedCard.id());
+        verify(mockRepository).getCardById(TestData.testScannedCard.id());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class GetCardByIdUseCaseTest {
                 .test()
                 .assertFailure(IllegalArgumentException.class);
 
-        verifyNoInteractions(repository);
+        verifyNoInteractions(mockRepository);
     }
 
     @Test
@@ -58,19 +58,19 @@ public class GetCardByIdUseCaseTest {
                 .test()
                 .assertFailure(IllegalArgumentException.class);
 
-        verifyNoInteractions(repository);
+        verifyNoInteractions(mockRepository);
     }
 
     @Test
     public void invokeWhenRepositoryFails_emitsError() {
-        when(repository.getCardById(TestData.testScannedCard.id()))
+        when(mockRepository.getCardById(TestData.testScannedCard.id()))
                 .thenReturn(Observable.error(TestData.sqlException));
 
         getCardById.invoke(TestData.testScannedCard.id())
                 .test()
                 .assertError(TestData.sqlException);
 
-        verify(repository).getCardById(TestData.testScannedCard.id());
+        verify(mockRepository).getCardById(TestData.testScannedCard.id());
     }
 
 }

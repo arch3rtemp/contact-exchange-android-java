@@ -30,7 +30,7 @@ public class UpdateCardUseCaseTest {
     public RxTrampolineRule rxTrampolineRule = new RxTrampolineRule();
 
     @Mock
-    private CardRepository repository;
+    private CardRepository mockRepository;
 
     @InjectMocks
     private UpdateCardUseCase updateCard;
@@ -38,14 +38,14 @@ public class UpdateCardUseCaseTest {
     @Test
     public void invokeWithValidNewCard_emitsComplete() {
 
-        when(repository.updateCard(any(Card.class)))
+        when(mockRepository.updateCard(any(Card.class)))
                 .thenReturn(Completable.complete());
 
         updateCard.invoke(TestData.testMyCard, TestData.testNewCard)
                 .test()
                 .assertComplete();
 
-        verify(repository).updateCard(TestData.mergedCard);
+        verify(mockRepository).updateCard(TestData.mergedCard);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class UpdateCardUseCaseTest {
 
     @Test
     public void invokeWhenRepositoryFails_emitsError() {
-        when(repository.updateCard(TestData.testNewCard))
+        when(mockRepository.updateCard(TestData.testNewCard))
                 .thenReturn(Completable.error(TestData.sqlException));
 
         updateCard.invoke(TestData.testNewCard, TestData.testNewCard)

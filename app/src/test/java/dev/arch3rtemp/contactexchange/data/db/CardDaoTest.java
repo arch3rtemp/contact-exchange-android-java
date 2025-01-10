@@ -19,23 +19,23 @@ public class CardDaoTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    private AppDatabase appDatabase;
+    private AppDatabase testDb;
     private CardDao cardDao;
 
     @Before
     public void setup() {
-        appDatabase = Room.inMemoryDatabaseBuilder(
+        testDb = Room.inMemoryDatabaseBuilder(
                 InstrumentationRegistry.getInstrumentation().getContext(),
                 AppDatabase.class
         ).allowMainThreadQueries().build();
 
-        cardDao = appDatabase.cardDao();
+        cardDao = testDb.cardDao();
         initDb();
     }
 
     @After
     public void tearDown() {
-        appDatabase.close();
+        testDb.close();
     }
 
     @Test
