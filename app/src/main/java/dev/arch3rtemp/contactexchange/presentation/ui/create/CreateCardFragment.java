@@ -102,7 +102,7 @@ public class CreateCardFragment extends BaseFragment<CreateCardContract.CreateCa
         });
         getBinding().btnCreate.setOnClickListener((v) ->  {
             var card = getDataFromFields();
-            presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPressed(card));
+            presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPress(card));
         });
     }
 

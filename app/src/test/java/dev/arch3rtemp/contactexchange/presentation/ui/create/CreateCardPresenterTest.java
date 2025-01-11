@@ -56,7 +56,7 @@ public class CreateCardPresenterTest {
     public void createCard_withValidData_success_emitsNavigateUpEffect() {
         when(mockSaveCard.invoke(TestData.testMyCard)).thenReturn(Completable.complete());
 
-        presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPressed(TestData.testMyCard));
+        presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPress(TestData.testMyCard));
 
         verify(mockSaveCard).invoke(TestData.testMyCard);
 
@@ -68,7 +68,7 @@ public class CreateCardPresenterTest {
     public void createCard_dbFailure_error_emitsShowErrorEffect() {
         when(mockSaveCard.invoke(TestData.testMyCard)).thenReturn(Completable.error(TestData.sqlException));
 
-        presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPressed(TestData.testMyCard));
+        presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPress(TestData.testMyCard));
 
         verify(mockSaveCard).invoke(TestData.testMyCard);
 
@@ -80,7 +80,7 @@ public class CreateCardPresenterTest {
     public void createCard_withInvalidData_error_emitsShowErrorEffect() {
         when(mockStringManager.string(R.string.msg_all_fields_required)).thenReturn("Please fill in all fields");
 
-        presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPressed(TestData.blankCard));
+        presenter.setEvent(new CreateCardContract.CreateCardEvent.OnCreateButtonPress(TestData.blankCard));
 
         verifyNoInteractions(mockSaveCard);
 

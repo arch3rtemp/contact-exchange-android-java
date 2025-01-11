@@ -32,8 +32,8 @@ public class CreateCardPresenter extends BasePresenter<CreateCardContract.Create
 
     @Override
     protected void handleEvent(CreateCardContract.CreateCardEvent createCardEvent) {
-        if (createCardEvent instanceof CreateCardContract.CreateCardEvent.OnCreateButtonPressed onCreateButtonPressed) {
-            saveCard(onCreateButtonPressed.card());
+        if (createCardEvent instanceof CreateCardContract.CreateCardEvent.OnCreateButtonPress onCreateButtonPress) {
+            saveCard(onCreateButtonPress.card());
         }
     }
 

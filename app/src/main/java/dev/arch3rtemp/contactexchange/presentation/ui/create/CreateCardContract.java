@@ -7,8 +7,8 @@ import dev.arch3rtemp.ui.base.UiState;
 
 public interface CreateCardContract {
 
-    sealed interface CreateCardEvent extends UiEvent permits CreateCardEvent.OnCreateButtonPressed {
-        record OnCreateButtonPressed(Card card) implements CreateCardEvent {}
+    sealed interface CreateCardEvent extends UiEvent permits CreateCardEvent.OnCreateButtonPress {
+        record OnCreateButtonPress(Card card) implements CreateCardEvent {}
     }
 
     sealed interface CreateCardEffect extends UiEffect permits CreateCardEffect.ShowMessage, CreateCardEffect.NavigateUp {
