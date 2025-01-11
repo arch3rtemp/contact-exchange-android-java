@@ -14,6 +14,7 @@ public abstract class BasePresenter<Event, Effect, State> {
     private final PublishSubject<Event> eventSubject = PublishSubject.create();
     private final PublishSubject<Effect> effectSubject = PublishSubject.create();
     protected final CompositeDisposable disposables = new CompositeDisposable();
+    private boolean isDestroyed = false;
 
     public BasePresenter() {
         stateSubject = BehaviorSubject.createDefault(createInitialState());
@@ -70,6 +71,7 @@ public abstract class BasePresenter<Event, Effect, State> {
      * Called by the View (or Controller) to send user events (UiEvents) to the Presenter.
      */
     public void setEvent(Event event) {
+        if (isDestroyed) return;
         eventSubject.onNext(event);
     }
 
@@ -78,6 +80,7 @@ public abstract class BasePresenter<Event, Effect, State> {
      * The reducer receives the current state and returns a new, modified state.
      */
     protected void setState(Function<State, State> reducer) {
+        if (isDestroyed) return;
         State current = getCurrentState();
         if (current != null) {
             State newState = reducer.apply(current);
@@ -89,6 +92,7 @@ public abstract class BasePresenter<Event, Effect, State> {
      * Emit a one-time effect. The View should subscribe and handle these effects as they arrive.
      */
     protected void setEffect(Supplier<Effect> effectSupplier) {
+        if (isDestroyed) return;
         Effect effect = effectSupplier.get();
         effectSubject.onNext(effect);
     }
@@ -99,5 +103,9 @@ public abstract class BasePresenter<Event, Effect, State> {
      */
     public void destroy() {
         disposables.clear();
+        eventSubject.onComplete();
+        effectSubject.onComplete();
+        stateSubject.onComplete();
+        isDestroyed = true;
     }
 }

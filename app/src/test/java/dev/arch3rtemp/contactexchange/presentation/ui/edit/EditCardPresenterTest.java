@@ -3,6 +3,7 @@ package dev.arch3rtemp.contactexchange.presentation.ui.edit;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -45,7 +46,7 @@ public class EditCardPresenterTest {
     private TestObserver<EditCardContract.EditCardEffect> testEffectObserver;
 
     @Before
-    public void setup() {
+    public void setUp() {
         var mapper = new CardUiMapper(new TimeConverter());
         SchedulerProvider testSchedulerProvider = new TestSchedulerProvider();
         var validateCard = new ValidateCardUseCase();
@@ -54,6 +55,11 @@ public class EditCardPresenterTest {
         );
         testStateObserver = presenter.stateStream().test();
         testEffectObserver = presenter.effectStream().test();
+    }
+
+    @After
+    public void tearDown() {
+        presenter.destroy();
     }
 
     @Test

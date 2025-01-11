@@ -32,7 +32,7 @@ public class CardRepositoryImplTest {
     private CardRepository repository;
 
     @Before
-    public void setup() {
+    public void setUp() {
         CardEntityMapper mapper = new CardEntityMapper();
         repository = new CardRepositoryImpl(mockCardDao, mapper);
     }

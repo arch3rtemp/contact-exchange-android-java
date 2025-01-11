@@ -4,6 +4,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,11 +40,16 @@ public class CreateCardPresenterTest {
     private TestObserver<CreateCardContract.CreateCardEffect> testEffectObserver;
 
     @Before
-    public void setup() {
+    public void setUp() {
         validateCard = new ValidateCardUseCase();
         SchedulerProvider schedulerProvider = new TestSchedulerProvider();
         presenter = new CreateCardPresenter(mockSaveCard, validateCard, schedulerProvider, mockStringManager);
         testEffectObserver = presenter.effectStream().test();
+    }
+
+    @After
+    public void tearDown() {
+        presenter.destroy();
     }
 
     @Test

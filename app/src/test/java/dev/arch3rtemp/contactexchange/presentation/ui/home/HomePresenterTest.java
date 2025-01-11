@@ -3,6 +3,7 @@ package dev.arch3rtemp.contactexchange.presentation.ui.home;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,12 +68,17 @@ public class HomePresenterTest {
     private TestScheduler testScheduler;
 
     @Before
-    public void setup() {
+    public void setUp() {
         SchedulerProvider testSchedulerProvider = new TestSchedulerProvider();
         var mapper = new CardUiMapper(new TimeConverter());
         presenter = new HomePresenter(mockGetMyCards, mockGetScannedCards, mockDeleteCard, mockSaveCard, mockFilterCards, resourceManager, mapper, testSchedulerProvider);
         testStateObserver = presenter.stateStream().test();
         testEffectObserver = presenter.effectStream().test();
+    }
+
+    @After
+    public void tearDown() {
+        presenter.destroy();
     }
 
     @Test

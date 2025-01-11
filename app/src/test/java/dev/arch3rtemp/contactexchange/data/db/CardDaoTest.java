@@ -23,7 +23,7 @@ public class CardDaoTest {
     private CardDao cardDao;
 
     @Before
-    public void setup() {
+    public void setUp() {
         testDb = Room.inMemoryDatabaseBuilder(
                 InstrumentationRegistry.getInstrumentation().getContext(),
                 AppDatabase.class

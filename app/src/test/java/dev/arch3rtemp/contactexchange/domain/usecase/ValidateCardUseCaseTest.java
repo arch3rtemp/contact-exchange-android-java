@@ -14,7 +14,7 @@ public class ValidateCardUseCaseTest {
     private ValidateCardUseCase validateCard;
 
     @Before
-    public void setup() {
+    public void setUp() {
         validateCard = new ValidateCardUseCase();
     }
 

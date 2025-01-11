@@ -27,7 +27,7 @@ public class FilterCardsUseCaseTest {
     private TestObserver<List<Card>> testObserver;
 
     @Before
-    public void setup() {
+    public void setUp() {
         testScheduler = rxTestSchedulerRule.getTestScheduler();
         filterCards = new FilterCardsUseCase(new TestSchedulerProvider());
         testObserver = filterCards.getFilteredCardsStream().test();

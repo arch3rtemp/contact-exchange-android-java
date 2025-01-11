@@ -3,6 +3,7 @@ package dev.arch3rtemp.contactexchange.presentation.ui.card;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,12 +42,17 @@ public class CardPresenterTest {
     private TestObserver<CardContract.CardEffect> testEffectObserver;
 
     @Before
-    public void setup() {
+    public void setUp() {
         SchedulerProvider schedulerProvider = new TestSchedulerProvider();
         CardUiMapper mapper = new CardUiMapper(new TimeConverter());
         presenter = new CardPresenter(mockGetCardById, mockDeleteCard, mapper, schedulerProvider);
         testStateObserver = presenter.stateStream().test();
         testEffectObserver = presenter.effectStream().test();
+    }
+
+    @After
+    public void tearDown() {
+        presenter.destroy();
     }
 
     @Test
