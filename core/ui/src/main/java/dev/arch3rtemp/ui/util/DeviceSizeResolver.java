@@ -11,7 +11,8 @@ import javax.inject.Inject;
 public class DeviceSizeResolver {
     @Inject
     public DeviceSizeResolver() {}
-    
+
+    @SuppressWarnings("deprecation")
     public Pair<Integer, Integer> resolve(WindowManager wManager) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             var x = wManager.getCurrentWindowMetrics().getBounds().width();
@@ -19,7 +20,6 @@ public class DeviceSizeResolver {
 
             return new Pair<>(x, y);
         } else {
-            @SuppressWarnings("deprecation")
             var size = new Point();
             wManager.getDefaultDisplay().getSize(size);
 
