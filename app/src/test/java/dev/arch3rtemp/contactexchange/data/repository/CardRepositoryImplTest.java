@@ -3,9 +3,9 @@ package dev.arch3rtemp.contactexchange.data.repository;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -14,7 +14,6 @@ import dev.arch3rtemp.contactexchange.rx.RxTrampolineRule;
 import dev.arch3rtemp.contactexchange.TestData;
 import dev.arch3rtemp.contactexchange.data.db.CardDao;
 import dev.arch3rtemp.contactexchange.data.mapper.CardEntityMapper;
-import dev.arch3rtemp.contactexchange.domain.repository.CardRepository;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 
@@ -29,17 +28,16 @@ public class CardRepositoryImplTest {
     @Mock
     public CardDao mockCardDao;
 
-    private CardRepository repository;
+    @Mock
+    public CardEntityMapper mockMapper;
 
-    @Before
-    public void setUp() {
-        CardEntityMapper mapper = new CardEntityMapper();
-        repository = new CardRepositoryImpl(mockCardDao, mapper);
-    }
+    @InjectMocks
+    private CardRepositoryImpl repository;
 
     @Test
     public void invokeGetMyCards_mapsAndReturnsValidData() {
         when(mockCardDao.selectMyCards()).thenReturn(Observable.just(TestData.testCardsEntity));
+        when(mockMapper.fromEntityList(TestData.testCardsEntity)).thenReturn(TestData.testCards);
 
         repository.getMyCards()
                 .test()
@@ -63,6 +61,7 @@ public class CardRepositoryImplTest {
     @Test
     public void invokeGetScannedCards_mapsAndReturnsValidData() {
         when(mockCardDao.selectScannedCards()).thenReturn(Observable.just(TestData.testCardsEntity));
+        when(mockMapper.fromEntityList(TestData.testCardsEntity)).thenReturn(TestData.testCards);
 
         repository.getScannedCards()
                 .test()
@@ -87,6 +86,8 @@ public class CardRepositoryImplTest {
     public void invokeGetCardById_mapsAndReturnsValidData() {
         when(mockCardDao.selectCardById(TestData.testMyCardEntity.getId()))
                 .thenReturn(Observable.just(TestData.testMyCardEntity));
+        when(mockMapper.fromEntity(TestData.testMyCardEntity))
+                .thenReturn(TestData.testMyCard);
 
         repository.getCardById(TestData.testMyCardEntity.getId())
                 .test()
@@ -112,6 +113,8 @@ public class CardRepositoryImplTest {
     public void invokeAddCard_withValidCard_completesSuccessfully() {
         when(mockCardDao.insert(TestData.testScannedCardEntity))
                 .thenReturn(Completable.complete());
+        when(mockMapper.toEntity(TestData.testScannedCard))
+                .thenReturn(TestData.testScannedCardEntity);
 
         repository.addCard(TestData.testScannedCard)
                 .test()
@@ -121,9 +124,11 @@ public class CardRepositoryImplTest {
     }
 
     @Test
-    public void invokeAddCard_withValidCard_throwsErrorDueToDbFailure() {
+    public void invokeAddCard_failsDb() {
         when(mockCardDao.insert(TestData.testScannedCardEntity))
                 .thenReturn(Completable.error(TestData.sqlException));
+        when(mockMapper.toEntity(TestData.testScannedCard))
+                .thenReturn(TestData.testScannedCardEntity);
 
         repository.addCard(TestData.testScannedCard)
                 .test()
@@ -136,6 +141,8 @@ public class CardRepositoryImplTest {
     public void invokeUpdateCard_withValidCard_completesSuccessfully() {
         when(mockCardDao.update(TestData.testScannedCardEntity))
                 .thenReturn(Completable.complete());
+        when(mockMapper.toEntity(TestData.testScannedCard))
+                .thenReturn(TestData.testScannedCardEntity);
 
         repository.updateCard(TestData.testScannedCard)
                 .test()
@@ -148,6 +155,8 @@ public class CardRepositoryImplTest {
     public void invokeUpdateCard_withValidCard_throwsErrorDueToDbFailure() {
         when(mockCardDao.update(TestData.testScannedCardEntity))
                 .thenReturn(Completable.error(TestData.sqlException));
+        when(mockMapper.toEntity(TestData.testScannedCard))
+                .thenReturn(TestData.testScannedCardEntity);
 
         repository.updateCard(TestData.testScannedCard)
                 .test()

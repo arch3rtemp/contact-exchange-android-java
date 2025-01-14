@@ -17,7 +17,7 @@ public class JsonToCardMapperTest {
     private final JsonToCardMapper mapper = new JsonToCardMapper();
     
     @Test
-    public void invokeFromJson_returnsCard() throws JSONException {
+    public void invokeFromJson_withValidData_returnsCard() throws JSONException {
         var card = mapper.fromJson(TestData.testCardJson);
         assertEquals(0, card.id());
         assertEquals(TestData.testMyCard.name(), card.name());
@@ -31,7 +31,7 @@ public class JsonToCardMapperTest {
     }
 
     @Test
-    public void invokeFromJson_throwsJSONException() {
+    public void invokeFromJson_withInvalidData_throwsJSONException() {
         assertThrows(JSONException.class, () -> {
             mapper.fromJson("invalid string");
         });
