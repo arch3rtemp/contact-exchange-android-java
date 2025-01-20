@@ -1,6 +1,7 @@
 package dev.arch3rtemp.contactexchange.domain.usecase;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.Rule;
@@ -46,6 +47,8 @@ public class DeleteCardUseCaseTest {
         deleteCard.invoke(TestData.NEGATIVE_CARD_ID)
                 .test()
                 .assertFailure(IllegalArgumentException.class);
+
+        verifyNoInteractions(mockRepository);
     }
 
     @Test
@@ -53,6 +56,8 @@ public class DeleteCardUseCaseTest {
         deleteCard.invoke(TestData.ZERO_CARD_ID)
                 .test()
                 .assertFailure(IllegalArgumentException.class);
+
+        verifyNoInteractions(mockRepository);
     }
 
     @Test
@@ -63,6 +68,8 @@ public class DeleteCardUseCaseTest {
         deleteCard.invoke(TestData.testMyCard.id())
                 .test()
                 .assertError(TestData.sqlException);
+
+        verify(mockRepository).deleteCard(TestData.testMyCard.id());
     }
 
 }
