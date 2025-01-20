@@ -48,7 +48,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void createCard_withValidData_emitsSuccess() {
+    public void scanComplete_createCard_emitsSuccess() {
         when(mockSaveCard.invoke(TestData.testScannedCard)).thenReturn(Completable.complete());
         when(mockStringManager.string(R.string.msg_contact_added)).thenReturn("Contact Added");
 
@@ -60,7 +60,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void createCard_dbFailure_emitsError() {
+    public void scanComplete_createCard_emitsError() {
         when(mockSaveCard.invoke(TestData.testScannedCard)).thenReturn(Completable.error(TestData.sqlException));
 
         presenter.setEvent(new MainContract.MainEvent.OnQrScanComplete(TestData.testScannedCard));
@@ -68,5 +68,26 @@ public class MainPresenterTest {
         verify(mockSaveCard).invoke(TestData.testScannedCard);
 
         testEffectObserver.assertValue(new MainContract.MainEffect.ShowMessage(TestData.sqlException.getLocalizedMessage()));
+    }
+
+    @Test
+    public void scanCanceled_showsMessage() {
+        presenter.setEvent(new MainContract.MainEvent.OnQrScanCanceled("Scan canceled"));
+
+        testEffectObserver.assertValue(new MainContract.MainEffect.ShowMessage("Scan canceled"));
+    }
+
+    @Test
+    public void jsonParsingFailed_showsMessage() {
+        presenter.setEvent(new MainContract.MainEvent.OnJsonParseFail("JSON parse failed"));
+
+        testEffectObserver.assertValue(new MainContract.MainEffect.ShowMessage("JSON parse failed"));
+    }
+
+    @Test
+    public void scanFailed_showsMessage() {
+        presenter.setEvent(new MainContract.MainEvent.OnQrScanFail("Scan failed"));
+
+        testEffectObserver.assertValue(new MainContract.MainEffect.ShowMessage("Scan failed"));
     }
 }
