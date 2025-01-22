@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Observable;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class BasePresenter<Event, Effect, State> {
+public abstract class BasePresenter<Event extends UiEvent, Effect extends UiEffect, State extends UiState> {
 
     private final BehaviorSubject<State> stateSubject;
     private final PublishSubject<Event> eventSubject = PublishSubject.create();

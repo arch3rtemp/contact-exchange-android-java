@@ -11,8 +11,8 @@ import io.reactivex.rxjava3.observers.TestObserver;
 public class BasePresenterTest {
 
     private TestPresenter presenter;
-    private TestObserver<String> testStateObserver;
-    private TestObserver<String> testEffectObserver;
+    private TestObserver<TestState> testStateObserver;
+    private TestObserver<TestEffect> testEffectObserver;
 
     @Before
     public void setUp() {
@@ -28,20 +28,20 @@ public class BasePresenterTest {
 
     @Test
     public void testInitialState() {
-        testStateObserver.assertValue(TestPresenter.INITIAL_STATE);
+        testStateObserver.assertValue(new TestState(TestPresenter.INITIAL_STATE));
     }
 
     @Test
     public void testSetEventAndHandleEvent() {
-        presenter.setEvent(TEST_EVENT);
+        presenter.setEvent(new TestEvent(TEST_EVENT));
         testStateObserver.assertValueCount(2)
-                .assertValueAt(1, TestPresenter.HANDLED_EVENT + TEST_EVENT);
+                .assertValueAt(1, new TestState(TestPresenter.HANDLED_EVENT + TEST_EVENT));
     }
 
     @Test
     public void testSetEffect() {
-        presenter.triggerEffect(TEST_EFFECT);
-        testEffectObserver.assertValue(TEST_EFFECT);
+        presenter.triggerEffect(new TestEffect(TEST_EFFECT));
+        testEffectObserver.assertValue(new TestEffect(TEST_EFFECT));
     }
 
     @Test
@@ -50,12 +50,12 @@ public class BasePresenterTest {
         presenter.destroy();
 
         // Try to set new data
-        presenter.setEvent(TEST_EVENT);
-        presenter.triggerEffect(TEST_EFFECT);
+        presenter.setEvent(new TestEvent(TEST_EVENT));
+        presenter.triggerEffect(new TestEffect(TEST_EFFECT));
 
         // Check if presenter is cleared
         testStateObserver.assertValueCount(1)
-                .assertValueAt(0, state -> !Objects.equals(state, TEST_EVENT));
+                .assertValueAt(0, state -> !Objects.equals(state, new TestState(TEST_EVENT)));
         testEffectObserver.assertNoValues();
     }
 
