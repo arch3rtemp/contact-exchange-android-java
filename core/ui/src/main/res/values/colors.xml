@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_primary">#FFF3F6F9</color>
+    <color name="background_secondary">@color/white</color>
+    <color name="button_secondary">@color/light_navy</color>
+    <color name="button_primary">@color/hospital_green</color>
+    <color name="text_primary">@color/black_two</color>
+    <color name="text_secondary">@color/white</color>
+    <color name="icon_primary">@color/black_two</color>
+    <color name="icon_secondary">@color/pinkish_grey</color>
+
+    <color name="black_two">#FF2C2C2C</color>
+    <color name="light_navy">#FF1451a4</color>
+    <color name="darkish_purple">#FF951d61</color>
+    <color name="purple">#FF771E9D</color>
+    <color name="warm_grey_two">#FF939393</color>
+    <color name="soft_green">#FF75c463</color>
+    <color name="clay_warm">#FFbe6c60</color>
+    <color name="clay">#FFbe8060</color>
+    <color name="dusky_rose">#FFbe607c</color>
+    <color name="aqua_marine">#FF31d7cc</color>
+    <color name="ugly_yellow">#FFd7de00</color>
+    <color name="shamrock_green">#FF00d932</color>
+    <color name="black_three">#FF363636</color>
+    <color name="pumpkin">#FFe38100</color>
+    <color name="hospital_green">#FF84e397</color>
+    <color name="pastel_red">#FFe46363</color>
+    <color name="pinkish_grey">#FFbdbdbd</color>
+    <color name="dark_green">#FF2BB673</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

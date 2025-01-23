@@ -20,14 +20,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
         
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_checked"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:padding="3dp"
             android:background="@drawable/shape_deleted_successfully_bg"
-            android:src="@drawable/ic_baseline_check_24"
-            android:contentDescription="@string/deleted_successfully" />
+            android:src="@drawable/ic_baseline_check_24" />
 
         <TextView
             android:layout_width="0dp"
@@ -39,7 +38,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:fontFamily="@font/poppins_medium"
-            android:text="@string/deleted_successfully"
+            android:text="@string/msg_deleted_successfully"
             android:textSize="11sp"
             android:textColor="@color/black_two"
             tools:ignore="SmallSp" />

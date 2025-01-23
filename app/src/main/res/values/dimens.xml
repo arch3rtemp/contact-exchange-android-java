@@ -6,4 +6,6 @@
         name="design_fab_image_size"
         tools:override="true">16dp
     </dimen>
+    <dimen name="margin_horizontal">20dp</dimen>
+    <dimen name="margin_vertical">10dp</dimen>
 </resources>

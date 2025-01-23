@@ -2,8 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.card.CardFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_card"
@@ -80,6 +82,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,21 +95,24 @@
             android:background="@drawable/shape_button_action_bg"
             android:paddingTop="18dp"
             android:paddingBottom="13dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/cl_delete"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_pencil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/edit"
-                android:src="@drawable/ic_pencil"
+                android:tint="@color/icon_primary"
                 app:layout_constraintBottom_toTopOf="@+id/tv_edit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="spread_inside" />
+                app:layout_constraintVertical_chainStyle="spread_inside"
+                app:srcCompat="@drawable/ic_pencil" />
 
             <TextView
                 android:id="@+id/tv_edit"
@@ -114,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/edit"
-                android:textColor="@color/black_two"
+                android:textColor="@color/text_primary"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -153,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/delete"
-                android:textColor="@color/black_two"
+                android:textColor="@color/text_primary"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -172,7 +178,7 @@
         android:layout_marginBottom="11dp"
         android:fontFamily="@font/poppins_medium"
         android:text="@string/scan_qr"
-        android:textColor="@color/black_two"
+        android:textColor="@color/text_primary"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@id/ll_qr"
         app:layout_constraintEnd_toEndOf="parent"
@@ -198,5 +204,69 @@
             android:contentDescription="@string/scan_qr" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_circular_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cl_card" />
+
+    <ImageView
+        android:id="@+id/iv_card_error"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/error"
+        android:src="@drawable/ic_error"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_deleted"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
+        android:background="@drawable/shape_card_deleted_successfully_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="5dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_checked"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="@drawable/shape_deleted_successfully_bg"
+            android:contentDescription="@string/msg_deleted_successfully"
+            android:padding="3dp"
+            app:srcCompat="@drawable/ic_baseline_check_24" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="@string/msg_deleted_successfully"
+            android:textColor="@color/text_primary"
+            android:textSize="11sp"
+            tools:ignore="SmallSp" />
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

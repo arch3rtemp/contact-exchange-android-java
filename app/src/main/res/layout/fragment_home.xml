@@ -2,12 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fb_add"
+        android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="30dp"
@@ -31,16 +33,55 @@
         android:orientation="horizontal"
         android:paddingStart="100dp"
         android:paddingEnd="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/card_list_item" />
+
+    <ProgressBar
+        android:id="@+id/progress_circular_cards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_cards"
+        app:layout_constraintEnd_toEndOf="@+id/rv_cards"
+        app:layout_constraintStart_toEndOf="@+id/fab_add"
+        app:layout_constraintTop_toTopOf="@+id/rv_cards" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_cards_error_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:drawableTopCompat="@drawable/ic_error"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_cards"
+        app:layout_constraintEnd_toEndOf="@+id/rv_cards"
+        app:layout_constraintStart_toEndOf="@+id/fab_add"
+        app:layout_constraintTop_toTopOf="@+id/rv_cards"
+        tools:text="Data could not be loaded"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/iv_cards_empty"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/ic_empty"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_cards"
+        app:layout_constraintEnd_toEndOf="@+id/rv_cards"
+        app:layout_constraintStart_toEndOf="@+id/fab_add"
+        app:layout_constraintTop_toTopOf="@+id/rv_cards" />
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_contacts"
+    <LinearLayout
+        android:id="@+id/ll_contacts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/shape_contact_list_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:paddingHorizontal="20dp"
         android:transitionName="@string/transition_contacts_name"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -76,17 +117,48 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_contacts"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_header_search" />
+            android:layout_height="match_parent">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_contacts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/contact_list_item"
+                tools:visibility="gone" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ProgressBar
+                android:id="@+id/progress_circular_contacts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_contacts_error_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:drawableTopCompat="@drawable/ic_error"
+                tools:text="Data could not be loaded"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_contacts_empty"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/ic_empty"
+                android:visibility="gone" />
+        </FrameLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

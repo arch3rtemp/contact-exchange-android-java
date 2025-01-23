@@ -5,5 +5,5 @@
     <solid android:color="@color/aqua_marine" />
     <stroke
         android:width="3dp"
-        android:color="@color/white" />
+        android:color="@color/background_secondary" />
 </shape>

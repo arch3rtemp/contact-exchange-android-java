@@ -42,7 +42,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/ll_qr_card"
+            android:id="@+id/ll_contact_initials"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/shape_contact_list_item_bg"
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/test_name"
-                android:textColor="@color/black_two"
+                android:textColor="@color/text_primary"
                 android:textSize="12sp" />
 
             <TextView
