@@ -55,7 +55,7 @@ public class Contact implements Serializable {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             LocalDate today = LocalDate.now();
-            createdAd = today.format(DateTimeFormatter.ofPattern("dd MMM"));
+            createdAd = today.format(DateTimeFormatter.ofPattern("dd MMM yy"));
         } else {
             Calendar date = Calendar.getInstance();
             createdAd = date.toString();

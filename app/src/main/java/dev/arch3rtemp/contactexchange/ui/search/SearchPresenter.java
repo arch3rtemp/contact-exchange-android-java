@@ -25,30 +25,12 @@ public class SearchPresenter implements ISearchContract.Presenter {
 
     @Override
     public void getContacts() {
-        appDatabase.contactDao().getAllContacts()
+        var disposable = appDatabase.contactDao().getScannedContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Contact>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<Contact> contacts) {
-                        view.onGetContacts(contacts);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                .subscribe(contacts -> view.onGetContacts(contacts),
+                        throwable -> view.showMessage(throwable.getLocalizedMessage()));
+        compositeDisposable.add(disposable);
     }
 
     @Override

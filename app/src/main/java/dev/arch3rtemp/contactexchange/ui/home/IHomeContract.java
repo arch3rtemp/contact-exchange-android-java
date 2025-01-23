@@ -17,5 +17,6 @@ public interface IHomeContract {
     interface View extends IBaseView<Presenter> {
         void onGetMyCards(List<Contact> cards);
         void onGetContacts(List<Contact> contacts);
+        void showMessage(String message);
     }
 }

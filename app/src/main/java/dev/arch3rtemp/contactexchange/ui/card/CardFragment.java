@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,7 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import dev.arch3rtemp.ui.util.ColorUtils;
 
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -133,8 +135,8 @@ public class CardFragment extends Fragment implements ICardContract.View {
 
     private void setCardData() {
         Drawable cardBackground = clCard.getBackground();
-        presenter.setBackgroundColorAndRetainShape(card.getColor(), cardBackground);
-        tvName.setText(card.formatInitials());
+        cardBackground.mutate().setColorFilter(ColorUtils.createSrcInColorFilter(card.getColor()));
+        tvName.setText(card.getName());
         tvPosition.setText(card.getPosition());
         tvEmail.setText(card.getEmail());
         tvPhoneMobile.setText(card.getPhoneMobile());
@@ -206,6 +208,11 @@ public class CardFragment extends Fragment implements ICardContract.View {
                 .setCustomAnimations(R.anim.slide_in, 0)
                 .replace(R.id.fl_main_frame_container, deletedFragment)
                 .commit();
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public static CardFragment getInstance() {

@@ -1,5 +1,6 @@
 package dev.arch3rtemp.contactexchange.ui.card;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -20,9 +21,9 @@ import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.constants.IsMe;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.home.HomeActivity;
+import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, ICreateOrEditCardContract.View {
-
 
     private boolean isCreate;
     private int contactId;
@@ -53,7 +54,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     String phoneOffice;
     ICreateOrEditCardContract.Presenter presenter;
     Contact card;
-
 
     @Nullable
     @Override
@@ -91,7 +91,8 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             color = currentColor;
             cardBackground = clCreateOrEdit.getBackground();
             tvNavy.setBackgroundResource(R.drawable.shape_selected_card_color_light_navy_bg);
-            presenter.setBackgroundColorWithAnimationAndRetainShape(getResources().getColor(R.color.light_navy), getResources().getColor(R.color.light_navy), cardBackground);
+
+            setBackgroundColorWithAnimationAndRetainShape(getResources().getColor(R.color.light_navy), getResources().getColor(R.color.light_navy), cardBackground);
             setListeners();
         }
     }
@@ -118,7 +119,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     public void onGetContactById(Contact card) {
         this.card = card;
         Drawable cardBackground = clCreateOrEdit.getBackground();
-        presenter.setBackgroundColorWithAnimationAndRetainShape(card.getColor(), card.getColor(), cardBackground);
+        setBackgroundColorWithAnimationAndRetainShape(card.getColor(), card.getColor(), cardBackground);
         setDataEditTextFields();
     }
 
@@ -161,37 +162,37 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         if (clickedId == R.id.tv_color_light_navy) {
             color = getResources().getColor(R.color.light_navy);
             tvNavy.setBackgroundResource(R.drawable.shape_selected_card_color_light_navy_bg);
-            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_aqua_marine) {
             color = getResources().getColor(R.color.aqua_marine);
             tvAqua.setBackgroundResource(R.drawable.shape_selected_card_color_aqua_marine_bg);
-            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_ugly_yellow) {
             color = getResources().getColor(R.color.ugly_yellow);
             tvYellow.setBackgroundResource(R.drawable.shape_selected_card_color_ugly_yellow_bg);
-            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_shamrock_green) {
             color = getResources().getColor(R.color.shamrock_green);
             tvGreen.setBackgroundResource(R.drawable.shape_selected_card_color_shamrock_green_bg);
-            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_black_three) {
             color = getResources().getColor(R.color.black_three);
             tvBlack.setBackgroundResource(R.drawable.shape_selected_card_color_black_bg);
-            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_pumpkin) {
             color = getResources().getColor(R.color.pumpkin);
             tvPumpkin.setBackgroundResource(R.drawable.shape_selected_card_color_pumpkin_bg);
-            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_darkish_purple) {
             color = getResources().getColor(R.color.darkish_purple);
             tvPurple.setBackgroundResource(R.drawable.shape_selected_card_color_darkish_purple_bg);
-            presenter.setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
+            setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.btn_create_or_save) {
 
@@ -221,7 +222,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             if (isCreate) {
                 Contact contact = new Contact(name, company, position, email, phoneMobile, phoneOffice, color, IsMe.ME);
                 presenter.createContact(contact);
-                showToastMessage("Contact created");
             }
 
             else {
@@ -233,13 +233,11 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
                 card.setPhoneMobile(phoneMobile);
                 card.setPhoneOffice(phoneOffice);
                 presenter.editContact(card);
-                showToastMessage("Contact edited");
             }
 
             startHomeActivity();
         }
     }
-
 
     private void defaultColorsView() {
 
@@ -266,13 +264,14 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     }
 
     private boolean isEmptyField(EditText editText) {
-        boolean result = editText.getText().toString().length() <= 0;
+        boolean result = editText.getText().toString().isEmpty();
         if (result)
             showToastMessage("Fill all fields!");
         return result;
     }
 
-    private void showToastMessage(String message) {
+    @Override
+    public void showToastMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
@@ -284,5 +283,18 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     @Override
     public void setPresenter(ICreateOrEditCardContract.Presenter presenter) {
         this.presenter = presenter;
+    }
+
+    private void setBackgroundColorWithAnimationAndRetainShape(final int currentColor, final int finalColor, final Drawable background) {
+
+        ValueAnimator valueAnimator = ValueAnimator.ofArgb(currentColor, finalColor);
+        valueAnimator.setDuration(200);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                background.setColorFilter(ColorUtils.createSrcInColorFilter((Integer) valueAnimator.getAnimatedValue()));
+            }
+        });
+        valueAnimator.start();
     }
 }

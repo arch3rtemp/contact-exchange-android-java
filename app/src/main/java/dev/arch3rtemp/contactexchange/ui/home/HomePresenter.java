@@ -32,63 +32,32 @@ public class HomePresenter implements IHomeContract.Presenter {
 
     @Override
     public void getMyCards() {
-        appDatabase.contactDao().getAllMyCards()
+        var disposable = appDatabase.contactDao().getMyCards()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Contact>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<Contact> myCards) {
-                        view.onGetMyCards(myCards);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                .subscribe(cards -> view.onGetMyCards(cards),
+                        throwable -> view.showMessage(throwable.getLocalizedMessage()));
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void getContacts() {
-        appDatabase.contactDao().getAllContacts()
+         var disposable = appDatabase.contactDao().getScannedContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Contact>>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(@NonNull List<Contact> contacts) {
-                        view.onGetContacts(contacts);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                .subscribe(contacts -> view.onGetContacts(contacts),
+                        throwable -> view.showMessage(throwable.getLocalizedMessage()));
+        compositeDisposable.add(disposable);
     }
 
     @Override
     public void deleteContact(int id) {
-        new Thread(() -> appDatabase.contactDao().delete(id)).start();
+        var disposable = appDatabase.contactDao().delete(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {},
+                        throwable -> view.showMessage(throwable.getLocalizedMessage()));
+        compositeDisposable.add(disposable);
     }
 
     @Override

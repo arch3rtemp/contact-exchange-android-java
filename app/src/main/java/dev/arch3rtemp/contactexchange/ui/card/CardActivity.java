@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,6 +22,9 @@ import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.constants.FragmentType;
 import dev.arch3rtemp.contactexchange.db.AppDatabase;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CardActivity extends AppCompatActivity {
 
@@ -32,12 +34,14 @@ public class CardActivity extends AppCompatActivity {
     LinearLayout llScan;
     GmsBarcodeScanner scanner;
     AppDatabase appDatabase;
+    CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
 
+        compositeDisposable = new CompositeDisposable();
         appDatabase = AppDatabase.getDBInstance(this);
         initUI();
         initScanner();
@@ -87,14 +91,22 @@ public class CardActivity extends AppCompatActivity {
                         public void onSuccess(Barcode barcode) {
                             try {
                                 var contact = new Contact(new JSONObject(barcode.getRawValue()));
-                                appDatabase.contactDao().insert(contact);
-                                Toast.makeText(CardActivity.this, "Contact added", Toast.LENGTH_SHORT).show();
+                                var disposable = appDatabase.contactDao().insert(contact)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(() -> showMessage("Contact added"),
+                                                throwable -> showMessage(throwable.getLocalizedMessage()));
+                                compositeDisposable.add(disposable);
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                showMessage(e.getLocalizedMessage());
                             }
                         }
                     });
         });
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(CardActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void initCreateCardFragment() {
@@ -124,5 +136,11 @@ public class CardActivity extends AppCompatActivity {
 //                .setCustomAnimations(R.anim.slide_in, 0)
                 .replace(R.id.fl_main_frame_container, deletedFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }

@@ -12,5 +12,6 @@ public interface ISearchContract {
     }
     interface View extends IBaseView<Presenter> {
         void onGetContacts(List<Contact> contacts);
+        void showMessage(String message);
     }
 }

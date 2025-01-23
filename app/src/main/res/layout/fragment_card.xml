@@ -95,7 +95,6 @@
             android:background="@drawable/shape_button_action_bg"
             android:paddingTop="18dp"
             android:paddingBottom="13dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/cl_delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

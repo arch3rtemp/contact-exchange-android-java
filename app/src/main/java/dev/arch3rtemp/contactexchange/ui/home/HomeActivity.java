@@ -21,6 +21,9 @@ import org.json.JSONObject;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.AppDatabase;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -30,12 +33,14 @@ public class HomeActivity extends AppCompatActivity {
     TextView tvMyCards;
     GmsBarcodeScanner scanner;
     AppDatabase appDatabase;
+    CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        compositeDisposable = new CompositeDisposable();
         appDatabase = AppDatabase.getDBInstance(this);
         initUI();
         initScanner();
@@ -65,10 +70,14 @@ public class HomeActivity extends AppCompatActivity {
                         public void onSuccess(Barcode barcode) {
                             try {
                                 var contact = new Contact(new JSONObject(barcode.getRawValue()));
-                                appDatabase.contactDao().insert(contact);
-                                Toast.makeText(HomeActivity.this, "Contact added", Toast.LENGTH_SHORT).show();
+                                var disposable = appDatabase.contactDao().insert(contact)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(() -> showMessage("Contact added"),
+                                                throwable -> showMessage(throwable.getLocalizedMessage()));
+                                compositeDisposable.add(disposable);
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                showMessage(e.getLocalizedMessage());
                             }
                         }
                     });
@@ -82,18 +91,13 @@ public class HomeActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        compositeDisposable.clear();
     }
 }

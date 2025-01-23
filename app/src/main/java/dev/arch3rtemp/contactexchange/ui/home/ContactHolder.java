@@ -1,10 +1,6 @@
 package dev.arch3rtemp.contactexchange.ui.home;
 
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +13,7 @@ import com.chauthai.swipereveallayout.SwipeRevealLayout;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.constants.IsMe;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class ContactHolder extends RecyclerView.ViewHolder {
 
@@ -49,7 +46,7 @@ public class ContactHolder extends RecyclerView.ViewHolder {
         }
         llItemRoot = itemView.findViewById(R.id.ll_item_root);
         tvInitials = itemView.findViewById(R.id.tv_contact_initials);
-        llInitials = itemView.findViewById(R.id.ll_qr_card);
+        llInitials = itemView.findViewById(R.id.ll_contact_initials);
         tvName = itemView.findViewById(R.id.tv_contact_name);
         tvPosition = itemView.findViewById(R.id.tv_contact_position);
         tvAddDate = itemView.findViewById(R.id.tv_contact_add_date);
@@ -62,11 +59,9 @@ public class ContactHolder extends RecyclerView.ViewHolder {
         if (isMe == IsMe.ME) {
             tvCard.setText(contact.getJob());
             Drawable background = tvCard.getBackground();
-            setBackgroundColorAndRetainShape(contact.getColor(), background);
+            background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.getColor()));
             tvCard.setOnClickListener(v -> clickListener.onContactClicked(contact, getAdapterPosition()));
-        }
-
-        else {
+        } else {
             tvName.setText(contact.getName());
             tvInitials.setText(contact.formatInitials());
             tvPosition.setText(contact.getPosition());
@@ -74,18 +69,7 @@ public class ContactHolder extends RecyclerView.ViewHolder {
             llItemRoot.setOnClickListener(v -> clickListener.onContactClicked(contact, getAdapterPosition()));
             llDelete.setOnClickListener(v -> deleteListener.onDeleteClicked(contact, getAdapterPosition()));
             Drawable background = llInitials.getBackground();
-            setBackgroundColorAndRetainShape(contact.getColor(), background);
+            background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.getColor()));
         }
-    }
-
-    private void setBackgroundColorAndRetainShape(final int color, final Drawable background) {
-        if (background instanceof ShapeDrawable)
-            ((ShapeDrawable) background.mutate()).getPaint().setColor(color);
-        else if (background instanceof GradientDrawable)
-            ((GradientDrawable) background.mutate()).setColor(color);
-        else if (background instanceof ColorDrawable)
-            ((ColorDrawable) background).setColor(color);
-        else
-            Log.w("TAG", "Not a valid background type");
     }
 }

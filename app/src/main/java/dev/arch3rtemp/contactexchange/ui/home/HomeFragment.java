@@ -1,6 +1,7 @@
 package dev.arch3rtemp.contactexchange.ui.home;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -103,28 +105,13 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         ObjectAnimator fade = ObjectAnimator.ofFloat(tvContactHeader, View.ALPHA, 1f, 0f);
         AnimatorSet animator = new AnimatorSet();
         animator.playTogether(moveLeftX, fade);
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
+        animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 Intent intent = new Intent(activity, SearchActivity.class);
                 ActivityOptionsCompat options = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(activity, llContacts, llContacts.getTransitionName());
                 startActivityForResult(intent, 122, options.toBundle());
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
             }
         });
         animator.start();
@@ -190,9 +177,9 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dx > 0) {
+                if (dx > 0 && fab.getVisibility() == View.VISIBLE) {
                     fab.setVisibility(View.INVISIBLE);
-                } else {
+                } else if(dx < 0 && fab.getVisibility() == View.INVISIBLE) {
                     fab.setVisibility(View.VISIBLE);
                 }
             }
@@ -225,9 +212,11 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     public void onDeleteClicked(Contact contact, int contactPosition) {
         rvContactAdapter.removeItem(contactPosition);
         presenter.deleteContact(contact.getId());
-        Intent intent = new Intent(getContext(), CardActivity.class);
-        intent.putExtra("type", FragmentType.DELETED);
-        startActivity(intent);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
