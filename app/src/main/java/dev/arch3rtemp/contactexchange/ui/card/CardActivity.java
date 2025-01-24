@@ -7,52 +7,34 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.mlkit.vision.barcode.common.Barcode;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.AppDatabase;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import dev.arch3rtemp.contactexchange.ui.home.IMainContract;
+import dev.arch3rtemp.contactexchange.ui.home.MainPresenter;
 
-public class CardActivity extends AppCompatActivity {
+public class CardActivity extends AppCompatActivity implements IMainContract.View {
 
-    FragmentManager manager;
-    Intent intent;
-    LinearLayout back;
-    LinearLayout llScan;
-    GmsBarcodeScanner scanner;
-    AppDatabase appDatabase;
-    CompositeDisposable compositeDisposable;
+    private LinearLayout back;
+    private LinearLayout llScan;
+    private IMainContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
 
-        compositeDisposable = new CompositeDisposable();
-        appDatabase = AppDatabase.getDBInstance(this);
         initUI();
-        initScanner();
+        setListeners();
+        setPresenter(new MainPresenter(this));
+        presenter.onCreate(this);
     }
 
     private void initUI() {
         back = findViewById(R.id.ll_back);
         llScan = findViewById(R.id.ll_qr_card);
-        manager = getSupportFragmentManager();
-        intent = getIntent();
-        setListeners();
+        Intent intent = getIntent();
+
         FragmentType fragmentType;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             fragmentType = intent.getSerializableExtra("type", FragmentType.class);
@@ -77,40 +59,16 @@ public class CardActivity extends AppCompatActivity {
         }
     }
 
-    private void initScanner() {
-        var options = new GmsBarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .enableAutoZoom()
-                .build();
-
-        scanner = GmsBarcodeScanning.getClient(this, options);
-    }
-
     private void setListeners() {
         back.setOnClickListener(v -> onBackPressed());
 
         llScan.setOnClickListener(v -> {
-            scanner.startScan()
-                    .addOnSuccessListener(new OnSuccessListener<Barcode>() {
-                        @Override
-                        public void onSuccess(Barcode barcode) {
-                            try {
-                                var contact = new Contact(new JSONObject(barcode.getRawValue()));
-                                var disposable = appDatabase.contactDao().insert(contact)
-                                        .subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(() -> showMessage(getString(R.string.msg_contact_added)),
-                                                throwable -> showMessage(throwable.getLocalizedMessage()));
-                                compositeDisposable.add(disposable);
-                            } catch (JSONException e) {
-                                showMessage(e.getLocalizedMessage());
-                            }
-                        }
-                    });
+            presenter.scanContact();
         });
     }
 
-    private void showMessage(String message) {
+    @Override
+    public void showMessage(String message) {
         Toast.makeText(CardActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -119,7 +77,7 @@ public class CardActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putBoolean("isCreate", true);
         createCardFragment.setArguments(bundle);
-        FragmentTransaction transaction = manager.beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_main_frame_container, createCardFragment);
 //        transaction.addToBackStack(null);
         transaction.commit();
@@ -128,7 +86,7 @@ public class CardActivity extends AppCompatActivity {
     private void initCardFragment(Bundle bundle) {
         CardDetailsFragment cardDetailsFragment = CardDetailsFragment.getInstance();
         cardDetailsFragment.setArguments(bundle);
-        FragmentTransaction transaction = manager.beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fl_main_frame_container, cardDetailsFragment);
 //        transaction.addToBackStack(null);
         transaction.commit();
@@ -144,8 +102,13 @@ public class CardActivity extends AppCompatActivity {
     }
 
     @Override
+    public void setPresenter(IMainContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        compositeDisposable.clear();
+        presenter.onDestroy();
     }
 }

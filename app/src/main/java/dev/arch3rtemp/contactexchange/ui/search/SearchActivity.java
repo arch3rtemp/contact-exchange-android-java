@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity implements ISearchContract
 
     private void initUI() {
         setPresenter(new SearchPresenter(this));
-        presenter.onViewCreated(this);
+        presenter.onCreate(this);
         clContacts = findViewById(R.id.cl_contacts_search);
         etSearch = findViewById(R.id.et_search);
     }

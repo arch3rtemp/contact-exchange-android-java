@@ -19,7 +19,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
     }
 
     @Override
-    public void onViewCreated(Context context) {
+    public void onCreate(Context context) {
         appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
         compositeDisposable = new CompositeDisposable();
     }

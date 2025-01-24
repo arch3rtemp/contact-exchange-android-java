@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
-import dev.arch3rtemp.contactexchange.ui.home.HomeActivity;
+import dev.arch3rtemp.contactexchange.ui.home.MainActivity;
 import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, ICreateOrEditCardContract.View {
@@ -60,7 +60,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
     public void initUI(View view) {
         setPresenter(new CreateOrEditCardPresenter(this));
-        presenter.onViewCreated(requireContext());
+        presenter.onCreate(requireContext());
         clCreateOrEdit = view.findViewById(R.id.cl_create_or_edit);
         btnCreateOrSave = view.findViewById(R.id.btn_create_or_save);
         isCreate = requireArguments().getBoolean("isCreate", false);
@@ -255,7 +255,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     }
 
     private void startHomeActivity() {
-        Intent intent = new Intent(getContext(), HomeActivity.class);
+        Intent intent = new Intent(getContext(), MainActivity.class);
         requireActivity().startActivity(intent);
     }
 

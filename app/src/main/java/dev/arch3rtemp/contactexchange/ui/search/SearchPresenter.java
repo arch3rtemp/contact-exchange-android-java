@@ -27,7 +27,7 @@ public class SearchPresenter implements ISearchContract.Presenter {
     }
 
     @Override
-    public void onViewCreated(Context context) {
+    public void onCreate(Context context) {
         appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
         compositeDisposable = new CompositeDisposable();
     }

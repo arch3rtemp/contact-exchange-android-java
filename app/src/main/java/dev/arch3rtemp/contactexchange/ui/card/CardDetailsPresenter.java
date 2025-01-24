@@ -18,7 +18,7 @@ public class CardDetailsPresenter implements ICardContract.Presenter {
     }
 
     @Override
-    public void onViewCreated(Context context) {
+    public void onCreate(Context context) {
         appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
         compositeDisposable = new CompositeDisposable();
     }

@@ -86,7 +86,7 @@ public class CardDetailsFragment extends Fragment implements ICardContract.View 
 
     private void initPresenter() {
         setPresenter(new CardDetailsPresenter(this));
-        presenter.onViewCreated(getActivity());
+        presenter.onCreate(getActivity());
     }
 
     @Override
