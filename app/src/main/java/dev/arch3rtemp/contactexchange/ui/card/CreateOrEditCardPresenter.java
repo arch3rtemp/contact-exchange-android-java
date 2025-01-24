@@ -2,8 +2,10 @@ package dev.arch3rtemp.contactexchange.ui.card;
 
 import android.content.Context;
 
+import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.AppDatabase;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -13,6 +15,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
     private ICreateOrEditCardContract.View view;
     private CompositeDisposable compositeDisposable;
     private AppDatabase appDatabase;
+    private StringResourceManager stringManager;
 
     public CreateOrEditCardPresenter(ICreateOrEditCardContract.View view) {
         this.view = view;
@@ -20,6 +23,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
 
     @Override
     public void onCreate(Context context) {
+        stringManager = new StringResourceManager(context);
         appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
         compositeDisposable = new CompositeDisposable();
     }
@@ -29,7 +33,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
         var disposable = appDatabase.contactDao().insert(contact)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> view.showToastMessage("Contact created"),
+                .subscribe(() -> view.showToastMessage(stringManager.string(R.string.msg_contact_created)),
                         throwable -> view.showToastMessage(throwable.getLocalizedMessage()));
 
         compositeDisposable.add(disposable);
@@ -40,7 +44,7 @@ public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Pres
         var disposable = appDatabase.contactDao().update(contact)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> view.showToastMessage("Contact edited"),
+                .subscribe(() -> view.showToastMessage(stringManager.string(R.string.msg_contact_updated)),
                         throwable -> view.showToastMessage(throwable.getLocalizedMessage()));
 
         compositeDisposable.add(disposable);

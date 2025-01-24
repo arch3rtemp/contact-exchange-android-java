@@ -40,6 +40,8 @@
     <!--    Messages-->
     <string name="msg_deleted_successfully">Deleted Successfully</string>
     <string name="msg_contact_added">Contact Added</string>
+    <string name="msg_contact_created">Contact Created</string>
+    <string name="msg_contact_updated">Contact Updated</string>
     <string name="msg_contact_deleted">Contact Deleted</string>
     <string name="msg_undo">Undo</string>
     <string name="msg_error_unspecified">Unspecified error occurred</string>
