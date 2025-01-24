@@ -25,7 +25,7 @@ public class CardDetailsPresenter implements ICardContract.Presenter {
 
     @Override
     public void getContactById(int id) {
-        var disposable = appDatabase.contactDao().getContactById(id)
+        var disposable = appDatabase.contactDao().selectContactById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(contact -> view.onCardLoaded(contact),

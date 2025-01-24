@@ -26,14 +26,14 @@ public class Contact {
     private String phoneMobile;
     @ColumnInfo(name = "phone_office")
     private String phoneOffice;
-
     @ColumnInfo(name = "created_at")
     private final long createdAt;
     private final int color;
     @ColumnInfo(name = "is_my")
     private final boolean isMy;
 
-    public Contact(String name, String job, String position, String email, String phoneMobile, String phoneOffice, long createdAt, int color, boolean isMy) {
+    public Contact(int id, String name, String job, String position, String email, String phoneMobile, String phoneOffice, long createdAt, int color, boolean isMy) {
+        this.id = id;
         this.name = name;
         this.job = job;
         this.position = position;
@@ -46,7 +46,9 @@ public class Contact {
     }
 
     public Contact(JSONObject jsonData) throws JSONException {
-        this(jsonData.getString("name"),
+        this(
+                0,
+                jsonData.getString("name"),
                 jsonData.getString("job"),
                 jsonData.getString("position"),
                 jsonData.getString("email"),
@@ -54,7 +56,8 @@ public class Contact {
                 jsonData.getString("phoneOffice"),
                 System.currentTimeMillis(),
                 jsonData.getInt("color"),
-                false);
+                false
+        );
     }
 
     public int getId() {

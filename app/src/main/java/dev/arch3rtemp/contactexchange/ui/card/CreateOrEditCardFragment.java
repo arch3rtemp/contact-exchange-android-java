@@ -208,7 +208,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             var phoneOffice = etPhoneOffice.getText().toString();
 
             if (isCreate) {
-                Contact contact = new Contact(name, company, position, email, phoneMobile, phoneOffice, System.currentTimeMillis(), color, true);
+                Contact contact = new Contact(0, name, company, position, email, phoneMobile, phoneOffice, System.currentTimeMillis(), color, true);
                 presenter.createContact(contact);
             } else {
                 card.setName(name);

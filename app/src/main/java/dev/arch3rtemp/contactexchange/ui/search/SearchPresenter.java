@@ -18,7 +18,7 @@ public class SearchPresenter implements ISearchContract.Presenter {
 
     @Override
     public void getContacts() {
-        var disposable = appDatabase.contactDao().getScannedContacts()
+        var disposable = appDatabase.contactDao().selectScannedContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(contacts -> view.onGetContacts(contacts),

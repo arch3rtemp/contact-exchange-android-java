@@ -25,7 +25,7 @@ public class HomePresenter implements IHomeContract.Presenter {
 
     @Override
     public void getMyCards() {
-        var disposable = appDatabase.contactDao().getMyCards()
+        var disposable = appDatabase.contactDao().selectMyCards()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(cards -> view.onGetMyCards(cards),
@@ -35,7 +35,7 @@ public class HomePresenter implements IHomeContract.Presenter {
 
     @Override
     public void getContacts() {
-         var disposable = appDatabase.contactDao().getScannedContacts()
+         var disposable = appDatabase.contactDao().selectScannedContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(contacts -> view.onGetContacts(contacts),

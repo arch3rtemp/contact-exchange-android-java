@@ -16,13 +16,13 @@ import io.reactivex.rxjava3.core.Observable;
 public interface ContactDao {
 
     @Query("SELECT * FROM contact_table WHERE is_my == 0 ORDER BY name ASC")
-    Observable<List<Contact>> getScannedContacts();
+    Observable<List<Contact>> selectScannedContacts();
 
     @Query("SELECT * FROM contact_table WHERE is_my == 1 ORDER BY job ASC")
-    Observable<List<Contact>> getMyCards();
+    Observable<List<Contact>> selectMyCards();
 
     @Query("SELECT * FROM contact_table WHERE id = :id LIMIT 1")
-    Observable<Contact> getContactById(int id);
+    Observable<Contact> selectContactById(int id);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insert(Contact contact);
