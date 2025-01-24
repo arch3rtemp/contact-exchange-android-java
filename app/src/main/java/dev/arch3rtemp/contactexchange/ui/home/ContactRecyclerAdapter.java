@@ -26,7 +26,7 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactHolder> 
     public ContactRecyclerAdapter(List<Contact> contacts) {
         this.contacts.clear();
         this.contacts.addAll(contacts);
-        contactsFull.addAll(contacts);
+        this.contactsFull.addAll(contacts);
     }
 
     @Override
@@ -125,11 +125,11 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactHolder> 
 
     public IContactClickListener clickListener;
     public interface IContactClickListener {
-        void onContactClicked(Contact contact, int contactPosition);
+        void onContactClick(Contact contact, int contactPosition);
     }
 
     public IDeleteClickListener deleteListener;
     public interface IDeleteClickListener {
-        void onDeleteClicked(Contact contact, int contactPosition);
+        void onDeleteClick(Contact contact, int contactPosition);
     }
 }

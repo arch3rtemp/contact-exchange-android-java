@@ -99,7 +99,7 @@ public class CardActivity extends AppCompatActivity {
                                 var disposable = appDatabase.contactDao().insert(contact)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(() -> showMessage("Contact added"),
+                                        .subscribe(() -> showMessage(getString(R.string.msg_contact_added)),
                                                 throwable -> showMessage(throwable.getLocalizedMessage()));
                                 compositeDisposable.add(disposable);
                             } catch (JSONException e) {
@@ -126,10 +126,10 @@ public class CardActivity extends AppCompatActivity {
     }
 
     private void initCardFragment(Bundle bundle) {
-        CardFragment cardFragment = CardFragment.getInstance();
-        cardFragment.setArguments(bundle);
+        CardDetailsFragment cardDetailsFragment = CardDetailsFragment.getInstance();
+        cardDetailsFragment.setArguments(bundle);
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.fl_main_frame_container, cardFragment);
+        transaction.replace(R.id.fl_main_frame_container, cardDetailsFragment);
 //        transaction.addToBackStack(null);
         transaction.commit();
     }

@@ -71,7 +71,7 @@ public class SearchActivity extends AppCompatActivity implements ISearchContract
     }
 
     @Override
-    public void onContactClicked(Contact contact, int contactPosition) {
+    public void onContactClick(Contact contact, int contactPosition) {
         Intent intent = new Intent(this, CardActivity.class);
         intent.putExtra("type", FragmentType.CARD);
         intent.putExtra("isMy", contact.getIsMy());

@@ -11,12 +11,13 @@ public interface IHomeContract {
     interface Presenter extends IBasePresenter {
         void getMyCards();
         void getContacts();
-        void deleteContact(int id);
+        void deleteContact(int id, int position);
     }
 
     interface View extends IBaseView<Presenter> {
         void onGetMyCards(List<Contact> cards);
         void onGetContacts(List<Contact> contacts);
+        void onContactDelete(int position);
         void showMessage(String message);
     }
 }

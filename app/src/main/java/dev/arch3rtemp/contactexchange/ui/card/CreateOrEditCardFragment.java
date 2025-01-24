@@ -24,8 +24,6 @@ import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, ICreateOrEditCardContract.View {
 
-    private boolean isCreate;
-    private View view;
     private ConstraintLayout clCreateOrEdit;
     private Button btnCreateOrSave;
     private TextView tvNavy;
@@ -35,44 +33,38 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private TextView tvBlack;
     private TextView tvPumpkin;
     private TextView tvPurple;
-    Drawable cardBackground;
+    private Drawable cardBackground;
     private EditText etFullName;
     private EditText etCompany;
     private EditText etPosition;
     private EditText etEmail;
     private EditText etPhoneMobile;
     private EditText etPhoneOffice;
+    private boolean isCreate;
     private int color;
     private int currentColor;
-    String name;
-    String company;
-    String position;
-    String email;
-    String phoneMobile;
-    String phoneOffice;
-    ICreateOrEditCardContract.Presenter presenter;
-    Contact card;
+    private ICreateOrEditCardContract.Presenter presenter;
+    private Contact card;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_card_create_or_edit, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_card_create_or_edit, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initUI();
+        initUI(view);
     }
 
-    public void initUI() {
+    public void initUI(View view) {
         setPresenter(new CreateOrEditCardPresenter(this));
         presenter.onViewCreated(requireContext());
         clCreateOrEdit = view.findViewById(R.id.cl_create_or_edit);
         btnCreateOrSave = view.findViewById(R.id.btn_create_or_save);
         isCreate = requireArguments().getBoolean("isCreate", false);
-        initEditTextFields();
+        initEditTextFields(view);
 
         if (!isCreate) {
             var contactId = requireArguments().getInt("id", -1);
@@ -84,7 +76,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             btnCreateOrSave.setText(getResources().getString(R.string.update));
             btnCreateOrSave.setOnClickListener(this);
         } else {
-            initColorsView();
+            initColorsView(view);
             currentColor = getResources().getColor(R.color.light_navy);
             color = currentColor;
             cardBackground = clCreateOrEdit.getBackground();
@@ -95,7 +87,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         }
     }
 
-    private void initEditTextFields() {
+    private void initEditTextFields(View view) {
         etFullName = view.findViewById(R.id.et_full_name);
         etCompany = view.findViewById(R.id.et_company);
         etPosition = view.findViewById(R.id.et_position);
@@ -121,7 +113,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         setDataEditTextFields();
     }
 
-    private void initColorsView() {
+    private void initColorsView(View view) {
 
         tvNavy = view.findViewById(R.id.tv_color_light_navy);
 
@@ -207,13 +199,13 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             if (isEmptyField(etPhoneOffice))
                 return;
 
-            name = etFullName.getText().toString();
+            var name = etFullName.getText().toString();
 
-            company = etCompany.getText().toString();
-            position = etPosition.getText().toString();
-            email = etEmail.getText().toString();
-            phoneMobile = etPhoneMobile.getText().toString();
-            phoneOffice = etPhoneOffice.getText().toString();
+            var company = etCompany.getText().toString();
+            var position = etPosition.getText().toString();
+            var email = etEmail.getText().toString();
+            var phoneMobile = etPhoneMobile.getText().toString();
+            var phoneOffice = etPhoneOffice.getText().toString();
 
             if (isCreate) {
                 Contact contact = new Contact(name, company, position, email, phoneMobile, phoneOffice, System.currentTimeMillis(), color, true);
@@ -236,21 +228,15 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
         tvNavy.setBackgroundResource(R.drawable.shape_default_card_color_light_navy_bg);
 
-
         tvAqua.setBackgroundResource(R.drawable.shape_default_card_color_aqua_marine_bg);
-
 
         tvYellow.setBackgroundResource(R.drawable.shape_default_card_color_ugly_yellow_bg);
 
-
         tvGreen.setBackgroundResource(R.drawable.shape_default_card_color_shamrock_green_bg);
-
 
         tvBlack.setBackgroundResource(R.drawable.shape_default_card_color_black_bg);
 
-
         tvPumpkin.setBackgroundResource(R.drawable.shape_default_card_color_pumpkin_bg);
-
 
         tvPurple.setBackgroundResource(R.drawable.shape_default_card_color_darkish_purple_bg);
 
@@ -259,7 +245,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private boolean isEmptyField(EditText editText) {
         boolean result = editText.getText().toString().isEmpty();
         if (result)
-            showToastMessage("Fill all fields!");
+            showToastMessage(getString(R.string.msg_all_fields_required));
         return result;
     }
 

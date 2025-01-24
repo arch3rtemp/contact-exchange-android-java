@@ -44,11 +44,11 @@ public class HomePresenter implements IHomeContract.Presenter {
     }
 
     @Override
-    public void deleteContact(int id) {
+    public void deleteContact(int id, int position) {
         var disposable = appDatabase.contactDao().delete(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {},
+                .subscribe(() -> view.onContactDelete(position),
                         throwable -> view.showMessage(throwable.getLocalizedMessage()));
         compositeDisposable.add(disposable);
     }

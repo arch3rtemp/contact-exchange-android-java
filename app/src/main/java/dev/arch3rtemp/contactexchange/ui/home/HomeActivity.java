@@ -2,11 +2,9 @@ package dev.arch3rtemp.contactexchange.ui.home;
 
 import android.os.Bundle;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,13 +25,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeActivity extends AppCompatActivity {
 
-    FragmentManager manager = getSupportFragmentManager();
-    HomeFragment homeFragment;
-    LinearLayout llScan;
-    TextView tvMyCards;
-    GmsBarcodeScanner scanner;
-    AppDatabase appDatabase;
-    CompositeDisposable compositeDisposable;
+    private LinearLayout llScan;
+    private GmsBarcodeScanner scanner;
+    private AppDatabase appDatabase;
+    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +44,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initUI() {
         llScan = findViewById(R.id.ll_qr_home);
-        tvMyCards = findViewById(R.id.tv_my_cards);
         initHomeFragment();
     }
 
@@ -73,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
                                 var disposable = appDatabase.contactDao().insert(contact)
                                         .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(() -> showMessage("Contact added"),
+                                        .subscribe(() -> showMessage(getString(R.string.msg_contact_added)),
                                                 throwable -> showMessage(throwable.getLocalizedMessage()));
                                 compositeDisposable.add(disposable);
                             } catch (JSONException e) {
@@ -85,8 +79,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initHomeFragment() {
-        homeFragment = HomeFragment.getInstance();
-        FragmentTransaction transaction = manager.beginTransaction();
+        var homeFragment = HomeFragment.getInstance();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.fl_main_frame_container, homeFragment);
         transaction.commit();
     }

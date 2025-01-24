@@ -16,8 +16,7 @@ import androidx.fragment.app.Fragment;
 import dev.arch3rtemp.contactexchange.R;
 
 public class DeletedFragment extends Fragment {
-    LinearLayout llDeleted;
-    ImageView ivChecked;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,17 +27,19 @@ public class DeletedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initUI(view);
-        checkedSignScaleUp();
+        checkedSignScaleUp(view);
     }
 
     private void initUI(View view) {
-        llDeleted = view.findViewById(R.id.ll_deleted);
+        LinearLayout llDeleted = view.findViewById(R.id.ll_deleted);
         llDeleted.setClipChildren(false);
         llDeleted.setClipToPadding(false);
-        ivChecked = view.findViewById(R.id.iv_checked);
+
     }
 
-    private void checkedSignScaleUp() {
+    private void checkedSignScaleUp(View view) {
+        ImageView ivChecked = view.findViewById(R.id.iv_checked);
+
         ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(ivChecked, View.SCALE_X, 1f, 1.1f);
         ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(ivChecked, View.SCALE_Y, 1f, 1.1f);
         scaleUpX.setDuration(300)

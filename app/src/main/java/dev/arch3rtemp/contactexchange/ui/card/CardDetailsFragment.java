@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,14 +13,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -32,50 +29,43 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.util.ColorUtils;
 import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
-public class CardFragment extends Fragment implements ICardContract.View {
+public class CardDetailsFragment extends Fragment implements ICardContract.View {
 
-    View view;
     private ConstraintLayout clCard;
     private ConstraintLayout clEdit;
     private ConstraintLayout clDelete;
-    private boolean isMy;
-    Button delete;
-    Button cancel;
-    TextView tvName;
-    TextView tvPosition;
-    TextView tvEmail;
-    TextView tvPhoneMobile;
-    TextView tvPhoneOffice;
-    ICardContract.Presenter presenter;
-    AppCompatActivity activity;
-    int id;
-    Contact card;
-    ImageView ivQr;
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        activity = (AppCompatActivity) context;
-    }
+    private TextView tvName;
+    private TextView tvPosition;
+    private TextView tvEmail;
+    private TextView tvPhoneMobile;
+    private TextView tvPhoneOffice;
+    private ImageView ivQr;
+    private ICardContract.Presenter presenter;
+    private int id;
+    private Contact card;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_card, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_card, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initUI();
+        initUI(view);
+        initPresenter();
         setListeners();
+
+        boolean isMy = requireArguments().getBoolean("isMy", false);
+        id = requireArguments().getInt("id", -1);
+        presenter.getContactById(id);
         if (!isMy) {
             clEdit.setVisibility(View.GONE);
         }
     }
 
-    private void initUI() {
+    private void initUI(View view) {
         clCard = view.findViewById(R.id.cl_card);
         tvName = view.findViewById(R.id.tv_name);
         tvPosition = view.findViewById(R.id.tv_position);
@@ -85,11 +75,6 @@ public class CardFragment extends Fragment implements ICardContract.View {
         clEdit = view.findViewById(R.id.cl_edit);
         clDelete = view.findViewById(R.id.cl_delete);
         ivQr = view.findViewById(R.id.iv_qr);
-        setPresenter(new CardPresenter(this));
-        presenter.onViewCreated(getActivity());
-        isMy = requireArguments().getBoolean("isMy", false);
-        id = requireArguments().getInt("id", -1);
-        getCard(id);
     }
 
     private void setListeners() {
@@ -97,11 +82,11 @@ public class CardFragment extends Fragment implements ICardContract.View {
             createEditFragment();
         });
         clDelete.setOnClickListener(this::createDeleteDialog);
-
     }
 
-    private void getCard(int id) {
-        presenter.getContactById(id);
+    private void initPresenter() {
+        setPresenter(new CardDetailsPresenter(this));
+        presenter.onViewCreated(getActivity());
     }
 
     @Override
@@ -111,15 +96,13 @@ public class CardFragment extends Fragment implements ICardContract.View {
         generateQr();
     }
 
-
-
     private void createEditFragment() {
         CreateOrEditCardFragment editCardFragment = new CreateOrEditCardFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("isCreate", false);
         bundle.putInt("id", id);
         editCardFragment.setArguments(bundle);
-        activity.getSupportFragmentManager()
+        requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.card_scale_up, 0, 0, R.anim.card_scale_down)
                 .replace(R.id.fl_main_frame_container, editCardFragment)
@@ -158,8 +141,8 @@ public class CardFragment extends Fragment implements ICardContract.View {
         deleteDialog.setView(deletePopup);
         deleteDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         deleteDialog.show();
-        delete = deletePopup.findViewById(R.id.btn_delete);
-        cancel = deletePopup.findViewById(R.id.btn_cancel);
+        var delete = deletePopup.findViewById(R.id.btn_delete);
+        var cancel = deletePopup.findViewById(R.id.btn_cancel);
 
 
         delete.setOnClickListener(d -> {
@@ -194,7 +177,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
 
     private void createDeletedFragment() {
         DeletedFragment deletedFragment = new DeletedFragment();
-        activity.getSupportFragmentManager()
+        requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .setCustomAnimations(R.anim.slide_in, 0)
                 .replace(R.id.fl_main_frame_container, deletedFragment)
@@ -206,8 +189,8 @@ public class CardFragment extends Fragment implements ICardContract.View {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    public static CardFragment getInstance() {
-        return new CardFragment();
+    public static CardDetailsFragment getInstance() {
+        return new CardDetailsFragment();
     }
 
     @Override
@@ -216,10 +199,8 @@ public class CardFragment extends Fragment implements ICardContract.View {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        activity = null;
-        view = null;
+    public void onDestroyView() {
+        super.onDestroyView();
         presenter.onDestroy();
     }
 }

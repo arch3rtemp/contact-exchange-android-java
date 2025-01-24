@@ -8,8 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chauthai.swipereveallayout.SwipeRevealLayout;
-
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.util.ColorUtils;
@@ -23,7 +21,6 @@ public class ContactHolder extends RecyclerView.ViewHolder {
     private TextView tvPosition;
     private TextView tvAddDate;
     private LinearLayout llDelete;
-    private SwipeRevealLayout swipeRevealLayout;
     private LinearLayout llItemRoot;
     private final boolean isMy;
     private final ContactRecyclerAdapter.IContactClickListener clickListener;
@@ -50,7 +47,6 @@ public class ContactHolder extends RecyclerView.ViewHolder {
         tvPosition = itemView.findViewById(R.id.tv_contact_position);
         tvAddDate = itemView.findViewById(R.id.tv_contact_add_date);
         llDelete = itemView.findViewById(R.id.ll_delete);
-        swipeRevealLayout = itemView.findViewById(R.id.swipe_layout);
 
     }
 
@@ -59,14 +55,14 @@ public class ContactHolder extends RecyclerView.ViewHolder {
             tvCard.setText(contact.getJob());
             Drawable background = tvCard.getBackground();
             background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.getColor()));
-            tvCard.setOnClickListener(v -> clickListener.onContactClicked(contact, getAdapterPosition()));
+            tvCard.setOnClickListener(v -> clickListener.onContactClick(contact, getAdapterPosition()));
         } else {
             tvName.setText(contact.getName());
             tvInitials.setText(contact.formatInitials());
             tvPosition.setText(contact.getPosition());
             tvAddDate.setText(contact.getDateString());
-            llItemRoot.setOnClickListener(v -> clickListener.onContactClicked(contact, getAdapterPosition()));
-            llDelete.setOnClickListener(v -> deleteListener.onDeleteClicked(contact, getAdapterPosition()));
+            llItemRoot.setOnClickListener(v -> clickListener.onContactClick(contact, getAdapterPosition()));
+            llDelete.setOnClickListener(v -> deleteListener.onDeleteClick(contact, getAdapterPosition()));
             Drawable background = llInitials.getBackground();
             background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.getColor()));
         }
