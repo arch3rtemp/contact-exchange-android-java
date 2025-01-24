@@ -3,15 +3,8 @@ package dev.arch3rtemp.contactexchange.ui.search;
 import android.content.Context;
 
 import dev.arch3rtemp.contactexchange.db.AppDatabase;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
-
-import java.util.List;
-
-import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchPresenter implements ISearchContract.Presenter {

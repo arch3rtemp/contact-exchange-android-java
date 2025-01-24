@@ -13,14 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.constants.IsMe;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 
 public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactHolder> implements Filterable {
 
     private final List<Contact> contacts = new ArrayList<>();
     private final List<Contact> contactsFull = new ArrayList<>();
-    private int isMe = 0;
+    private boolean isMy = false;
+    private final int MY_CARD = 197;
+    private final int SCANNED_CONTACT = 198;
 
     public ContactRecyclerAdapter(List<Contact> contacts) {
         this.contacts.clear();
@@ -30,16 +31,13 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if (contacts.get(position).getIsMy() == IsMe.ME) {
-            isMe = IsMe.ME;
-            return IsMe.ME;
+        if (contacts.get(position).getIsMy()) {
+            isMy = true;
+            return MY_CARD;
+        } else {
+            isMy = false;
+            return SCANNED_CONTACT;
         }
-        else if (contacts.get(position).getIsMy() == IsMe.NOT_ME) {
-            isMe = IsMe.NOT_ME;
-            return IsMe.NOT_ME;
-        }
-        else
-            return 0;
     }
 
     @NonNull
@@ -48,12 +46,12 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<ContactHolder> 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View view = switch (viewType) {
-            case IsMe.ME -> inflater.inflate(R.layout.card_list_item, parent, false);
-            case IsMe.NOT_ME -> inflater.inflate(R.layout.contact_list_item, parent, false);
+            case MY_CARD -> inflater.inflate(R.layout.card_list_item, parent, false);
+            case SCANNED_CONTACT -> inflater.inflate(R.layout.contact_list_item, parent, false);
             default -> throw new IllegalStateException("Unexpected value: " + viewType);
         };
 
-        return new ContactHolder(view, isMe, clickListener, deleteListener);
+        return new ContactHolder(view, isMy, clickListener, deleteListener);
     }
 
     @Override

@@ -18,7 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.constants.IsMe;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.home.HomeActivity;
 import dev.arch3rtemp.ui.util.ColorUtils;
@@ -26,7 +25,6 @@ import dev.arch3rtemp.ui.util.ColorUtils;
 public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, ICreateOrEditCardContract.View {
 
     private boolean isCreate;
-    private int contactId;
     private View view;
     private ConstraintLayout clCreateOrEdit;
     private Button btnCreateOrSave;
@@ -77,7 +75,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         initEditTextFields();
 
         if (!isCreate) {
-            contactId = requireArguments().getInt("id", -1);
+            var contactId = requireArguments().getInt("id", -1);
             presenter.getContactById(contactId);
             ConstraintLayout clColorPalette = view.findViewById(R.id.cl_color_palette);
             TextView tvCardHeader = view.findViewById(R.id.tv_card_header);
@@ -217,15 +215,10 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             phoneMobile = etPhoneMobile.getText().toString();
             phoneOffice = etPhoneOffice.getText().toString();
 
-
-
             if (isCreate) {
-                Contact contact = new Contact(name, company, position, email, phoneMobile, phoneOffice, color, IsMe.ME);
+                Contact contact = new Contact(name, company, position, email, phoneMobile, phoneOffice, System.currentTimeMillis(), color, true);
                 presenter.createContact(contact);
-            }
-
-            else {
-                card.setId(contactId);
+            } else {
                 card.setName(name);
                 card.setJob(company);
                 card.setPosition(position);

@@ -8,15 +8,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,15 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.constants.IsMe;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
-
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import dev.arch3rtemp.contactexchange.R;
+import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.util.ColorUtils;
-
-import static android.content.Context.WINDOW_SERVICE;
+import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
 public class CardFragment extends Fragment implements ICardContract.View {
 
@@ -44,7 +38,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
     private ConstraintLayout clCard;
     private ConstraintLayout clEdit;
     private ConstraintLayout clDelete;
-    private int isMe;
+    private boolean isMy;
     Button delete;
     Button cancel;
     TextView tvName;
@@ -76,7 +70,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
         super.onViewCreated(view, savedInstanceState);
         initUI();
         setListeners();
-        if (isMe == IsMe.NOT_ME) {
+        if (!isMy) {
             clEdit.setVisibility(View.GONE);
         }
     }
@@ -93,7 +87,7 @@ public class CardFragment extends Fragment implements ICardContract.View {
         ivQr = view.findViewById(R.id.iv_qr);
         setPresenter(new CardPresenter(this));
         presenter.onViewCreated(getActivity());
-        isMe = requireArguments().getInt("isMe", 0);
+        isMy = requireArguments().getBoolean("isMy", false);
         id = requireArguments().getInt("id", -1);
         getCard(id);
     }
@@ -144,12 +138,9 @@ public class CardFragment extends Fragment implements ICardContract.View {
     }
 
     private void generateQr() {
-        WindowManager manager = (WindowManager) requireActivity().getSystemService(WINDOW_SERVICE);
-        Display display = manager.getDefaultDisplay();
-        Point point = new Point();
-        display.getSize(point);
-        int width = point.x;
-        int height = point.y;
+        var size = new DeviceSizeResolver().resolve(requireActivity().getWindowManager());
+        int width = size.first;
+        int height = size.second;
         int smallerDimension = Math.min(width, height);
         smallerDimension = smallerDimension * 3 / 4;
 

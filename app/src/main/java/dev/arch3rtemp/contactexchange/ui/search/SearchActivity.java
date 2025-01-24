@@ -18,6 +18,7 @@ import java.util.List;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
+import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
 import dev.arch3rtemp.contactexchange.ui.home.ContactRecyclerAdapter;
 
 public class SearchActivity extends AppCompatActivity implements ISearchContract.View, ContactRecyclerAdapter.IContactClickListener {
@@ -72,7 +73,8 @@ public class SearchActivity extends AppCompatActivity implements ISearchContract
     @Override
     public void onContactClicked(Contact contact, int contactPosition) {
         Intent intent = new Intent(this, CardActivity.class);
-        intent.putExtra("isMe", contact.getIsMy());
+        intent.putExtra("type", FragmentType.CARD);
+        intent.putExtra("isMy", contact.getIsMy());
         intent.putExtra("id", contact.getId());
         startActivity(intent);
     }

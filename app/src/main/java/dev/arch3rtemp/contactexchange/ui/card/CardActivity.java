@@ -1,6 +1,7 @@
 package dev.arch3rtemp.contactexchange.ui.card;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -19,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.constants.FragmentType;
 import dev.arch3rtemp.contactexchange.db.AppDatabase;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -53,18 +53,23 @@ public class CardActivity extends AppCompatActivity {
         manager = getSupportFragmentManager();
         intent = getIntent();
         setListeners();
-        int fragmentType = intent.getIntExtra("type", 0);
+        FragmentType fragmentType;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            fragmentType = intent.getSerializableExtra("type", FragmentType.class);
+        } else {
+            fragmentType = (FragmentType) intent.getSerializableExtra("type");
+        }
         switch (fragmentType) {
-            case FragmentType.CREATE:
+            case CREATE:
                 initCreateCardFragment();
                 break;
-            case FragmentType.CARD:
+            case CARD:
                 Bundle bundle = new Bundle();
-                bundle.putInt("isMe", intent.getIntExtra("isMe", 0));
+                bundle.putBoolean("isMy", intent.getBooleanExtra("isMy", false));
                 bundle.putInt("id", intent.getIntExtra("id", -1));
                 initCardFragment(bundle);
                 break;
-            case FragmentType.DELETED:
+            case DELETED:
                 createDeletedFragment();
                 break;
             default:

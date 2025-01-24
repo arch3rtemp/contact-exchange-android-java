@@ -1,5 +1,7 @@
 package dev.arch3rtemp.contactexchange.ui.home;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -25,16 +27,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.constants.FragmentType;
-import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
-import dev.arch3rtemp.contactexchange.ui.search.SearchActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
+import dev.arch3rtemp.contactexchange.R;
+import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
+import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
+import dev.arch3rtemp.contactexchange.ui.search.SearchActivity;
 
 public class HomeFragment extends Fragment implements ContactRecyclerAdapter.IContactClickListener, ContactRecyclerAdapter.IDeleteClickListener, IHomeContract.View {
 
@@ -203,7 +204,7 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     public void onContactClicked(Contact contact, int contactPosition) {
         Intent intent = new Intent(getContext(), CardActivity.class);
         intent.putExtra("type", FragmentType.CARD);
-        intent.putExtra("isMe", contact.getIsMy());
+        intent.putExtra("isMy", contact.getIsMy());
         intent.putExtra("id", contact.getId());
         startActivity(intent);
     }

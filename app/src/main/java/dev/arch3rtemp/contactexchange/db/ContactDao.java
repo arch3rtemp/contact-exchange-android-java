@@ -6,17 +6,16 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
-
 import java.util.List;
 
+import dev.arch3rtemp.contactexchange.db.models.Contact;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 
 @Dao
 public interface ContactDao {
 
-    @Query("SELECT * FROM contact_table WHERE is_my == 2 ORDER BY name ASC")
+    @Query("SELECT * FROM contact_table WHERE is_my == 0 ORDER BY name ASC")
     Observable<List<Contact>> getScannedContacts();
 
     @Query("SELECT * FROM contact_table WHERE is_my == 1 ORDER BY job ASC")

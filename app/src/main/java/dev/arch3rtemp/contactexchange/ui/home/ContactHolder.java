@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.constants.IsMe;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.util.ColorUtils;
 
@@ -26,21 +25,21 @@ public class ContactHolder extends RecyclerView.ViewHolder {
     private LinearLayout llDelete;
     private SwipeRevealLayout swipeRevealLayout;
     private LinearLayout llItemRoot;
-    private final int isMe;
+    private final boolean isMy;
     private final ContactRecyclerAdapter.IContactClickListener clickListener;
     private final ContactRecyclerAdapter.IDeleteClickListener deleteListener;
 
     public ContactHolder(
             @NonNull View itemView,
-            int isMe,
+            boolean isMy,
             ContactRecyclerAdapter.IContactClickListener clickListener,
             ContactRecyclerAdapter.IDeleteClickListener deleteListener
     ) {
         super(itemView);
-        this.isMe = isMe;
+        this.isMy = isMy;
         this.clickListener = clickListener;
         this.deleteListener = deleteListener;
-        if (isMe == IsMe.ME) {
+        if (isMy) {
             tvCard = itemView.findViewById(R.id.tv_card);
             return;
         }
@@ -56,7 +55,7 @@ public class ContactHolder extends RecyclerView.ViewHolder {
     }
 
     public void setData(Contact contact) {
-        if (isMe == IsMe.ME) {
+        if (isMy) {
             tvCard.setText(contact.getJob());
             Drawable background = tvCard.getBackground();
             background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.getColor()));
@@ -65,7 +64,7 @@ public class ContactHolder extends RecyclerView.ViewHolder {
             tvName.setText(contact.getName());
             tvInitials.setText(contact.formatInitials());
             tvPosition.setText(contact.getPosition());
-            tvAddDate.setText(contact.getCreatedAd());
+            tvAddDate.setText(contact.getDateString());
             llItemRoot.setOnClickListener(v -> clickListener.onContactClicked(contact, getAdapterPosition()));
             llDelete.setOnClickListener(v -> deleteListener.onDeleteClicked(contact, getAdapterPosition()));
             Drawable background = llInitials.getBackground();
