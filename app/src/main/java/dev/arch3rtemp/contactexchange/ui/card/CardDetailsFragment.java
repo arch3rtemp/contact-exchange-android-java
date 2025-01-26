@@ -179,7 +179,6 @@ public class CardDetailsFragment extends Fragment implements ICardContract.View 
         DeletedFragment deletedFragment = new DeletedFragment();
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.slide_in, 0)
                 .replace(R.id.fl_main_frame_container, deletedFragment)
                 .commit();
     }

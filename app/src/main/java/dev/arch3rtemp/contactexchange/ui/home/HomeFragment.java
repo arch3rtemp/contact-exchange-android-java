@@ -1,27 +1,18 @@
 package dev.arch3rtemp.contactexchange.ui.home;
 
-import static android.app.Activity.RESULT_OK;
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,20 +23,19 @@ import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
 import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
-import dev.arch3rtemp.contactexchange.ui.search.SearchActivity;
+import dev.arch3rtemp.contactexchange.ui.filter.FilterFragment;
+import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 
-public class HomeFragment extends Fragment implements ContactRecyclerAdapter.IContactClickListener, ContactRecyclerAdapter.IDeleteClickListener, IHomeContract.View {
+public class HomeFragment extends Fragment implements IHomeContract.View {
 
     private RecyclerView rvCards;
     private RecyclerView rvContacts;
     private FloatingActionButton fab;
-    private ImageView ivSearch;
     private ContactRecyclerAdapter rvCardAdapter;
     private ContactRecyclerAdapter rvContactAdapter;
+    private ImageView ivSearch;
     private LinearLayout llContacts;
     private IHomeContract.Presenter presenter;
-    private TextView tvContactHeader;
-    private boolean launchNextActivity = false;
 
     @Nullable
     @Override
@@ -67,10 +57,11 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     private void initUI(View view) {
         fab = view.findViewById(R.id.fab_add);
         ivSearch = view.findViewById(R.id.iv_search);
-        llContacts = view.findViewById(R.id.ll_contacts);
-        tvContactHeader = view.findViewById(R.id.tv_contact_header);
         rvCards = view.findViewById(R.id.rv_cards);
         rvContacts = view.findViewById(R.id.rv_contacts);
+        llContacts = view.findViewById(R.id.ll_contacts);
+        createCardRecyclerView();
+        createContactRecyclerView();
     }
 
     private void setListeners() {
@@ -80,62 +71,29 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
             startActivity(intent);
         });
 
-        ivSearch.setOnClickListener(v -> animateSearchMenu());
-    }
-
-    private void animateSearchMenu() {
-        ObjectAnimator moveLeftX = ObjectAnimator.ofFloat(ivSearch, View.X, 0f);
-        moveLeftX.setDuration(400)
-                .setInterpolator(new DecelerateInterpolator());
-        ObjectAnimator fade = ObjectAnimator.ofFloat(tvContactHeader, View.ALPHA, 1f, 0f);
-        AnimatorSet animator = new AnimatorSet();
-        animator.playTogether(moveLeftX, fade);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                Intent intent = new Intent(requireContext(), SearchActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(requireActivity(), llContacts, llContacts.getTransitionName());
-                startActivityForResult(intent, 122, options.toBundle());
-            }
-        });
-        animator.start();
-
-        setEnterSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
-                super.onSharedElementStart(sharedElementNames, sharedElements, sharedElementSnapshots);
-            }
-
-            @Override
-            public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
-                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots);
-            }
+        ivSearch.setOnClickListener(v -> {
+            var transaction = getParentFragmentManager().beginTransaction();
+            transaction.setReorderingAllowed(true);
+            transaction.addSharedElement(llContacts, getString(R.string.transition_contacts));
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            transaction.replace(R.id.fl_main_frame_container, FilterFragment.class, null, FilterFragment.class.getSimpleName());
+            transaction.addToBackStack(FilterFragment.class.getSimpleName());
+            transaction.commit();
         });
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 122) {
-            if (resultCode == RESULT_OK) {
-                launchNextActivity = true;
-            }
-        }
-    }
-
-    private void createCardRecyclerView(List<Contact> myCards) {
-        rvCardAdapter = new ContactRecyclerAdapter(myCards);
+    private void createCardRecyclerView() {
+        rvCardAdapter = new ContactRecyclerAdapter();
         rvCards.setAdapter(rvCardAdapter);
-        rvCardAdapter.setContactClickListener(this);
+        rvCardAdapter.setContactClickListener(this::onContactClick);
         observeRecyclerListener();
     }
 
-    private void createContactRecyclerView(List<Contact> contacts) {
-        rvContactAdapter = new ContactRecyclerAdapter(contacts);
+    private void createContactRecyclerView() {
+        rvContactAdapter = new ContactRecyclerAdapter();
         rvContacts.setAdapter(rvContactAdapter);
-        rvContactAdapter.setContactClickListener(this);
-        rvContactAdapter.setDeleteClickListener(this);
+        rvContactAdapter.setContactClickListener(this::onContactClick);
+        rvContactAdapter.setDeleteClickListener(this::onDeleteClick);
     }
 
     private void observeRecyclerListener() {
@@ -170,7 +128,6 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         return new HomeFragment();
     }
 
-    @Override
     public void onContactClick(Contact contact, int contactPosition) {
         Intent intent = new Intent(getContext(), CardActivity.class);
         intent.putExtra("type", FragmentType.CARD);
@@ -179,19 +136,18 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
         startActivity(intent);
     }
 
-    @Override
     public void onDeleteClick(Contact contact, int contactPosition) {
         presenter.deleteContact(contact.getId(), contactPosition);
     }
 
     @Override
     public void onGetMyCards(List<Contact> cards) {
-        createCardRecyclerView(cards);
+        rvCardAdapter.updateItems(cards);
     }
 
     @Override
     public void onGetContacts(List<Contact> contacts) {
-        createContactRecyclerView(contacts);
+        rvContactAdapter.updateItems(contacts);
     }
 
     @Override
@@ -207,22 +163,6 @@ public class HomeFragment extends Fragment implements ContactRecyclerAdapter.ICo
     @Override
     public void setPresenter(IHomeContract.Presenter presenter) {
         this.presenter = presenter;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (launchNextActivity) {
-            launchNextActivity = false;
-
-            ObjectAnimator moveRightX = ObjectAnimator.ofFloat(ivSearch, View.X, 0 - ivSearch.getTranslationX());
-            moveRightX.setDuration(400)
-                    .setInterpolator(new DecelerateInterpolator());
-            ObjectAnimator appear = ObjectAnimator.ofFloat(tvContactHeader, View.ALPHA, 0f, 1f);
-            AnimatorSet animator = new AnimatorSet();
-            animator.playTogether(moveRightX, appear);
-            animator.start();
-        }
     }
 
     @Override

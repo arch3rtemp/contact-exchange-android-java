@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.ui.home.IMainContract;
-import dev.arch3rtemp.contactexchange.ui.home.MainPresenter;
+import dev.arch3rtemp.contactexchange.ui.IMainContract;
+import dev.arch3rtemp.contactexchange.ui.MainPresenter;
 
 public class CardActivity extends AppCompatActivity implements IMainContract.View {
 

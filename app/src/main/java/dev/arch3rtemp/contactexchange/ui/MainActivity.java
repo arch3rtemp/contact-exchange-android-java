@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.home;
+package dev.arch3rtemp.contactexchange.ui;
 
 import android.os.Bundle;
 import android.widget.LinearLayout;
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import dev.arch3rtemp.contactexchange.R;
+import dev.arch3rtemp.contactexchange.ui.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity implements IMainContract.View {
 

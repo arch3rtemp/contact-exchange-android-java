@@ -18,15 +18,12 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".ui.search.SearchActivity"
-            android:exported="false" />
-
         <activity
             android:name=".ui.card.CardActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
 
-        <activity android:name=".ui.home.MainActivity"
+        <activity android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

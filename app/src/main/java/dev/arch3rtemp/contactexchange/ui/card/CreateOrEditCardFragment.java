@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
-import dev.arch3rtemp.contactexchange.ui.home.MainActivity;
+import dev.arch3rtemp.contactexchange.ui.MainActivity;
 import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, ICreateOrEditCardContract.View {
