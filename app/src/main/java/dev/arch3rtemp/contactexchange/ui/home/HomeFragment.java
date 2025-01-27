@@ -5,13 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -20,6 +18,7 @@ import java.util.List;
 
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
 import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
 import dev.arch3rtemp.contactexchange.ui.filter.FilterFragment;
@@ -27,14 +26,14 @@ import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
 
-    private RecyclerView rvCards;
-    private RecyclerView rvContacts;
     private FloatingActionButton fab;
+    private RecyclerView rvCards;
+    private ImageView ivSearch;
+    private RecyclerView rvContacts;
     private ContactRecyclerAdapter rvCardAdapter;
     private ContactRecyclerAdapter rvContactAdapter;
-    private ImageView ivSearch;
-    private LinearLayout llContacts;
     private HomeContract.Presenter presenter;
+    private Router router;
 
     @Nullable
     @Override
@@ -49,16 +48,16 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         setListeners();
         setPresenter(new HomePresenter(this));
         presenter.onCreate(getActivity());
+        router = new Router(getParentFragmentManager());
         getMyCards();
         getContacts();
     }
 
     private void initUI(View view) {
         fab = view.findViewById(R.id.fab_add);
-        ivSearch = view.findViewById(R.id.iv_search);
         rvCards = view.findViewById(R.id.rv_cards);
+        ivSearch = view.findViewById(R.id.iv_search);
         rvContacts = view.findViewById(R.id.rv_contacts);
-        llContacts = view.findViewById(R.id.ll_contacts);
         createCardRecyclerView();
         createContactRecyclerView();
     }
@@ -69,13 +68,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         });
 
         ivSearch.setOnClickListener(v -> {
-            var transaction = getParentFragmentManager().beginTransaction();
-            transaction.setReorderingAllowed(true);
-            transaction.addSharedElement(llContacts, getString(R.string.transition_contacts));
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            transaction.replace(R.id.fl_main_frame_container, FilterFragment.class, null, FilterFragment.class.getSimpleName());
-            transaction.addToBackStack(FilterFragment.class.getSimpleName());
-            transaction.commit();
+            router.navigate(FilterFragment.class, null, true);
         });
     }
 
@@ -119,10 +112,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private void getContacts() {
         presenter.getContacts();
-    }
-
-    public static HomeFragment getInstance() {
-        return new HomeFragment();
     }
 
     public void onContactClick(Contact contact, int contactPosition) {

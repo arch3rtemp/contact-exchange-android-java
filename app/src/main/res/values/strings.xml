@@ -34,9 +34,6 @@
     <string name="error">Error</string>
     <string name="empty">Empty</string>
 
-    <!--    Transition animation names-->
-    <string name="transition_contacts">transition_contacts</string>
-
     <!--    Messages-->
     <string name="msg_deleted_successfully">Deleted Successfully</string>
     <string name="msg_contact_added">Contact Added</string>

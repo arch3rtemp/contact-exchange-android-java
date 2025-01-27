@@ -30,6 +30,7 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.ui.util.ColorUtils;
 import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
@@ -45,6 +46,7 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
     private TextView tvPhoneOffice;
     private ImageView ivQr;
     private CardContract.Presenter presenter;
+    private Router router;
     private int id;
     private Contact card;
 
@@ -64,6 +66,7 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
         boolean isMy = requireArguments().getBoolean(IS_MY, false);
         id = requireArguments().getInt(ID, -1);
         presenter.getContactById(id);
+        router = new Router(getParentFragmentManager());
         if (!isMy) {
             clEdit.setVisibility(View.GONE);
         }
@@ -101,16 +104,10 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
     }
 
     private void createEditFragment() {
-        var editCardFragment = new CreateOrEditCardFragment();
         var bundle = new Bundle();
         bundle.putBoolean(IS_CREATE, false);
         bundle.putInt(ID, id);
-        editCardFragment.setArguments(bundle);
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_main_frame_container, editCardFragment)
-                .addToBackStack(CreateOrEditCardFragment.class.getSimpleName())
-                .commit();
+        router.navigate(CreateOrEditCardFragment.class, bundle, true);
     }
 
     private void setCardData() {
@@ -179,11 +176,7 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
     }
 
     private void createDeletedFragment() {
-        DeletedFragment deletedFragment = new DeletedFragment();
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_main_frame_container, deletedFragment)
-                .commit();
+        router.navigate(DeletedFragment.class, null, false);
     }
 
     @Override

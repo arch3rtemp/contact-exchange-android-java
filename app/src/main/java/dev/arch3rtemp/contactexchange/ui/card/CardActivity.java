@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import dev.arch3rtemp.contactexchange.R;
+import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.MainContract;
 import dev.arch3rtemp.contactexchange.ui.MainPresenter;
 
@@ -18,12 +19,14 @@ public class CardActivity extends AppCompatActivity implements MainContract.View
     private LinearLayout back;
     private LinearLayout llScan;
     private MainContract.Presenter presenter;
+    private Router router;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
 
+        router = new Router(getSupportFragmentManager());
         initUI();
         setListeners();
         setPresenter(new MainPresenter(this));
@@ -72,25 +75,18 @@ public class CardActivity extends AppCompatActivity implements MainContract.View
     private void initCreateCardFragment() {
         var bundle = new Bundle();
         bundle.putBoolean(IS_CREATE, true);
-        var transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_main_frame_container, CreateOrEditCardFragment.class, bundle, CreateOrEditCardFragment.class.getSimpleName());
-        transaction.commit();
+        router.navigate(CreateOrEditCardFragment.class, bundle, false);
     }
 
     private void initCardFragment(int id, boolean isMy) {
         var bundle = new Bundle();
         bundle.putInt(ID, id);
         bundle.putBoolean(IS_MY, isMy);
-        var transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_main_frame_container, CardDetailsFragment.class, bundle, CardDetailsFragment.class.getSimpleName());
-        transaction.commit();
+        router.navigate(CardDetailsFragment.class, bundle, false);
     }
 
     private void createDeletedFragment() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fl_main_frame_container, DeletedFragment.class, null, DeletedFragment.class.getSimpleName())
-                .commit();
+        router.navigate(DeletedFragment.class, null, false);
     }
 
     @Override

@@ -5,9 +5,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import dev.arch3rtemp.contactexchange.R;
+import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
@@ -15,11 +15,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private LinearLayout llScan;
 
     private MainContract.Presenter presenter;
+    private Router router;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        router = new Router(getSupportFragmentManager());
         initUI();
         setPresenter(new MainPresenter(this));
         presenter.onCreate(this);
@@ -38,10 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void initHomeFragment() {
-        var homeFragment = HomeFragment.getInstance();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fl_main_frame_container, homeFragment);
-        transaction.commit();
+        router.navigate(HomeFragment.class, null, false);
     }
 
     @Override

@@ -10,7 +10,6 @@
     android:background="@drawable/shape_contact_list_bg"
     android:orientation="vertical"
     android:paddingHorizontal="20dp"
-    android:transitionName="@string/transition_contacts"
     tools:context=".ui.filter.FilterFragment">
 
     <LinearLayout

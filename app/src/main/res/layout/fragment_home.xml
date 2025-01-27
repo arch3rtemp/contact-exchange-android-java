@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_home"
+    android:id="@+id/root_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -81,15 +81,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/ll_contacts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
         android:background="@drawable/shape_contact_list_bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:transitionName="@string/transition_contacts">
+        android:paddingHorizontal="20dp">
 
         <LinearLayout
             android:id="@+id/ll_search"
