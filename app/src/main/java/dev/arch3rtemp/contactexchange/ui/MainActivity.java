@@ -10,11 +10,11 @@ import androidx.fragment.app.FragmentTransaction;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.ui.home.HomeFragment;
 
-public class MainActivity extends AppCompatActivity implements IMainContract.View {
+public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     private LinearLayout llScan;
 
-    private IMainContract.Presenter presenter;
+    private MainContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements IMainContract.Vie
     }
 
     @Override
-    public void setPresenter(IMainContract.Presenter presenter) {
+    public void setPresenter(MainContract.Presenter presenter) {
         this.presenter = presenter;
     }
 

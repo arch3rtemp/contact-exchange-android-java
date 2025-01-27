@@ -4,7 +4,7 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.base.IBasePresenter;
 import dev.arch3rtemp.ui.base.IBaseView;
 
-public interface ICardContract {
+public interface CardContract {
 
     interface Presenter extends IBasePresenter {
         void getContactById(int id);

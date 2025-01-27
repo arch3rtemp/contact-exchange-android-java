@@ -19,15 +19,15 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MainPresenter implements IMainContract.Presenter {
+public class MainPresenter implements MainContract.Presenter {
 
-    private IMainContract.View view;
+    private MainContract.View view;
     private AppDatabase appDatabase;
     private GmsBarcodeScanner scanner;
     private StringResourceManager stringManager;
     private CompositeDisposable compositeDisposable;
 
-    public MainPresenter(IMainContract.View view) {
+    public MainPresenter(MainContract.View view) {
         this.view = view;
     }
 

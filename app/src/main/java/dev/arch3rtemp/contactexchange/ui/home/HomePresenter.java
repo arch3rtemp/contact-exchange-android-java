@@ -7,13 +7,13 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class HomePresenter implements IHomeContract.Presenter {
+public class HomePresenter implements HomeContract.Presenter {
 
-    private IHomeContract.View view;
+    private HomeContract.View view;
     private AppDatabase appDatabase;
     private CompositeDisposable compositeDisposable;
 
-    public HomePresenter(IHomeContract.View view) {
+    public HomePresenter(HomeContract.View view) {
         this.view = view;
     }
 

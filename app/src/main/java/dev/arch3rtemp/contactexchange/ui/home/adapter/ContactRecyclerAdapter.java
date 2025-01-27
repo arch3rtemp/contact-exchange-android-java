@@ -15,13 +15,13 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.holder.CardHolder;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.holder.CommonViewHolder;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.holder.ContactHolder;
-import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.IContactClickListener;
-import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.IDeleteClickListener;
+import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.ContactClickListener;
+import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.DeleteClickListener;
 
 public class ContactRecyclerAdapter extends RecyclerView.Adapter<CommonViewHolder> {
 
-    public IContactClickListener clickListener;
-    public IDeleteClickListener deleteListener;
+    public ContactClickListener clickListener;
+    public DeleteClickListener deleteListener;
     private final List<Contact> contacts = new ArrayList<>();
     private final int MY_CARD = 197;
     private final int SCANNED_CONTACT = 198;
@@ -81,11 +81,11 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<CommonViewHolde
         notifyItemInserted(position);
     }
 
-    public void setContactClickListener(IContactClickListener clickListener) {
+    public void setContactClickListener(ContactClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
-    public void setDeleteClickListener(IDeleteClickListener deleteListener) {
+    public void setDeleteClickListener(DeleteClickListener deleteListener) {
         this.deleteListener = deleteListener;
     }
 }

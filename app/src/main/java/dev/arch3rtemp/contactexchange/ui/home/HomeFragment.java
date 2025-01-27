@@ -1,6 +1,5 @@
 package dev.arch3rtemp.contactexchange.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,7 @@ import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
 import dev.arch3rtemp.contactexchange.ui.filter.FilterFragment;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 
-public class HomeFragment extends Fragment implements IHomeContract.View {
+public class HomeFragment extends Fragment implements HomeContract.View {
 
     private RecyclerView rvCards;
     private RecyclerView rvContacts;
@@ -35,7 +34,7 @@ public class HomeFragment extends Fragment implements IHomeContract.View {
     private ContactRecyclerAdapter rvContactAdapter;
     private ImageView ivSearch;
     private LinearLayout llContacts;
-    private IHomeContract.Presenter presenter;
+    private HomeContract.Presenter presenter;
 
     @Nullable
     @Override
@@ -66,9 +65,7 @@ public class HomeFragment extends Fragment implements IHomeContract.View {
 
     private void setListeners() {
         fab.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), CardActivity.class);
-            intent.putExtra("type", FragmentType.CREATE);
-            startActivity(intent);
+            CardActivity.start(requireContext(), -1, false, FragmentType.CREATE);
         });
 
         ivSearch.setOnClickListener(v -> {
@@ -129,11 +126,7 @@ public class HomeFragment extends Fragment implements IHomeContract.View {
     }
 
     public void onContactClick(Contact contact, int contactPosition) {
-        Intent intent = new Intent(getContext(), CardActivity.class);
-        intent.putExtra("type", FragmentType.CARD);
-        intent.putExtra("isMy", contact.getIsMy());
-        intent.putExtra("id", contact.getId());
-        startActivity(intent);
+        CardActivity.start(requireContext(), contact.getId(), contact.getIsMy(), FragmentType.CARD);
     }
 
     public void onDeleteClick(Contact contact, int contactPosition) {
@@ -161,7 +154,7 @@ public class HomeFragment extends Fragment implements IHomeContract.View {
     }
 
     @Override
-    public void setPresenter(IHomeContract.Presenter presenter) {
+    public void setPresenter(HomeContract.Presenter presenter) {
         this.presenter = presenter;
     }
 

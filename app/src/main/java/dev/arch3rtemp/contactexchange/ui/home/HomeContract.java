@@ -6,7 +6,7 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.base.IBasePresenter;
 import dev.arch3rtemp.ui.base.IBaseView;
 
-public interface IHomeContract {
+public interface HomeContract {
 
     interface Presenter extends IBasePresenter {
         void getMyCards();

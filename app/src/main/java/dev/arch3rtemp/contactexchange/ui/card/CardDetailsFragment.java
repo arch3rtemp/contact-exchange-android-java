@@ -1,5 +1,9 @@
 package dev.arch3rtemp.contactexchange.ui.card;
 
+import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.ID;
+import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.IS_CREATE;
+import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.IS_MY;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -29,7 +33,7 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.util.ColorUtils;
 import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
-public class CardDetailsFragment extends Fragment implements ICardContract.View {
+public class CardDetailsFragment extends Fragment implements CardContract.View {
 
     private ConstraintLayout clCard;
     private ConstraintLayout clEdit;
@@ -40,7 +44,7 @@ public class CardDetailsFragment extends Fragment implements ICardContract.View 
     private TextView tvPhoneMobile;
     private TextView tvPhoneOffice;
     private ImageView ivQr;
-    private ICardContract.Presenter presenter;
+    private CardContract.Presenter presenter;
     private int id;
     private Contact card;
 
@@ -57,8 +61,8 @@ public class CardDetailsFragment extends Fragment implements ICardContract.View 
         initPresenter();
         setListeners();
 
-        boolean isMy = requireArguments().getBoolean("isMy", false);
-        id = requireArguments().getInt("id", -1);
+        boolean isMy = requireArguments().getBoolean(IS_MY, false);
+        id = requireArguments().getInt(ID, -1);
         presenter.getContactById(id);
         if (!isMy) {
             clEdit.setVisibility(View.GONE);
@@ -97,16 +101,15 @@ public class CardDetailsFragment extends Fragment implements ICardContract.View 
     }
 
     private void createEditFragment() {
-        CreateOrEditCardFragment editCardFragment = new CreateOrEditCardFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("isCreate", false);
-        bundle.putInt("id", id);
+        var editCardFragment = new CreateOrEditCardFragment();
+        var bundle = new Bundle();
+        bundle.putBoolean(IS_CREATE, false);
+        bundle.putInt(ID, id);
         editCardFragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .setCustomAnimations(R.anim.card_scale_up, 0, 0, R.anim.card_scale_down)
                 .replace(R.id.fl_main_frame_container, editCardFragment)
-                .addToBackStack(null)
+                .addToBackStack(CreateOrEditCardFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -135,7 +138,7 @@ public class CardDetailsFragment extends Fragment implements ICardContract.View 
     }
 
     private void createDeleteDialog(View v) {
-        AlertDialog deleteDialog = new AlertDialog.Builder(getContext()).create();
+        var deleteDialog = new AlertDialog.Builder(getContext()).create();
         final View deletePopup = LayoutInflater.from(getContext()).inflate(R.layout.delete_popup, null, false);
 
         deleteDialog.setView(deletePopup);
@@ -188,12 +191,8 @@ public class CardDetailsFragment extends Fragment implements ICardContract.View 
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    public static CardDetailsFragment getInstance() {
-        return new CardDetailsFragment();
-    }
-
     @Override
-    public void setPresenter(ICardContract.Presenter presenter) {
+    public void setPresenter(CardContract.Presenter presenter) {
         this.presenter = presenter;
     }
 

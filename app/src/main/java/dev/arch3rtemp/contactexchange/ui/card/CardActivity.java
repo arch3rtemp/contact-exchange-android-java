@@ -1,5 +1,6 @@
 package dev.arch3rtemp.contactexchange.ui.card;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,17 +8,16 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.ui.IMainContract;
+import dev.arch3rtemp.contactexchange.ui.MainContract;
 import dev.arch3rtemp.contactexchange.ui.MainPresenter;
 
-public class CardActivity extends AppCompatActivity implements IMainContract.View {
+public class CardActivity extends AppCompatActivity implements MainContract.View {
 
     private LinearLayout back;
     private LinearLayout llScan;
-    private IMainContract.Presenter presenter;
+    private MainContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +37,16 @@ public class CardActivity extends AppCompatActivity implements IMainContract.Vie
 
         FragmentType fragmentType;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            fragmentType = intent.getSerializableExtra("type", FragmentType.class);
+            fragmentType = intent.getSerializableExtra(TYPE, FragmentType.class);
         } else {
-            fragmentType = (FragmentType) intent.getSerializableExtra("type");
+            fragmentType = (FragmentType) intent.getSerializableExtra(TYPE);
         }
         switch (fragmentType) {
             case CREATE:
                 initCreateCardFragment();
                 break;
             case CARD:
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("isMy", intent.getBooleanExtra("isMy", false));
-                bundle.putInt("id", intent.getIntExtra("id", -1));
-                initCardFragment(bundle);
+                initCardFragment(intent.getIntExtra(ID, -1), intent.getBooleanExtra("isMy", false));
                 break;
             case DELETED:
                 createDeletedFragment();
@@ -73,36 +70,31 @@ public class CardActivity extends AppCompatActivity implements IMainContract.Vie
     }
 
     private void initCreateCardFragment() {
-        CreateOrEditCardFragment createCardFragment = new CreateOrEditCardFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("isCreate", true);
-        createCardFragment.setArguments(bundle);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_main_frame_container, createCardFragment);
-//        transaction.addToBackStack(null);
+        var bundle = new Bundle();
+        bundle.putBoolean(IS_CREATE, true);
+        var transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_main_frame_container, CreateOrEditCardFragment.class, bundle, CreateOrEditCardFragment.class.getSimpleName());
         transaction.commit();
     }
 
-    private void initCardFragment(Bundle bundle) {
-        CardDetailsFragment cardDetailsFragment = CardDetailsFragment.getInstance();
-        cardDetailsFragment.setArguments(bundle);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fl_main_frame_container, cardDetailsFragment);
-//        transaction.addToBackStack(null);
+    private void initCardFragment(int id, boolean isMy) {
+        var bundle = new Bundle();
+        bundle.putInt(ID, id);
+        bundle.putBoolean(IS_MY, isMy);
+        var transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fl_main_frame_container, CardDetailsFragment.class, bundle, CardDetailsFragment.class.getSimpleName());
         transaction.commit();
     }
 
     private void createDeletedFragment() {
-        DeletedFragment deletedFragment = new DeletedFragment();
-        this.getSupportFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
-//                .setCustomAnimations(R.anim.slide_in, 0)
-                .replace(R.id.fl_main_frame_container, deletedFragment)
+                .replace(R.id.fl_main_frame_container, DeletedFragment.class, null, DeletedFragment.class.getSimpleName())
                 .commit();
     }
 
     @Override
-    public void setPresenter(IMainContract.Presenter presenter) {
+    public void setPresenter(MainContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -111,4 +103,17 @@ public class CardActivity extends AppCompatActivity implements IMainContract.Vie
         super.onDestroy();
         presenter.onDestroy();
     }
+
+    public static void start(Context context, int id, boolean isMy, FragmentType fragmentType) {
+        Intent intent = new Intent(context, CardActivity.class);
+        intent.putExtra(TYPE, fragmentType);
+        intent.putExtra(IS_MY, isMy);
+        intent.putExtra(ID, id);
+        context.startActivity(intent);
+    }
+
+    public static final String TYPE = "type";
+    public static final String IS_MY = "isMy";
+    public static final String ID = "id";
+    public static final String IS_CREATE = "isCreate";
 }

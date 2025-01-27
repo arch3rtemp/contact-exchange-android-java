@@ -1,5 +1,8 @@
 package dev.arch3rtemp.contactexchange.ui.card;
 
+import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.ID;
+import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.IS_CREATE;
+
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -22,7 +25,7 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.MainActivity;
 import dev.arch3rtemp.ui.util.ColorUtils;
 
-public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, ICreateOrEditCardContract.View {
+public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, CreateOrEditCardContract.View {
 
     private ConstraintLayout clCreateOrEdit;
     private Button btnCreateOrSave;
@@ -43,7 +46,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private boolean isCreate;
     private int color;
     private int currentColor;
-    private ICreateOrEditCardContract.Presenter presenter;
+    private CreateOrEditCardContract.Presenter presenter;
     private Contact card;
 
     @Nullable
@@ -63,11 +66,11 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         presenter.onCreate(requireContext());
         clCreateOrEdit = view.findViewById(R.id.cl_create_or_edit);
         btnCreateOrSave = view.findViewById(R.id.btn_create_or_save);
-        isCreate = requireArguments().getBoolean("isCreate", false);
+        isCreate = requireArguments().getBoolean(IS_CREATE, false);
         initEditTextFields(view);
 
         if (!isCreate) {
-            var contactId = requireArguments().getInt("id", -1);
+            var contactId = requireArguments().getInt(ID, -1);
             presenter.getContactById(contactId);
             ConstraintLayout clColorPalette = view.findViewById(R.id.cl_color_palette);
             TextView tvCardHeader = view.findViewById(R.id.tv_card_header);
@@ -260,7 +263,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     }
 
     @Override
-    public void setPresenter(ICreateOrEditCardContract.Presenter presenter) {
+    public void setPresenter(CreateOrEditCardContract.Presenter presenter) {
         this.presenter = presenter;
     }
 

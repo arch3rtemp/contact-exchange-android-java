@@ -1,7 +1,6 @@
 package dev.arch3rtemp.contactexchange.ui.filter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,9 +26,9 @@ import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
 import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 
-public class FilterFragment extends Fragment implements IFilterContract.View {
+public class FilterFragment extends Fragment implements FilterContract.View {
 
-    private IFilterContract.Presenter presenter;
+    private FilterContract.Presenter presenter;
     private ContactRecyclerAdapter rvContactAdapter;
     private TextInputEditText etSearch;
     private ImageView ivSearch;
@@ -90,11 +89,7 @@ public class FilterFragment extends Fragment implements IFilterContract.View {
     }
 
     public void onContactClick(Contact contact, int contactPosition) {
-        Intent intent = new Intent(requireContext(), CardActivity.class);
-        intent.putExtra("type", FragmentType.CARD);
-        intent.putExtra("isMy", contact.getIsMy());
-        intent.putExtra("id", contact.getId());
-        startActivity(intent);
+        CardActivity.start(requireContext(), contact.getId(), contact.getIsMy(), FragmentType.CARD);
     }
 
     public void onDeleteClick(Contact contact, int contactPosition) {
@@ -107,7 +102,7 @@ public class FilterFragment extends Fragment implements IFilterContract.View {
     }
 
     @Override
-    public void setPresenter(IFilterContract.Presenter presenter) {
+    public void setPresenter(FilterContract.Presenter presenter) {
         this.presenter = presenter;
     }
 
@@ -115,12 +110,4 @@ public class FilterFragment extends Fragment implements IFilterContract.View {
     public void showMessage(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent = getIntent();
-//        setResult(RESULT_OK, intent);
-//        finishAfterTransition();
-//        super.onBackPressed();
-//    }
 }

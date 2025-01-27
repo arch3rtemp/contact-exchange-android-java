@@ -10,14 +10,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class CreateOrEditCardPresenter implements ICreateOrEditCardContract.Presenter {
+public class CreateOrEditCardPresenter implements CreateOrEditCardContract.Presenter {
 
-    private ICreateOrEditCardContract.View view;
+    private CreateOrEditCardContract.View view;
     private CompositeDisposable compositeDisposable;
     private AppDatabase appDatabase;
     private StringResourceManager stringManager;
 
-    public CreateOrEditCardPresenter(ICreateOrEditCardContract.View view) {
+    public CreateOrEditCardPresenter(CreateOrEditCardContract.View view) {
         this.view = view;
     }
 

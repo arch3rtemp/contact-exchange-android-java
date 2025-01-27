@@ -11,8 +11,8 @@ import com.chauthai.swipereveallayout.SwipeRevealLayout;
 
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
-import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.IContactClickListener;
-import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.IDeleteClickListener;
+import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.ContactClickListener;
+import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.DeleteClickListener;
 import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class ContactHolder extends CommonViewHolder {
@@ -24,13 +24,13 @@ public class ContactHolder extends CommonViewHolder {
     private final LinearLayout llDelete;
     private final LinearLayout llItemRoot;
     private final SwipeRevealLayout swipeLayout;
-    private final IContactClickListener clickListener;
-    private final IDeleteClickListener deleteListener;
+    private final ContactClickListener clickListener;
+    private final DeleteClickListener deleteListener;
 
     public ContactHolder(
             @NonNull View itemView,
-            IContactClickListener clickListener,
-            IDeleteClickListener deleteListener
+            ContactClickListener clickListener,
+            DeleteClickListener deleteListener
     ) {
         super(itemView);
         this.clickListener = clickListener;

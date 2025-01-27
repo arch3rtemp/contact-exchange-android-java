@@ -6,7 +6,7 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.base.IBasePresenter;
 import dev.arch3rtemp.ui.base.IBaseView;
 
-public interface IFilterContract {
+public interface FilterContract {
     interface Presenter extends IBasePresenter {
         void getContacts();
         void deleteContact(int id);

@@ -4,7 +4,7 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.base.IBasePresenter;
 import dev.arch3rtemp.ui.base.IBaseView;
 
-public interface ICreateOrEditCardContract {
+public interface CreateOrEditCardContract {
 
     interface Presenter extends IBasePresenter {
         void createContact(Contact contact);

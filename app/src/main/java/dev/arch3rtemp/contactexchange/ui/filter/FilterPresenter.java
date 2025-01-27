@@ -13,14 +13,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class FilterPresenter implements IFilterContract.Presenter {
-    private IFilterContract.View view;
+public class FilterPresenter implements FilterContract.Presenter {
+    private FilterContract.View view;
     private StringResourceManager stringResourceManager;
     private AppDatabase appDatabase;
     private CompositeDisposable compositeDisposable;
     private List<Contact> unfiltered;
 
-    public FilterPresenter(IFilterContract.View view) {
+    public FilterPresenter(FilterContract.View view) {
         this.view = view;
     }
 

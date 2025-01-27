@@ -7,13 +7,13 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class CardDetailsPresenter implements ICardContract.Presenter {
+public class CardDetailsPresenter implements CardContract.Presenter {
 
-    private ICardContract.View view;
+    private CardContract.View view;
     private AppDatabase appDatabase;
     private CompositeDisposable compositeDisposable;
 
-    public CardDetailsPresenter(ICardContract.View view) {
+    public CardDetailsPresenter(CardContract.View view) {
         this.view = view;
     }
 
