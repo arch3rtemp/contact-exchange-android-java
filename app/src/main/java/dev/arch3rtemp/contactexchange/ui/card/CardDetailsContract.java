@@ -1,17 +1,17 @@
 package dev.arch3rtemp.contactexchange.ui.card;
 
 import dev.arch3rtemp.contactexchange.db.models.Contact;
-import dev.arch3rtemp.ui.base.IBasePresenter;
-import dev.arch3rtemp.ui.base.IBaseView;
+import dev.arch3rtemp.ui.base.BasePresenter;
+import dev.arch3rtemp.ui.base.BaseView;
 
-public interface CardContract {
+public interface CardDetailsContract {
 
-    interface Presenter extends IBasePresenter {
+    interface Presenter extends BasePresenter<View> {
         void getContactById(int id);
         void deleteContact(int id);
     }
 
-    interface View extends IBaseView<Presenter> {
+    interface View extends BaseView {
         void onCardLoaded(Contact contact);
         void showMessage(String message);
     }

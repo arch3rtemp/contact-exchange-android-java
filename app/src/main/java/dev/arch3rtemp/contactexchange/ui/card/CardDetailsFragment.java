@@ -9,6 +9,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -26,15 +27,18 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import javax.inject.Inject;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.ui.util.ColorUtils;
 import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
-public class CardDetailsFragment extends Fragment implements CardContract.View {
+public class CardDetailsFragment extends Fragment implements CardDetailsContract.View {
 
     private ConstraintLayout clCard;
     private ConstraintLayout clEdit;
@@ -45,10 +49,28 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
     private TextView tvPhoneMobile;
     private TextView tvPhoneOffice;
     private ImageView ivQr;
-    private CardContract.Presenter presenter;
-    private Router router;
+    @Inject
+    CardDetailsContract.Presenter presenter;
+    @Inject
+    Router router;
+    @Inject
+    DeviceSizeResolver deviceSizeResolver;
     private int id;
     private Contact card;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        ((App) requireActivity()
+                .getApplication())
+                .getAppComponent()
+                .activityComponent()
+                .create(requireActivity())
+                .fragmentComponent()
+                .create()
+                .inject(this);
+    }
 
     @Nullable
     @Override
@@ -66,7 +88,6 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
         boolean isMy = requireArguments().getBoolean(IS_MY, false);
         id = requireArguments().getInt(ID, -1);
         presenter.getContactById(id);
-        router = new Router(getParentFragmentManager());
         if (!isMy) {
             clEdit.setVisibility(View.GONE);
         }
@@ -92,8 +113,7 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
     }
 
     private void initPresenter() {
-        setPresenter(new CardDetailsPresenter(this));
-        presenter.onCreate(getActivity());
+        presenter.onCreate(this);
     }
 
     @Override
@@ -121,7 +141,7 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
     }
 
     private void generateQr() {
-        var size = new DeviceSizeResolver().resolve(requireActivity().getWindowManager());
+        var size = deviceSizeResolver.resolve(requireActivity().getWindowManager());
         int width = size.first;
         int height = size.second;
         int smallerDimension = Math.min(width, height);
@@ -182,11 +202,6 @@ public class CardDetailsFragment extends Fragment implements CardContract.View {
     @Override
     public void showMessage(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void setPresenter(CardContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 
     @Override

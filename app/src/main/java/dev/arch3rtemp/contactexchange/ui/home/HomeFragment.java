@@ -1,5 +1,6 @@
 package dev.arch3rtemp.contactexchange.ui.home;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.router.Router;
@@ -32,8 +36,24 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private RecyclerView rvContacts;
     private ContactRecyclerAdapter rvCardAdapter;
     private ContactRecyclerAdapter rvContactAdapter;
-    private HomeContract.Presenter presenter;
-    private Router router;
+    @Inject
+    HomeContract.Presenter presenter;
+    @Inject
+    Router router;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        ((App) requireActivity()
+                .getApplication())
+                .getAppComponent()
+                .activityComponent()
+                .create(requireActivity())
+                .fragmentComponent()
+                .create()
+                .inject(this);
+    }
 
     @Nullable
     @Override
@@ -46,9 +66,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         super.onViewCreated(view, savedInstanceState);
         initUI(view);
         setListeners();
-        setPresenter(new HomePresenter(this));
-        presenter.onCreate(getActivity());
-        router = new Router(getParentFragmentManager());
+        presenter.onCreate(this);
         getMyCards();
         getContacts();
     }
@@ -99,7 +117,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dx > 0 && fab.getVisibility() == View.VISIBLE) {
                     fab.setVisibility(View.INVISIBLE);
-                } else if(dx < 0 && fab.getVisibility() == View.INVISIBLE) {
+                } else if (dx < 0 && fab.getVisibility() == View.INVISIBLE) {
                     fab.setVisibility(View.VISIBLE);
                 }
             }
@@ -140,11 +158,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void showMessage(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void setPresenter(HomeContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 
     @Override

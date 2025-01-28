@@ -20,6 +20,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
@@ -28,11 +31,26 @@ import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 
 public class FilterFragment extends Fragment implements FilterContract.View {
 
-    private FilterContract.Presenter presenter;
-    private ContactRecyclerAdapter rvContactAdapter;
     private TextInputEditText etSearch;
     private ImageView ivSearch;
     private RecyclerView rvContacts;
+    private ContactRecyclerAdapter rvContactAdapter;
+    @Inject
+    FilterContract.Presenter presenter;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        ((App) requireActivity()
+                .getApplication())
+                .getAppComponent()
+                .activityComponent()
+                .create(requireActivity())
+                .fragmentComponent()
+                .create()
+                .inject(this);
+    }
 
     @Nullable
     @Override
@@ -46,8 +64,7 @@ public class FilterFragment extends Fragment implements FilterContract.View {
 
         initUI(view);
         setListeners();
-        setPresenter(new FilterPresenter(this));
-        presenter.onCreate(getActivity());
+        presenter.onCreate(this);
         presenter.getContacts();
     }
 
@@ -99,11 +116,6 @@ public class FilterFragment extends Fragment implements FilterContract.View {
     @Override
     public void onGetContacts(List<Contact> contacts) {
         rvContactAdapter.updateItems(contacts);
-    }
-
-    @Override
-    public void setPresenter(FilterContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 
     @Override

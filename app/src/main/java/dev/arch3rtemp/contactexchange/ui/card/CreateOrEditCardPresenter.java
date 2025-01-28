@@ -1,9 +1,7 @@
 package dev.arch3rtemp.contactexchange.ui.card;
 
-import android.content.Context;
-
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.AppDatabase;
+import dev.arch3rtemp.contactexchange.db.ContactDao;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -13,24 +11,24 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class CreateOrEditCardPresenter implements CreateOrEditCardContract.Presenter {
 
     private CreateOrEditCardContract.View view;
+    private final ContactDao contactDao;
     private CompositeDisposable compositeDisposable;
-    private AppDatabase appDatabase;
     private StringResourceManager stringManager;
 
-    public CreateOrEditCardPresenter(CreateOrEditCardContract.View view) {
-        this.view = view;
+    public CreateOrEditCardPresenter(ContactDao contactDao) {
+        this.contactDao = contactDao;
     }
 
     @Override
-    public void onCreate(Context context) {
-        stringManager = new StringResourceManager(context);
-        appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
+    public void onCreate(CreateOrEditCardContract.View view) {
+        this.view = view;
         compositeDisposable = new CompositeDisposable();
+        stringManager = new StringResourceManager(view.getContext());
     }
 
     @Override
     public void createContact(Contact contact) {
-        var disposable = appDatabase.contactDao().insert(contact)
+        var disposable = contactDao.insert(contact)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> view.showToastMessage(stringManager.string(R.string.msg_contact_created)),
@@ -41,7 +39,7 @@ public class CreateOrEditCardPresenter implements CreateOrEditCardContract.Prese
 
     @Override
     public void editContact(Contact contact) {
-        var disposable = appDatabase.contactDao().update(contact)
+        var disposable = contactDao.update(contact)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> view.showToastMessage(stringManager.string(R.string.msg_contact_updated)),
@@ -52,7 +50,7 @@ public class CreateOrEditCardPresenter implements CreateOrEditCardContract.Prese
 
     @Override
     public void getContactById(int id) {
-        var disposable = appDatabase.contactDao().selectContactById(id)
+        var disposable = contactDao.selectContactById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(contact -> view.onGetContactById(contact),

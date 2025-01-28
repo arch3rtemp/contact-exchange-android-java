@@ -43,7 +43,7 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 play-services-code-scanner = { module = "com.google.android.gms:play-services-code-scanner", version.ref = "play-services-code-scanner" }
 dagger-android = { module = "com.google.dagger:dagger-android", version.ref = "dagger" }
-dagger-compiler = { module = "com.google.dagger:dagger-android-processor", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 #Rx
 rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }

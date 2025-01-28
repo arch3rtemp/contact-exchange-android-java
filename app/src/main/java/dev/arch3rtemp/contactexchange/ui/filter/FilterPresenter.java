@@ -1,12 +1,10 @@
 package dev.arch3rtemp.contactexchange.ui.filter;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.AppDatabase;
+import dev.arch3rtemp.contactexchange.db.ContactDao;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -16,17 +14,24 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class FilterPresenter implements FilterContract.Presenter {
     private FilterContract.View view;
     private StringResourceManager stringResourceManager;
-    private AppDatabase appDatabase;
+    private final ContactDao contactDao;
     private CompositeDisposable compositeDisposable;
     private List<Contact> unfiltered;
 
-    public FilterPresenter(FilterContract.View view) {
+    public FilterPresenter(ContactDao contactDao) {
+        this.contactDao = contactDao;
+    }
+
+    @Override
+    public void onCreate(FilterContract.View view) {
         this.view = view;
+        compositeDisposable = new CompositeDisposable();
+        stringResourceManager = new StringResourceManager(view.getContext());
     }
 
     @Override
     public void getContacts() {
-        var disposable = appDatabase.contactDao().selectScannedContacts()
+        var disposable = contactDao.selectScannedContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(contacts -> {
@@ -39,7 +44,7 @@ public class FilterPresenter implements FilterContract.Presenter {
 
     @Override
     public void deleteContact(int id) {
-        var disposable = appDatabase.contactDao().delete(id)
+        var disposable = contactDao.delete(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> view.showMessage(stringResourceManager.string(R.string.msg_contact_deleted)),
@@ -57,13 +62,6 @@ public class FilterPresenter implements FilterContract.Presenter {
             }
         }
         return filteredContacts;
-    }
-
-    @Override
-    public void onCreate(Context context) {
-        stringResourceManager = new StringResourceManager(context);
-        appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
-        compositeDisposable = new CompositeDisposable();
     }
 
     @Override

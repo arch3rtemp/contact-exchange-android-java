@@ -1,8 +1,6 @@
 package dev.arch3rtemp.contactexchange.ui.home;
 
-import android.content.Context;
-
-import dev.arch3rtemp.contactexchange.db.AppDatabase;
+import dev.arch3rtemp.contactexchange.db.ContactDao;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -10,22 +8,22 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class HomePresenter implements HomeContract.Presenter {
 
     private HomeContract.View view;
-    private AppDatabase appDatabase;
+    private final ContactDao contactDao;
     private CompositeDisposable compositeDisposable;
 
-    public HomePresenter(HomeContract.View view) {
-        this.view = view;
+    public HomePresenter(ContactDao contactDao) {
+        this.contactDao = contactDao;
     }
 
     @Override
-    public void onCreate(Context context) {
-        appDatabase = AppDatabase.getDBInstance(context.getApplicationContext());
+    public void onCreate(HomeContract.View view) {
+        this.view = view;
         compositeDisposable = new CompositeDisposable();
     }
 
     @Override
     public void getMyCards() {
-        var disposable = appDatabase.contactDao().selectMyCards()
+        var disposable = contactDao.selectMyCards()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(cards -> view.onGetMyCards(cards),
@@ -35,7 +33,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void getContacts() {
-         var disposable = appDatabase.contactDao().selectScannedContacts()
+        var disposable = contactDao.selectScannedContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(contacts -> view.onGetContacts(contacts),
@@ -45,7 +43,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void deleteContact(int id, int position) {
-        var disposable = appDatabase.contactDao().delete(id)
+        var disposable = contactDao.delete(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> view.onContactDelete(position),

@@ -15,7 +15,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ContactsExchangeJava"
+rootProject.name = "ContactExchangeJava"
 
 include ':app'
 include ':core:ui'

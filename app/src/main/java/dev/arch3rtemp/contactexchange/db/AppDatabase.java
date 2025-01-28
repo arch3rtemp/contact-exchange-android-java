@@ -1,9 +1,6 @@
 package dev.arch3rtemp.contactexchange.db;
 
-import android.content.Context;
-
 import androidx.room.Database;
-import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import dev.arch3rtemp.contactexchange.db.models.Contact;
@@ -12,13 +9,4 @@ import dev.arch3rtemp.contactexchange.db.models.Contact;
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ContactDao contactDao();
-
-    private static AppDatabase appDatabase;
-
-    public static AppDatabase getDBInstance(Context context) {
-        if (appDatabase == null) {
-            appDatabase = Room.databaseBuilder(context, AppDatabase.class, "contacts_db").build();
-        }
-        return appDatabase;
-    }
 }

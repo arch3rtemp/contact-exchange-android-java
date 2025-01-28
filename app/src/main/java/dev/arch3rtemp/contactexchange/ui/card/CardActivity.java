@@ -9,27 +9,30 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import javax.inject.Inject;
+
+import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.MainContract;
-import dev.arch3rtemp.contactexchange.ui.MainPresenter;
 
 public class CardActivity extends AppCompatActivity implements MainContract.View {
 
     private LinearLayout back;
     private LinearLayout llScan;
-    private MainContract.Presenter presenter;
-    private Router router;
+    @Inject
+    MainContract.Presenter presenter;
+    @Inject
+    Router router;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
 
-        router = new Router(getSupportFragmentManager());
+        ((App) getApplication()).getAppComponent().activityComponent().create(this).inject(this);
         initUI();
         setListeners();
-        setPresenter(new MainPresenter(this));
         presenter.onCreate(this);
     }
 
@@ -90,11 +93,6 @@ public class CardActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void setPresenter(MainContract.Presenter presenter) {
-        this.presenter = presenter;
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
@@ -112,4 +110,9 @@ public class CardActivity extends AppCompatActivity implements MainContract.View
     public static final String IS_MY = "isMy";
     public static final String ID = "id";
     public static final String IS_CREATE = "isCreate";
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
 }

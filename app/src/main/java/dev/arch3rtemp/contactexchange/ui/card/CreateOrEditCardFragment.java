@@ -4,6 +4,7 @@ import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.ID;
 import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.IS_CREATE;
 
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import javax.inject.Inject;
+
+import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.MainActivity;
@@ -46,8 +50,23 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private boolean isCreate;
     private int color;
     private int currentColor;
-    private CreateOrEditCardContract.Presenter presenter;
+    @Inject
+    CreateOrEditCardContract.Presenter presenter;
     private Contact card;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        ((App) requireActivity()
+                .getApplication())
+                .getAppComponent()
+                .activityComponent()
+                .create(requireActivity())
+                .fragmentComponent()
+                .create()
+                .inject(this);
+    }
 
     @Nullable
     @Override
@@ -62,8 +81,7 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     }
 
     public void initUI(View view) {
-        setPresenter(new CreateOrEditCardPresenter(this));
-        presenter.onCreate(requireContext());
+        presenter.onCreate(this);
         clCreateOrEdit = view.findViewById(R.id.cl_create_or_edit);
         btnCreateOrSave = view.findViewById(R.id.btn_create_or_save);
         isCreate = requireArguments().getBoolean(IS_CREATE, false);
@@ -260,11 +278,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     private void startHomeActivity() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         requireActivity().startActivity(intent);
-    }
-
-    @Override
-    public void setPresenter(CreateOrEditCardContract.Presenter presenter) {
-        this.presenter = presenter;
     }
 
     private void setBackgroundColorWithAnimationAndRetainShape(final int currentColor, final int finalColor, final Drawable background) {
