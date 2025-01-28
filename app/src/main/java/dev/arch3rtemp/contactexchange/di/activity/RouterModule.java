@@ -1,25 +1,13 @@
 package dev.arch3rtemp.contactexchange.di.activity;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
-import dev.arch3rtemp.contactexchange.di.ActivityScope;
 import dev.arch3rtemp.contactexchange.router.Router;
+import dev.arch3rtemp.contactexchange.router.RouterImpl;
 
 @Module
-public class RouterModule {
+public interface RouterModule {
 
-    @ActivityScope
-    @Provides
-    public FragmentManager provideFragmentManager(FragmentActivity activity) {
-        return activity.getSupportFragmentManager();
-    }
-
-    @ActivityScope
-    @Provides
-    public Router provideRouter(FragmentManager fragmentManager) {
-        return new Router(fragmentManager);
-    }
+    @Binds
+    Router bindRouter(RouterImpl impl);
 }

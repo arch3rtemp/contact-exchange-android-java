@@ -10,7 +10,7 @@ import dev.arch3rtemp.contactexchange.ui.MainActivity;
 import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
 
 @ActivityScope
-@Subcomponent(modules = {RouterModule.class, PresenterModule.class})
+@Subcomponent(modules = {RouterModule.class, PresenterModule.class, FragmentManagerModule.class})
 public interface ActivityComponent {
 
     void inject(MainActivity mainActivity);

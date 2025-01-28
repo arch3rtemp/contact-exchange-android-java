@@ -16,12 +16,9 @@ public class DbModule {
     @AppScope
     @Provides
     AppDatabase provideDb(Context context) {
-
-        return Room.databaseBuilder(
-                        context,
-                        AppDatabase.class,
-                        "app_db"
-                ).fallbackToDestructiveMigration()
+        return Room
+                .databaseBuilder(context, AppDatabase.class, "app_db")
+                .fallbackToDestructiveMigration()
                 .build();
     }
 
