@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.card;
+package dev.arch3rtemp.contactexchange.ui.card.result;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import dev.arch3rtemp.contactexchange.R;
 
-public class DeletedFragment extends Fragment {
+public class ResultFragment extends Fragment {
 
     @Nullable
     @Override

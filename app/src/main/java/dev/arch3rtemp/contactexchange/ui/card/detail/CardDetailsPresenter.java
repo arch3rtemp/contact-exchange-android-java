@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.card;
+package dev.arch3rtemp.contactexchange.ui.card.detail;
 
 import dev.arch3rtemp.contactexchange.db.ContactDao;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;

@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.card;
+package dev.arch3rtemp.contactexchange.ui.card.detail;
 
 import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.ID;
 import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.IS_CREATE;
@@ -35,6 +35,8 @@ import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.router.Router;
+import dev.arch3rtemp.contactexchange.ui.card.createoredit.CreateOrEditCardFragment;
+import dev.arch3rtemp.contactexchange.ui.card.result.ResultFragment;
 import dev.arch3rtemp.ui.util.ColorUtils;
 import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
@@ -196,7 +198,7 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
     }
 
     private void createDeletedFragment() {
-        router.navigate(DeletedFragment.class, null, false);
+        router.navigate(ResultFragment.class, null, false);
     }
 
     @Override

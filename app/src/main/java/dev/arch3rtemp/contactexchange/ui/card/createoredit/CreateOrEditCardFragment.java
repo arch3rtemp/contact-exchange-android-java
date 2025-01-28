@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.card;
+package dev.arch3rtemp.contactexchange.ui.card.createoredit;
 
 import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.ID;
 import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.IS_CREATE;

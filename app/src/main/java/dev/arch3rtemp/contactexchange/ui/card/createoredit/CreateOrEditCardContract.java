@@ -1,18 +1,19 @@
-package dev.arch3rtemp.contactexchange.ui.card;
+package dev.arch3rtemp.contactexchange.ui.card.createoredit;
 
 import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.ui.base.BasePresenter;
 import dev.arch3rtemp.ui.base.BaseView;
 
-public interface CardDetailsContract {
+public interface CreateOrEditCardContract {
 
     interface Presenter extends BasePresenter<View> {
+        void createContact(Contact contact);
+        void editContact(Contact contact);
         void getContactById(int id);
-        void deleteContact(int id);
     }
 
     interface View extends BaseView {
-        void onCardLoaded(Contact contact);
-        void showMessage(String message);
+        void onGetContactById(Contact contact);
+        void showToastMessage(String message);
     }
 }

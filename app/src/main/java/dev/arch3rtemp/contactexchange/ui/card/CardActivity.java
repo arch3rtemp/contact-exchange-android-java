@@ -15,6 +15,9 @@ import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.MainContract;
+import dev.arch3rtemp.contactexchange.ui.card.createoredit.CreateOrEditCardFragment;
+import dev.arch3rtemp.contactexchange.ui.card.detail.CardDetailsFragment;
+import dev.arch3rtemp.contactexchange.ui.card.result.ResultFragment;
 
 public class CardActivity extends AppCompatActivity implements MainContract.View {
 
@@ -89,7 +92,7 @@ public class CardActivity extends AppCompatActivity implements MainContract.View
     }
 
     private void createDeletedFragment() {
-        router.navigate(DeletedFragment.class, null, false);
+        router.navigate(ResultFragment.class, null, false);
     }
 
     @Override
