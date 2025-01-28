@@ -4,7 +4,7 @@ import android.database.SQLException;
 
 import java.util.List;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.db.model.Contact;
 
 public class TestData {
 

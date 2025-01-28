@@ -1,7 +1,7 @@
 package dev.arch3rtemp.contactexchange.ui.home.adapter.listener;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 
 public interface DeleteClickListener {
-    void onDeleteClick(Contact contact, int contactPosition);
+    void onDeleteClick(ContactUi contact);
 }

@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.db.models;
+package dev.arch3rtemp.contactexchange.db.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -8,11 +8,6 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.time.ZoneId;
-import java.util.Locale;
-
-import dev.arch3rtemp.ui.util.TimeConverter;
 
 @Entity(tableName = "contact_table")
 public class Contact {
@@ -163,20 +158,5 @@ public class Contact {
     @Override
     public String toString() {
         return new Gson().toJson(this);
-    }
-
-    public String formatInitials() {
-        if (name.contains(" ")) {
-            var spaceIndex = name.indexOf(" ") + 1;
-            var firstLetter = name.substring(0, 1);
-            var secondLetter = name.substring(spaceIndex, spaceIndex + 1);
-            return firstLetter + secondLetter;
-        } else {
-            return name.substring(0, 1);
-        }
-    }
-
-    public String getDateString() {
-        return new TimeConverter().convertLongToDateString(createdAt, "dd MMM yy", Locale.getDefault(), ZoneId.systemDefault());
     }
 }

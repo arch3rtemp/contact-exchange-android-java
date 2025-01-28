@@ -33,7 +33,7 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.card.createoredit.CreateOrEditCardFragment;
 import dev.arch3rtemp.contactexchange.ui.card.result.ResultFragment;
@@ -42,6 +42,14 @@ import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
 public class CardDetailsFragment extends Fragment implements CardDetailsContract.View {
 
+    @Inject
+    CardDetailsContract.Presenter presenter;
+    @Inject
+    Router router;
+    @Inject
+    DeviceSizeResolver deviceSizeResolver;
+    private int id;
+    private Contact card;
     private ConstraintLayout clCard;
     private ConstraintLayout clEdit;
     private ConstraintLayout clDelete;
@@ -51,14 +59,6 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
     private TextView tvPhoneMobile;
     private TextView tvPhoneOffice;
     private ImageView ivQr;
-    @Inject
-    CardDetailsContract.Presenter presenter;
-    @Inject
-    Router router;
-    @Inject
-    DeviceSizeResolver deviceSizeResolver;
-    private int id;
-    private Contact card;
 
     @Override
     public void onAttach(@NonNull Context context) {

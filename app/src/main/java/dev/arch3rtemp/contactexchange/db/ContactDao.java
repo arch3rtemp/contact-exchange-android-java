@@ -8,7 +8,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.db.model.Contact;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 

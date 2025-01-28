@@ -11,26 +11,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.holder.CardHolder;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.holder.CommonViewHolder;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.holder.ContactHolder;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.ContactClickListener;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.DeleteClickListener;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 
 public class ContactRecyclerAdapter extends RecyclerView.Adapter<CommonViewHolder> {
 
     public ContactClickListener clickListener;
     public DeleteClickListener deleteListener;
-    private final List<Contact> contacts = new ArrayList<>();
+    private final List<ContactUi> contacts = new ArrayList<>();
     private final int MY_CARD = 197;
     private final int SCANNED_CONTACT = 198;
 
-    public ContactRecyclerAdapter() {}
+    public ContactRecyclerAdapter(ContactClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     @Override
     public int getItemViewType(int position) {
-        if (contacts.get(position).getIsMy()) {
+        if (contacts.get(position).isMy()) {
             return MY_CARD;
         } else {
             return SCANNED_CONTACT;
@@ -51,7 +53,7 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<CommonViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull CommonViewHolder holder, int position) {
-        Contact contact = contacts.get(position);
+        var contact = contacts.get(position);
         holder.setData(contact);
     }
 
@@ -60,29 +62,11 @@ public class ContactRecyclerAdapter extends RecyclerView.Adapter<CommonViewHolde
         return contacts.size();
     }
 
-    public void updateItems(List<Contact> contacts) {
+    public void updateItems(List<ContactUi> contacts) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ContactDiffCallback(this.contacts, contacts));
         this.contacts.clear();
         this.contacts.addAll(contacts);
         diffResult.dispatchUpdatesTo(this);
-    }
-
-    public void clearAdapter() {
-        contacts.clear();
-    }
-
-    public void removeItem(int position) {
-        contacts.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void addItem(Contact contact, int position) {
-        contacts.add(position, contact);
-        notifyItemInserted(position);
-    }
-
-    public void setContactClickListener(ContactClickListener clickListener) {
-        this.clickListener = clickListener;
     }
 
     public void setDeleteClickListener(DeleteClickListener deleteListener) {

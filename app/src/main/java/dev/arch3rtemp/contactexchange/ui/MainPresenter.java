@@ -15,7 +15,7 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.ContactDao;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -23,22 +23,22 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainPresenter implements MainContract.Presenter {
 
-    private MainContract.View view;
     private final ContactDao contactDao;
+    private final StringResourceManager stringManager;
+    private MainContract.View view;
     private GmsBarcodeScanner scanner;
-    private StringResourceManager stringManager;
     private CompositeDisposable compositeDisposable;
 
-    public MainPresenter(ContactDao contactDao) {
-
+    @Inject
+    public MainPresenter(ContactDao contactDao, StringResourceManager stringManager) {
         this.contactDao = contactDao;
+        this.stringManager = stringManager;
     }
 
     @Override
     public void onCreate(MainContract.View view) {
         this.view = view;
         scanner = initScanner(view.getContext());
-        stringManager = new StringResourceManager(view.getContext());
         compositeDisposable = new CompositeDisposable();
     }
 

@@ -1,6 +1,6 @@
 package dev.arch3rtemp.contactexchange.ui.card.createoredit;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.ui.base.BasePresenter;
 import dev.arch3rtemp.ui.base.BaseView;
 

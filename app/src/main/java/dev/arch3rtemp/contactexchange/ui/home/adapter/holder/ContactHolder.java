@@ -10,9 +10,9 @@ import androidx.annotation.NonNull;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.ContactClickListener;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.DeleteClickListener;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class ContactHolder extends CommonViewHolder {
@@ -46,20 +46,20 @@ public class ContactHolder extends CommonViewHolder {
     }
 
     @Override
-    public void setData(Contact contact) {
-        tvName.setText(contact.getName());
+    public void setData(ContactUi contact) {
+        tvName.setText(contact.name());
         tvInitials.setText(contact.formatInitials());
-        tvPosition.setText(contact.getPosition());
-        tvAddDate.setText(contact.getDateString());
+        tvPosition.setText(contact.position());
+        tvAddDate.setText(contact.dateString());
         llItemRoot.setOnClickListener(v -> {
             swipeLayout.close(true);
-            clickListener.onContactClick(contact, getAdapterPosition());
+            clickListener.onContactClick(contact);
         });
         llDelete.setOnClickListener(v -> {
             swipeLayout.close(true);
-            deleteListener.onDeleteClick(contact, getAdapterPosition());
+            deleteListener.onDeleteClick(contact);
         });
         Drawable background = llInitials.getBackground();
-        background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.getColor()));
+        background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.color()));
     }
 }

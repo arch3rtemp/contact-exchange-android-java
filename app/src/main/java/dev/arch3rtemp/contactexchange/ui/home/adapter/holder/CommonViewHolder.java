@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 
 public abstract class CommonViewHolder extends RecyclerView.ViewHolder {
 
@@ -13,5 +13,5 @@ public abstract class CommonViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
     }
 
-    public abstract void setData(Contact contact);
+    public abstract void setData(ContactUi contact);
 }

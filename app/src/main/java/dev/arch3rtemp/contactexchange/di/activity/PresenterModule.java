@@ -1,18 +1,15 @@
 package dev.arch3rtemp.contactexchange.di.activity;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
-import dev.arch3rtemp.contactexchange.db.ContactDao;
 import dev.arch3rtemp.contactexchange.di.ActivityScope;
 import dev.arch3rtemp.contactexchange.ui.MainContract;
 import dev.arch3rtemp.contactexchange.ui.MainPresenter;
 
 @Module
-public class PresenterModule {
+public interface PresenterModule {
 
     @ActivityScope
-    @Provides
-    MainContract.Presenter provideMainPresenter(ContactDao contactDao) {
-        return new MainPresenter(contactDao);
-    }
+    @Binds
+    MainContract.Presenter provideMainPresenter(MainPresenter impl);
 }

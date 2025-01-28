@@ -1,7 +1,7 @@
 package dev.arch3rtemp.contactexchange.ui.home.adapter.listener;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 
 public interface ContactClickListener {
-    void onContactClick(Contact contact, int contactPosition);
+    void onContactClick(ContactUi contact);
 }

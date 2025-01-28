@@ -25,7 +25,7 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.contactexchange.ui.MainActivity;
 import dev.arch3rtemp.ui.util.ColorUtils;
 

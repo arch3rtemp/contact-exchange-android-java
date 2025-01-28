@@ -4,16 +4,15 @@ import androidx.recyclerview.widget.DiffUtil;
 
 import java.util.List;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 
 public class ContactDiffCallback extends DiffUtil.Callback {
-    private final List<Contact> oldList;
-    private final List<Contact> newList;
-    public ContactDiffCallback(List<Contact> oldList, List<Contact> newList) {
+    private final List<ContactUi> oldList;
+    private final List<ContactUi> newList;
+    public ContactDiffCallback(List<ContactUi> oldList, List<ContactUi> newList) {
         this.oldList = oldList;
         this.newList = newList;
     }
-
 
     @Override
     public int getOldListSize() {
@@ -27,8 +26,8 @@ public class ContactDiffCallback extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        var oldContactId = oldList.get(oldItemPosition).getId();
-        var newContactId = newList.get(newItemPosition).getId();
+        var oldContactId = oldList.get(oldItemPosition).id();
+        var newContactId = newList.get(newItemPosition).id();
         return oldContactId == newContactId;
     }
 

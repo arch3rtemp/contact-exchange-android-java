@@ -7,8 +7,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.ContactClickListener;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class CardHolder extends CommonViewHolder {
@@ -24,10 +24,10 @@ public class CardHolder extends CommonViewHolder {
     }
 
     @Override
-    public void setData(Contact contact) {
-        tvCard.setText(contact.getJob());
+    public void setData(ContactUi contact) {
+        tvCard.setText(contact.job());
         Drawable background = tvCard.getBackground();
-        background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.getColor()));
-        itemView.setOnClickListener(v -> clickListener.onContactClick(contact, getAdapterPosition()));
+        background.setColorFilter(ColorUtils.createSrcInColorFilter(contact.color()));
+        itemView.setOnClickListener(v -> clickListener.onContactClick(contact));
     }
 }

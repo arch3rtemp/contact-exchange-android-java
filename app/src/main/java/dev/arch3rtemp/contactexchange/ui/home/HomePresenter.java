@@ -1,18 +1,24 @@
 package dev.arch3rtemp.contactexchange.ui.home;
 
+import javax.inject.Inject;
+
 import dev.arch3rtemp.contactexchange.db.ContactDao;
+import dev.arch3rtemp.contactexchange.ui.mapper.ContactToUiMapper;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomePresenter implements HomeContract.Presenter {
 
-    private HomeContract.View view;
     private final ContactDao contactDao;
+    private final ContactToUiMapper mapper;
+    private HomeContract.View view;
     private CompositeDisposable compositeDisposable;
 
-    public HomePresenter(ContactDao contactDao) {
+    @Inject
+    public HomePresenter(ContactDao contactDao, ContactToUiMapper mapper) {
         this.contactDao = contactDao;
+        this.mapper = mapper;
     }
 
     @Override
@@ -26,7 +32,7 @@ public class HomePresenter implements HomeContract.Presenter {
         var disposable = contactDao.selectMyCards()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(cards -> view.onGetMyCards(cards),
+                .subscribe(cards -> view.onGetMyCards(mapper.toUiList(cards)),
                         throwable -> view.showMessage(throwable.getLocalizedMessage()));
         compositeDisposable.add(disposable);
     }
@@ -36,17 +42,17 @@ public class HomePresenter implements HomeContract.Presenter {
         var disposable = contactDao.selectScannedContacts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(contacts -> view.onGetContacts(contacts),
+                .subscribe(contacts -> view.onGetContacts(mapper.toUiList(contacts)),
                         throwable -> view.showMessage(throwable.getLocalizedMessage()));
         compositeDisposable.add(disposable);
     }
 
     @Override
-    public void deleteContact(int id, int position) {
+    public void deleteContact(int id) {
         var disposable = contactDao.delete(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> view.onContactDelete(position),
+                .subscribe(() -> {},
                         throwable -> view.showMessage(throwable.getLocalizedMessage()));
         compositeDisposable.add(disposable);
     }

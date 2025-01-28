@@ -1,5 +1,7 @@
 package dev.arch3rtemp.contactexchange.ui.card.detail;
 
+import javax.inject.Inject;
+
 import dev.arch3rtemp.contactexchange.db.ContactDao;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -7,10 +9,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CardDetailsPresenter implements CardDetailsContract.Presenter {
 
-    private CardDetailsContract.View view;
     private final ContactDao contactDao;
+    private CardDetailsContract.View view;
     private CompositeDisposable compositeDisposable;
 
+    @Inject
     public CardDetailsPresenter(ContactDao contactDao) {
         this.contactDao = contactDao;
     }

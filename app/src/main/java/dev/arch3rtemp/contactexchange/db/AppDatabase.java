@@ -3,7 +3,7 @@ package dev.arch3rtemp.contactexchange.db;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.db.model.Contact;
 
 @Database(entities = {Contact.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {

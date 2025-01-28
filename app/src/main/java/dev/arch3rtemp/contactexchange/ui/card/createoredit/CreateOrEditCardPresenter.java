@@ -1,8 +1,10 @@
 package dev.arch3rtemp.contactexchange.ui.card.createoredit;
 
+import javax.inject.Inject;
+
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.ContactDao;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
+import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -10,20 +12,21 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class CreateOrEditCardPresenter implements CreateOrEditCardContract.Presenter {
 
-    private CreateOrEditCardContract.View view;
     private final ContactDao contactDao;
+    private final StringResourceManager stringManager;
+    private CreateOrEditCardContract.View view;
     private CompositeDisposable compositeDisposable;
-    private StringResourceManager stringManager;
 
-    public CreateOrEditCardPresenter(ContactDao contactDao) {
+    @Inject
+    public CreateOrEditCardPresenter(ContactDao contactDao, StringResourceManager stringManager) {
         this.contactDao = contactDao;
+        this.stringManager = stringManager;
     }
 
     @Override
     public void onCreate(CreateOrEditCardContract.View view) {
         this.view = view;
         compositeDisposable = new CompositeDisposable();
-        stringManager = new StringResourceManager(view.getContext());
     }
 
     @Override

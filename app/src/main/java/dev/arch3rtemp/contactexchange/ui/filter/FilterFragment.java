@@ -24,10 +24,10 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
 import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 
 public class FilterFragment extends Fragment implements FilterContract.View {
 
@@ -79,9 +79,8 @@ public class FilterFragment extends Fragment implements FilterContract.View {
     }
 
     private void createContactRecyclerView() {
-        rvContactAdapter = new ContactRecyclerAdapter();
+        rvContactAdapter = new ContactRecyclerAdapter(this::onContactClick);
         rvContacts.setAdapter(rvContactAdapter);
-        rvContactAdapter.setContactClickListener(this::onContactClick);
         rvContactAdapter.setDeleteClickListener(this::onDeleteClick);
     }
 
@@ -105,16 +104,16 @@ public class FilterFragment extends Fragment implements FilterContract.View {
         });
     }
 
-    public void onContactClick(Contact contact, int contactPosition) {
-        CardActivity.start(requireContext(), contact.getId(), contact.getIsMy(), FragmentType.CARD);
+    public void onContactClick(ContactUi contact) {
+        CardActivity.start(requireContext(), contact.id(), contact.isMy(), FragmentType.CARD);
     }
 
-    public void onDeleteClick(Contact contact, int contactPosition) {
-        presenter.deleteContact(contact.getId());
+    public void onDeleteClick(ContactUi contact) {
+        presenter.deleteContact(contact.id());
     }
 
     @Override
-    public void onGetContacts(List<Contact> contacts) {
+    public void onGetContacts(List<ContactUi> contacts) {
         rvContactAdapter.updateItems(contacts);
     }
 

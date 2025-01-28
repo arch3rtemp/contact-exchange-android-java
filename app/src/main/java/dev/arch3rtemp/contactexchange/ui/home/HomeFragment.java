@@ -21,25 +21,25 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.models.Contact;
 import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
 import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
 import dev.arch3rtemp.contactexchange.ui.filter.FilterFragment;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 
 public class HomeFragment extends Fragment implements HomeContract.View {
 
+    @Inject
+    HomeContract.Presenter presenter;
+    @Inject
+    Router router;
     private FloatingActionButton fab;
     private RecyclerView rvCards;
     private ImageView ivSearch;
     private RecyclerView rvContacts;
     private ContactRecyclerAdapter rvCardAdapter;
     private ContactRecyclerAdapter rvContactAdapter;
-    @Inject
-    HomeContract.Presenter presenter;
-    @Inject
-    Router router;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -91,16 +91,14 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     private void createCardRecyclerView() {
-        rvCardAdapter = new ContactRecyclerAdapter();
+        rvCardAdapter = new ContactRecyclerAdapter(this::onContactClick);
         rvCards.setAdapter(rvCardAdapter);
-        rvCardAdapter.setContactClickListener(this::onContactClick);
         observeRecyclerListener();
     }
 
     private void createContactRecyclerView() {
-        rvContactAdapter = new ContactRecyclerAdapter();
+        rvContactAdapter = new ContactRecyclerAdapter(this::onContactClick);
         rvContacts.setAdapter(rvContactAdapter);
-        rvContactAdapter.setContactClickListener(this::onContactClick);
         rvContactAdapter.setDeleteClickListener(this::onDeleteClick);
     }
 
@@ -132,27 +130,22 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         presenter.getContacts();
     }
 
-    public void onContactClick(Contact contact, int contactPosition) {
-        CardActivity.start(requireContext(), contact.getId(), contact.getIsMy(), FragmentType.CARD);
+    public void onContactClick(ContactUi contact) {
+        CardActivity.start(requireContext(), contact.id(), contact.isMy(), FragmentType.CARD);
     }
 
-    public void onDeleteClick(Contact contact, int contactPosition) {
-        presenter.deleteContact(contact.getId(), contactPosition);
+    public void onDeleteClick(ContactUi contact) {
+        presenter.deleteContact(contact.id());
     }
 
     @Override
-    public void onGetMyCards(List<Contact> cards) {
+    public void onGetMyCards(List<ContactUi> cards) {
         rvCardAdapter.updateItems(cards);
     }
 
     @Override
-    public void onGetContacts(List<Contact> contacts) {
+    public void onGetContacts(List<ContactUi> contacts) {
         rvContactAdapter.updateItems(contacts);
-    }
-
-    @Override
-    public void onContactDelete(int position) {
-        rvContactAdapter.removeItem(position);
     }
 
     @Override
