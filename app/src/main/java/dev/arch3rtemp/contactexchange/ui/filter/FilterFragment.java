@@ -2,8 +2,6 @@ package dev.arch3rtemp.contactexchange.ui.filter;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +26,7 @@ import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
 import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
+import dev.arch3rtemp.ui.view.FilterTextWatcher;
 
 public class FilterFragment extends Fragment implements FilterContract.View {
 
@@ -89,18 +88,12 @@ public class FilterFragment extends Fragment implements FilterContract.View {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
 
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
+        etSearch.addTextChangedListener(new FilterTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 var filtered = presenter.filterContacts(s.toString());
                 rvContactAdapter.updateItems(filtered);
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
         });
     }
 

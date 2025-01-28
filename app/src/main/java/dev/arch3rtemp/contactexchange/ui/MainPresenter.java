@@ -16,22 +16,23 @@ import javax.inject.Inject;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.ContactDao;
 import dev.arch3rtemp.contactexchange.db.model.Contact;
+import dev.arch3rtemp.contactexchange.util.SchedulerProvider;
 import dev.arch3rtemp.ui.util.StringResourceManager;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainPresenter implements MainContract.Presenter {
 
     private final ContactDao contactDao;
+    private final SchedulerProvider schedulers;
     private final StringResourceManager stringManager;
     private MainContract.View view;
     private GmsBarcodeScanner scanner;
     private CompositeDisposable compositeDisposable;
 
     @Inject
-    public MainPresenter(ContactDao contactDao, StringResourceManager stringManager) {
+    public MainPresenter(ContactDao contactDao, SchedulerProvider schedulers, StringResourceManager stringManager) {
         this.contactDao = contactDao;
+        this.schedulers = schedulers;
         this.stringManager = stringManager;
     }
 
@@ -69,8 +70,8 @@ public class MainPresenter implements MainContract.Presenter {
 
     private void saveContact(Contact contact) {
         var disposable = contactDao.insert(contact)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.main())
                 .subscribe(() -> view.showMessage(stringManager.string(R.string.msg_contact_added)),
                         throwable -> view.showMessage(throwable.getLocalizedMessage()));
         compositeDisposable.add(disposable);

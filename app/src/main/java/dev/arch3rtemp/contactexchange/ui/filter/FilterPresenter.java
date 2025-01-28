@@ -9,22 +9,23 @@ import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.ContactDao;
 import dev.arch3rtemp.contactexchange.ui.mapper.ContactToUiMapper;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
+import dev.arch3rtemp.contactexchange.util.SchedulerProvider;
 import dev.arch3rtemp.ui.util.StringResourceManager;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FilterPresenter implements FilterContract.Presenter {
-    private final StringResourceManager stringManager;
     private final ContactDao contactDao;
+    private final SchedulerProvider schedulers;
     private final ContactToUiMapper mapper;
+    private final StringResourceManager stringManager;
     private FilterContract.View view;
     private CompositeDisposable compositeDisposable;
     private List<ContactUi> unfiltered;
 
     @Inject
-    public FilterPresenter(ContactDao contactDao, ContactToUiMapper mapper, StringResourceManager stringManager) {
+    public FilterPresenter(ContactDao contactDao, SchedulerProvider schedulers, ContactToUiMapper mapper, StringResourceManager stringManager) {
         this.contactDao = contactDao;
+        this.schedulers = schedulers;
         this.mapper = mapper;
         this.stringManager = stringManager;
     }
@@ -38,8 +39,8 @@ public class FilterPresenter implements FilterContract.Presenter {
     @Override
     public void getContacts() {
         var disposable = contactDao.selectScannedContacts()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.main())
                 .subscribe(contacts -> {
                             unfiltered = mapper.toUiList(contacts);
                             view.onGetContacts(unfiltered);
@@ -51,8 +52,8 @@ public class FilterPresenter implements FilterContract.Presenter {
     @Override
     public void deleteContact(int id) {
         var disposable = contactDao.delete(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.main())
                 .subscribe(() -> view.showMessage(stringManager.string(R.string.msg_contact_deleted)),
                         throwable -> view.showMessage(throwable.getLocalizedMessage()));
         compositeDisposable.add(disposable);
