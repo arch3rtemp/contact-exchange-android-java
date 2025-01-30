@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.model.Contact;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 import dev.arch3rtemp.ui.util.ColorUtils;
 
 public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, CreateOrEditCardContract.View {
@@ -30,10 +31,8 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
     @Inject
     CreateOrEditCardContract.Presenter presenter;
     private boolean isCreate;
-    private int color;
     private int currentColor;
 
-    private Contact card;
     private ConstraintLayout clCreateOrEdit;
     private Button btnCreateOrSave;
     private TextView tvNavy;
@@ -96,7 +95,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         } else {
             initColorsView(view);
             currentColor = ContextCompat.getColor(requireContext(), R.color.light_navy);
-            color = currentColor;
             cardBackground = clCreateOrEdit.getBackground();
             tvNavy.setBackgroundResource(R.drawable.shape_selected_card_color_light_navy_bg);
 
@@ -114,21 +112,20 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         etPhoneOffice = view.findViewById(R.id.et_tel_office);
     }
 
-    private void setDataEditTextFields() {
-        etFullName.setText(card.getName());
-        etCompany.setText(card.getJob());
-        etPosition.setText(card.getPosition());
-        etEmail.setText(card.getEmail());
-        etPhoneMobile.setText(card.getPhoneMobile());
-        etPhoneOffice.setText(card.getPhoneOffice());
+    private void setDataEditTextFields(ContactUi card) {
+        etFullName.setText(card.name());
+        etCompany.setText(card.job());
+        etPosition.setText(card.position());
+        etEmail.setText(card.email());
+        etPhoneMobile.setText(card.phoneMobile());
+        etPhoneOffice.setText(card.phoneOffice());
     }
 
     @Override
-    public void onGetContactById(Contact card) {
-        this.card = card;
+    public void onGetContactById(ContactUi card) {
         Drawable cardBackground = clCreateOrEdit.getBackground();
-        setBackgroundColorWithAnimationAndRetainShape(card.getColor(), card.getColor(), cardBackground);
-        setDataEditTextFields();
+        setBackgroundColorWithAnimationAndRetainShape(card.color(), card.color(), cardBackground);
+        setDataEditTextFields(card);
     }
 
     private void initColorsView(View view) {
@@ -168,57 +165,43 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         int clickedId = v.getId();
 
         if (clickedId == R.id.tv_color_light_navy) {
-            color = ContextCompat.getColor(requireContext(), R.color.light_navy);
+            var color = ContextCompat.getColor(requireContext(), R.color.light_navy);
             tvNavy.setBackgroundResource(R.drawable.shape_selected_card_color_light_navy_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_aqua_marine) {
-            color = ContextCompat.getColor(requireContext(), R.color.aqua_marine);
+            var color = ContextCompat.getColor(requireContext(), R.color.aqua_marine);
             tvAqua.setBackgroundResource(R.drawable.shape_selected_card_color_aqua_marine_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_ugly_yellow) {
-            color = ContextCompat.getColor(requireContext(), R.color.ugly_yellow);
+            var color = ContextCompat.getColor(requireContext(), R.color.ugly_yellow);
             tvYellow.setBackgroundResource(R.drawable.shape_selected_card_color_ugly_yellow_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_shamrock_green) {
-            color = ContextCompat.getColor(requireContext(), R.color.shamrock_green);
+            var color = ContextCompat.getColor(requireContext(), R.color.shamrock_green);
             tvGreen.setBackgroundResource(R.drawable.shape_selected_card_color_shamrock_green_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_black_three) {
-            color = ContextCompat.getColor(requireContext(), R.color.black_three);
+            var color = ContextCompat.getColor(requireContext(), R.color.black_three);
             tvBlack.setBackgroundResource(R.drawable.shape_selected_card_color_black_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_pumpkin) {
-            color = ContextCompat.getColor(requireContext(), R.color.pumpkin);
+            var color = ContextCompat.getColor(requireContext(), R.color.pumpkin);
             tvPumpkin.setBackgroundResource(R.drawable.shape_selected_card_color_pumpkin_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_darkish_purple) {
-            color = ContextCompat.getColor(requireContext(), R.color.darkish_purple);
+            var color = ContextCompat.getColor(requireContext(), R.color.darkish_purple);
             tvPurple.setBackgroundResource(R.drawable.shape_selected_card_color_darkish_purple_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.btn_create_or_save) {
 
-            if (isEmptyField(etFullName))
-                return;
-            if (isEmptyField(etCompany))
-                return;
-            if (isEmptyField(etPosition))
-                return;
-            if (isEmptyField(etEmail))
-                return;
-            if (isEmptyField(etPhoneMobile))
-                return;
-            if (isEmptyField(etPhoneOffice))
-                return;
-
             var name = etFullName.getText().toString();
-
             var company = etCompany.getText().toString();
             var position = etPosition.getText().toString();
             var email = etEmail.getText().toString();
@@ -226,9 +209,10 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             var phoneOffice = etPhoneOffice.getText().toString();
 
             if (isCreate) {
-                Contact contact = new Contact(0, name, company, position, email, phoneMobile, phoneOffice, System.currentTimeMillis(), color, true);
+                Contact contact = new Contact(0, name, company, position, email, phoneMobile, phoneOffice, System.currentTimeMillis(), currentColor, true);
                 presenter.createContact(contact);
             } else {
+                var card = presenter.getCurrentCard();
                 card.setName(name);
                 card.setJob(company);
                 card.setPosition(position);
@@ -237,8 +221,6 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
                 card.setPhoneOffice(phoneOffice);
                 presenter.editContact(card);
             }
-
-            getParentFragmentManager().popBackStack();
         }
     }
 
@@ -260,16 +242,14 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
 
     }
 
-    private boolean isEmptyField(EditText editText) {
-        boolean result = editText.getText().toString().isEmpty();
-        if (result)
-            showToastMessage(getString(R.string.msg_all_fields_required));
-        return result;
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void showToastMessage(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    public void navigateUp() {
+        getParentFragmentManager().popBackStack();
     }
 
     private void setBackgroundColorWithAnimationAndRetainShape(final int currentColor, final int finalColor, final Drawable background) {
