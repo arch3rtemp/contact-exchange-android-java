@@ -1,6 +1,5 @@
 package dev.arch3rtemp.contactexchange.ui;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -92,10 +91,5 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     protected void onDestroy() {
         super.onDestroy();
         presenter.onDestroy();
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
     }
 }
