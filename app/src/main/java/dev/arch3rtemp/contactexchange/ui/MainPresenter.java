@@ -24,32 +24,23 @@ public class MainPresenter implements MainContract.Presenter {
 
     private final ContactDao contactDao;
     private final SchedulerProvider schedulers;
+    private final GmsBarcodeScanner scanner;
     private final StringResourceManager stringManager;
     private MainContract.View view;
-    private GmsBarcodeScanner scanner;
     private CompositeDisposable compositeDisposable;
 
     @Inject
-    public MainPresenter(ContactDao contactDao, SchedulerProvider schedulers, StringResourceManager stringManager) {
+    public MainPresenter(ContactDao contactDao, SchedulerProvider schedulers, GmsBarcodeScanner scanner, StringResourceManager stringManager) {
         this.contactDao = contactDao;
         this.schedulers = schedulers;
+        this.scanner = scanner;
         this.stringManager = stringManager;
     }
 
     @Override
     public void onCreate(MainContract.View view) {
         this.view = view;
-        scanner = initScanner(view.getContext());
         compositeDisposable = new CompositeDisposable();
-    }
-
-    private GmsBarcodeScanner initScanner(Context context) {
-        var options = new GmsBarcodeScannerOptions.Builder()
-                .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .enableAutoZoom()
-                .build();
-
-        return GmsBarcodeScanning.getClient(context, options);
     }
 
     @Override

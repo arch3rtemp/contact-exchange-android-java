@@ -9,7 +9,7 @@ import dev.arch3rtemp.contactexchange.di.fragment.FragmentComponent;
 import dev.arch3rtemp.contactexchange.ui.MainActivity;
 
 @ActivityScope
-@Subcomponent(modules = {RouterModule.class, PresenterModule.class, ActivityModule.class})
+@Subcomponent(modules = {ActivityModule.class})
 public interface ActivityComponent {
 
     void inject(MainActivity mainActivity);

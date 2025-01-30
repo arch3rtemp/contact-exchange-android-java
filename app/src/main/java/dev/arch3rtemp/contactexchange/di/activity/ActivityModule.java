@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import dagger.Module;
 import dagger.Provides;
 
-@Module
+@Module(includes = {PresenterModule.class, RouterModule.class, ScannerModule.class})
 public class ActivityModule {
 
     @Provides
