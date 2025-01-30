@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @Entity(tableName = "contact_table")
-public class Contact {
+public final class Contact {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;

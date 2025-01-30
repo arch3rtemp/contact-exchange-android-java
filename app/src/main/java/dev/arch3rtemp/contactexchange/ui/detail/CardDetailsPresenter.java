@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.card.detail;
+package dev.arch3rtemp.contactexchange.ui.detail;
 
 import javax.inject.Inject;
 

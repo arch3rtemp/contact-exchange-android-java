@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.card.createoredit;
+package dev.arch3rtemp.contactexchange.ui.createoredit;
 
 import javax.inject.Inject;
 

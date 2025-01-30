@@ -7,7 +7,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class FragmentManagerModule {
+public class ActivityModule {
 
     @Provides
     public FragmentManager provideFragmentManager(FragmentActivity activity) {

@@ -1,7 +1,5 @@
 package dev.arch3rtemp.contactexchange.router;
 
-import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -18,26 +16,15 @@ public class RouterImpl implements Router {
     }
 
     @Override
-    public void navigate(Class<? extends Fragment> fragmentClass, Bundle bundle, boolean addToBackStack) {
-        if (addToBackStack) {
-            navigateAndAddToBackStack(fragmentClass, bundle);
-        } else {
-            navigateWithoutAddToBackStack(fragmentClass, bundle);
+    public void navigate(Fragment fragment, boolean animation, boolean addToBackstack) {
+        var transaction = fragmentManager.beginTransaction();
+        if (animation) {
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         }
-    }
-
-    private void navigateAndAddToBackStack(Class<? extends Fragment> fragmentClass, Bundle bundle) {
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.fl_main_frame_container, fragmentClass, bundle, fragmentClass.getSimpleName())
-                .addToBackStack(fragmentClass.getSimpleName())
-                .commit();
-    }
-
-    private void navigateWithoutAddToBackStack(Class<? extends Fragment> fragmentClass, Bundle bundle) {
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.fl_main_frame_container, fragmentClass, bundle, fragmentClass.getSimpleName())
-                .commit();
+        transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getSimpleName());
+        if (addToBackstack) {
+            transaction.addToBackStack(fragment.getClass().getSimpleName());
+        }
+        transaction.commit();
     }
 }

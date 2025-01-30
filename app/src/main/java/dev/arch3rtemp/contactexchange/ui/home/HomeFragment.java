@@ -22,8 +22,8 @@ import javax.inject.Inject;
 import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.router.Router;
-import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
-import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
+import dev.arch3rtemp.contactexchange.ui.createoredit.CreateOrEditCardFragment;
+import dev.arch3rtemp.contactexchange.ui.detail.CardDetailsFragment;
 import dev.arch3rtemp.contactexchange.ui.filter.FilterFragment;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
@@ -82,11 +82,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private void setListeners() {
         fab.setOnClickListener(v -> {
-            CardActivity.start(requireContext(), -1, false, FragmentType.CREATE);
+            router.navigate(CreateOrEditCardFragment.newInstance(-1, true), true, true);
         });
 
         ivSearch.setOnClickListener(v -> {
-            router.navigate(FilterFragment.class, null, true);
+            router.navigate(FilterFragment.newInstance(), false, true);
         });
     }
 
@@ -131,7 +131,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     public void onContactClick(ContactUi contact) {
-        CardActivity.start(requireContext(), contact.id(), contact.isMy(), FragmentType.CARD);
+        router.navigate(CardDetailsFragment.newInstance(contact.id(), contact.isMy()), true, true);
     }
 
     public void onDeleteClick(ContactUi contact) {
@@ -159,5 +159,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         rvCardAdapter = null;
         rvContactAdapter = null;
         presenter.onDestroy();
+    }
+
+    public static HomeFragment newInstance() {
+        return new HomeFragment();
     }
 }

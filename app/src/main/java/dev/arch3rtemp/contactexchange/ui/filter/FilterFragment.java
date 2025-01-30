@@ -22,20 +22,22 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.ui.card.CardActivity;
-import dev.arch3rtemp.contactexchange.ui.card.FragmentType;
+import dev.arch3rtemp.contactexchange.router.Router;
+import dev.arch3rtemp.contactexchange.ui.detail.CardDetailsFragment;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 import dev.arch3rtemp.ui.view.FilterTextWatcher;
 
 public class FilterFragment extends Fragment implements FilterContract.View {
 
+    @Inject
+    FilterContract.Presenter presenter;
+    @Inject
+    Router router;
     private TextInputEditText etSearch;
     private ImageView ivSearch;
     private RecyclerView rvContacts;
     private ContactRecyclerAdapter rvContactAdapter;
-    @Inject
-    FilterContract.Presenter presenter;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -98,7 +100,7 @@ public class FilterFragment extends Fragment implements FilterContract.View {
     }
 
     public void onContactClick(ContactUi contact) {
-        CardActivity.start(requireContext(), contact.id(), contact.isMy(), FragmentType.CARD);
+        router.navigate(CardDetailsFragment.newInstance(contact.id(), contact.isMy()),true, true);
     }
 
     public void onDeleteClick(ContactUi contact) {
@@ -113,5 +115,9 @@ public class FilterFragment extends Fragment implements FilterContract.View {
     @Override
     public void showMessage(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static FilterFragment newInstance() {
+        return new FilterFragment();
     }
 }

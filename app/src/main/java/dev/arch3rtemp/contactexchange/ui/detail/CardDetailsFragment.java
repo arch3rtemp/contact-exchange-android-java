@@ -1,8 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.card.detail;
-
-import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.ID;
-import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.IS_CREATE;
-import static dev.arch3rtemp.contactexchange.ui.card.CardActivity.IS_MY;
+package dev.arch3rtemp.contactexchange.ui.detail;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -35,8 +31,8 @@ import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.contactexchange.router.Router;
-import dev.arch3rtemp.contactexchange.ui.card.createoredit.CreateOrEditCardFragment;
-import dev.arch3rtemp.contactexchange.ui.card.result.ResultFragment;
+import dev.arch3rtemp.contactexchange.ui.createoredit.CreateOrEditCardFragment;
+import dev.arch3rtemp.contactexchange.ui.result.ResultFragment;
 import dev.arch3rtemp.ui.util.ColorUtils;
 import dev.arch3rtemp.ui.util.DeviceSizeResolver;
 
@@ -87,8 +83,8 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
         initPresenter();
         setListeners();
 
-        boolean isMy = requireArguments().getBoolean(IS_MY, false);
-        id = requireArguments().getInt(ID, -1);
+        boolean isMy = requireArguments().getBoolean(ARG_IS_MY, false);
+        id = requireArguments().getInt(ARG_ID, -1);
         presenter.getContactById(id);
         if (!isMy) {
             clEdit.setVisibility(View.GONE);
@@ -126,10 +122,7 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
     }
 
     private void createEditFragment() {
-        var bundle = new Bundle();
-        bundle.putBoolean(IS_CREATE, false);
-        bundle.putInt(ID, id);
-        router.navigate(CreateOrEditCardFragment.class, bundle, true);
+        router.navigate(CreateOrEditCardFragment.newInstance(id, false), false, true);
     }
 
     private void setCardData() {
@@ -198,7 +191,7 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
     }
 
     private void createDeletedFragment() {
-        router.navigate(ResultFragment.class, null, false);
+        router.navigate(ResultFragment.newInstance(), false, false);
     }
 
     @Override
@@ -211,4 +204,17 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
         super.onDestroyView();
         presenter.onDestroy();
     }
+
+    public static CardDetailsFragment newInstance(int id, boolean isMy) {
+
+        var args = new Bundle();
+        args.putInt(ARG_ID, id);
+        args.putBoolean(ARG_IS_MY, isMy);
+        CardDetailsFragment fragment = new CardDetailsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    private static final String ARG_ID = "id";
+    private static final String ARG_IS_MY = "isMy";
 }

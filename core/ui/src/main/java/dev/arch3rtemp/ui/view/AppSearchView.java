@@ -34,8 +34,8 @@ public class AppSearchView extends SearchView {
     private void init() {
         TextView searchTextView = findViewById(androidx.appcompat.R.id.search_src_text);
         var font = ResourcesCompat.getFont(getContext(), R.font.poppins_medium);
-        var textColor = ResourcesCompat.getColor(getResources(), R.color.warm_grey_two, null);
-        var hintColor = ResourcesCompat.getColor(getResources(), R.color.pinkish_grey, null);
+        var textColor = ContextCompat.getColor(getContext(), R.color.warm_grey_two);
+        var hintColor = ContextCompat.getColor(getContext(), R.color.pinkish_grey);
         searchTextView.setTypeface(font);
         searchTextView.setTextSize(12f);
         searchTextView.setTextColor(textColor);
@@ -44,7 +44,7 @@ public class AppSearchView extends SearchView {
         closeIcon.setColorFilter(ColorUtils.createSrcInColorFilter(hintColor));
 
         ImageView searchIcon = findViewById(androidx.appcompat.R.id.search_button);
-        int iconColor = ResourcesCompat.getColor(getResources(), R.color.icon_primary, null);
+        int iconColor = ContextCompat.getColor(getContext(), R.color.icon_primary);
         var iconDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_search);
         assert iconDrawable != null;
         iconDrawable.setColorFilter(ColorUtils.createSrcInColorFilter(iconColor));

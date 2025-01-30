@@ -2,10 +2,10 @@ package dev.arch3rtemp.contactexchange.di.fragment;
 
 import dagger.Binds;
 import dagger.Module;
-import dev.arch3rtemp.contactexchange.ui.card.createoredit.CreateOrEditCardContract;
-import dev.arch3rtemp.contactexchange.ui.card.createoredit.CreateOrEditCardPresenter;
-import dev.arch3rtemp.contactexchange.ui.card.detail.CardDetailsContract;
-import dev.arch3rtemp.contactexchange.ui.card.detail.CardDetailsPresenter;
+import dev.arch3rtemp.contactexchange.ui.createoredit.CreateOrEditCardContract;
+import dev.arch3rtemp.contactexchange.ui.createoredit.CreateOrEditCardPresenter;
+import dev.arch3rtemp.contactexchange.ui.detail.CardDetailsContract;
+import dev.arch3rtemp.contactexchange.ui.detail.CardDetailsPresenter;
 import dev.arch3rtemp.contactexchange.ui.filter.FilterContract;
 import dev.arch3rtemp.contactexchange.ui.filter.FilterPresenter;
 import dev.arch3rtemp.contactexchange.ui.home.HomeContract;

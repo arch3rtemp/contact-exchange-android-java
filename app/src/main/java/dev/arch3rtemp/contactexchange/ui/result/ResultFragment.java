@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.ui.card.result;
+package dev.arch3rtemp.contactexchange.ui.result;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -59,5 +59,9 @@ public class ResultFragment extends Fragment {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(scaleUpX).with(scaleUpY).with(scaleDownX).with(scaleDownY);
         animatorSet.start();
+    }
+
+    public static ResultFragment newInstance() {
+        return new ResultFragment();
     }
 }
