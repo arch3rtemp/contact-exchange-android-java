@@ -11,12 +11,20 @@ public interface HomeContract {
     interface Presenter extends BasePresenter<View> {
         void getMyCards();
         void getContacts();
-        void deleteContact(int id);
+        void deleteContact(ContactUi contact);
+        void saveContact(ContactUi contact);
     }
 
     interface View extends BaseView {
-        void onGetMyCards(List<ContactUi> cards);
-        void onGetContacts(List<ContactUi> contacts);
+        void onCardsResult(ViewState state);
+        void onContactsResult(ViewState state);
+        void onContactDeleted(ContactUi contact, String message);
         void showMessage(String message);
+    }
+
+    sealed interface ViewState permits ViewState.Empty, ViewState.Error, ViewState.Success {
+        record Empty() implements ViewState {}
+        record Error(String message) implements ViewState {}
+        record Success(List<ContactUi> data) implements ViewState {}
     }
 }

@@ -5,6 +5,7 @@ import android.database.SQLException;
 import java.util.List;
 
 import dev.arch3rtemp.contactexchange.db.model.Contact;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 
 public class TestData {
 
@@ -91,4 +92,47 @@ public class TestData {
 
     public static final String testContactJsonCompact = "{\"id\":9,\"name\":\"John Doe\",\"job\":\"Job\",\"position\":\"Developer\",\"email\":\"john@example.com\",\"phoneMobile\":\"+15559879855\",\"phoneOffice\":\"+15558797882\",\"createdAt\":1736190485327,\"formattedCreatedAt\":\"06 Jan 25\",\"color\":16711680,\"isMy\":true}";
 
+    public static final ContactUi testMyContactUi = new ContactUi(
+            9,
+            "John Doe",
+            "Job",
+            "Developer",
+            "john@example.com",
+            "+15559879855",
+            "+15558797882",
+            SIMULATED_CREATED_TIME_1,
+            "06 Jan 25",
+            0xFF0000,
+            true
+    );
+
+    public static ContactUi testScannedContactUi = new ContactUi(
+            10,
+            "Jane Doe",
+            "JP Morgan",
+            "CEO",
+            "jane@example.com",
+            "+15559879853",
+            "+15558797884",
+            SIMULATED_CREATED_TIME_2,
+            "06 Jan 25",
+            0xFF00FF,
+            false
+    );
+
+    public static ContactUi testInvalidContactUi = new ContactUi(
+            NEGATIVE_CONTACT_ID,
+            "Jane Doe",
+            "JP Morgan",
+            "CEO",
+            "jane@example.com",
+            "+15559879853",
+            "+15558797884",
+            SIMULATED_CREATED_TIME_2,
+            "06 Jan 25",
+            0xFF00FF,
+            false
+    );
+
+    public static List<ContactUi> testContactsUi = List.of(testMyContactUi, testScannedContactUi);
 }

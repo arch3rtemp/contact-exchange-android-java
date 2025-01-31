@@ -29,9 +29,9 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
-import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.createoredit.CreateOrEditCardFragment;
+import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 import dev.arch3rtemp.contactexchange.ui.result.ResultFragment;
 import dev.arch3rtemp.ui.util.ColorUtils;
 import dev.arch3rtemp.ui.util.DeviceSizeResolver;
@@ -45,7 +45,6 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
     @Inject
     DeviceSizeResolver deviceSizeResolver;
     private int id;
-    private Contact card;
     private ConstraintLayout clCard;
     private ConstraintLayout clEdit;
     private ConstraintLayout clDelete;
@@ -115,27 +114,26 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
     }
 
     @Override
-    public void onCardLoaded(Contact card) {
-        this.card = card;
-        setCardData();
-        generateQr();
+    public void onCardLoaded(ContactUi card) {
+        setCardData(card);
+        generateQr(card);
     }
 
     private void createEditFragment() {
         router.navigate(CreateOrEditCardFragment.newInstance(id, false), false, true);
     }
 
-    private void setCardData() {
+    private void setCardData(ContactUi card) {
         Drawable cardBackground = clCard.getBackground();
-        cardBackground.mutate().setColorFilter(ColorUtils.createSrcInColorFilter(card.getColor()));
-        tvName.setText(card.getName());
-        tvPosition.setText(card.getPosition());
-        tvEmail.setText(card.getEmail());
-        tvPhoneMobile.setText(card.getPhoneMobile());
-        tvPhoneOffice.setText(card.getPhoneOffice());
+        cardBackground.mutate().setColorFilter(ColorUtils.createSrcInColorFilter(card.color()));
+        tvName.setText(card.name());
+        tvPosition.setText(card.position());
+        tvEmail.setText(card.email());
+        tvPhoneMobile.setText(card.phoneMobile());
+        tvPhoneOffice.setText(card.phoneOffice());
     }
 
-    private void generateQr() {
+    private void generateQr(ContactUi card) {
         var size = deviceSizeResolver.resolve(requireActivity().getWindowManager());
         int width = size.first;
         int height = size.second;
@@ -163,26 +161,26 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
         delete.setOnClickListener(d -> {
             deleteDialog.dismiss();
             presenter.deleteContact(id);
-            cardDeletionAnimation();
         });
 
         cancel.setOnClickListener(c -> deleteDialog.dismiss());
     }
 
-    private void cardDeletionAnimation() {
-        ObjectAnimator moveY = ObjectAnimator.ofFloat(clCard, View.Y, clCard.getY(), clCard.getY()+700 );
-        ObjectAnimator moveX = ObjectAnimator.ofFloat(clCard, View.X, clCard.getX(), clCard.getX()+0 );
+    @Override
+    public void animateDeletion() {
+        var moveY = ObjectAnimator.ofFloat(clCard, View.Y, clCard.getY(), clCard.getY() + 700);
+        var moveX = ObjectAnimator.ofFloat(clCard, View.X, clCard.getX(), clCard.getX() + 0);
 
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(clCard, View.SCALE_Y, 1f, 0.2f);
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(clCard, View.SCALE_X, 1f, 0.2f);
+        var scaleY = ObjectAnimator.ofFloat(clCard, View.SCALE_Y, 1f, 0.2f);
+        var scaleX = ObjectAnimator.ofFloat(clCard, View.SCALE_X, 1f, 0.2f);
 
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(clCard, View.ALPHA, 1f,0f);
+        var alpha = ObjectAnimator.ofFloat(clCard, View.ALPHA, 1f, 0f);
 
-        AnimatorSet animatorSet = new AnimatorSet();
+        var animatorSet = new AnimatorSet();
         animatorSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animator) {
-                createDeletedFragment();
+                navigateToResult();
             }
         });
         animatorSet.setDuration(1000);
@@ -190,7 +188,7 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
         animatorSet.start();
     }
 
-    private void createDeletedFragment() {
+    private void navigateToResult() {
         router.navigate(ResultFragment.newInstance(), false, false);
     }
 
