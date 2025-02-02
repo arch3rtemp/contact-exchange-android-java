@@ -2,12 +2,11 @@
 #Gradle
 gradle-plugin = "8.8.0"
 #Jetpack
-core = "1.13.1"
+core = "1.15.0"
 appcompat = "1.7.0"
 room = "2.6.1"
-activity = "1.9.2"
+activity = "1.10.0"
 fragment = "1.8.5"
-navigation = "2.8.5"
 splash = "1.0.1"
 #Google
 material = "1.12.0"

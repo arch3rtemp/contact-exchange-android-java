@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'dev.arch3rtemp.contactexchange'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "dev.arch3rtemp.contactexchangejava"
         minSdk 21
-        targetSdk 34
+        targetSdk 35
         versionCode 1
         versionName "1.0"
 
