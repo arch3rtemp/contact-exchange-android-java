@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,22 +15,19 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingVertical="10dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="20dp"
+        app:contentInsetEnd="20dp"
+        app:contentInsetStart="20dp"
         app:title="@string/home_cards"
-        app:titleMarginStart="20dp"
         app:titleTextAppearance="@style/ToolbarTheme">
 
-        <LinearLayout
+    <LinearLayout
             android:id="@+id/ll_back"
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_gravity="start"
             android:background="@drawable/shape_back_rounded_bg"
             android:gravity="center"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:visibility="invisible">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/tv_back"
@@ -54,10 +52,7 @@
                 android:layout_height="30dp"
                 android:contentDescription="@string/qr"
                 android:fontFamily="@font/poppins"
-                android:gravity="center"
-                android:src="@drawable/ic_baseline_qr_code_2_24"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:src="@drawable/ic_baseline_qr_code_2_24" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
