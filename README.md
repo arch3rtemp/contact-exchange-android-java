@@ -32,13 +32,13 @@ An Android application that lets you **create contact cards** and **share them**
 This repository demonstrates different Android architecture approaches. Each branch contains the **same app functionality** but uses different tech stacks and patterns:
 
 1. **MVP** (branch: `master`)  
-   - **Java**  
+   - **Java 17**  
    - Plain MVP architecture (no Clean Architecture)  
-   - No RxJava  
+   - **RxJava** for reactive programming  
    - **Tests**: JUnit, Mockito, Robolectric
 
 2. **MVP-MVI** (branch: `mvp-mvi`)  
-   - **Java**  
+   - **Java 17**  
    - Clean Architecture + MVP + MVI pattern  
    - **RxJava** for reactive programming  
    - **Tests**: JUnit, Mockito, Robolectric
