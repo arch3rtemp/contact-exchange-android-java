@@ -1,23 +1,23 @@
 [versions]
 #Gradle
-gradle-plugin = "8.8.1"
+gradle-plugin = "8.8.2"
 #Jetpack
 core = "1.15.0"
 appcompat = "1.7.0"
 room = "2.6.1"
 fragment = "1.8.6"
-navigation = "2.8.7"
+navigation = "2.8.9"
 splash = "1.0.1"
 #Google
 material = "1.12.0"
 gson = "2.11.0"
-hilt = "2.53"
+hilt = "2.56"
 play-services-code-scanner = "16.1.0"
 #Rx
 rxjava = "3.1.10"
 rxandroid = "3.0.2"
 #Misc
-desugar = "2.1.4"
+desugar = "2.1.5"
 qrgenerator = "1.0.1"
 swipereveallayout = "1.4.0"
 timber = "5.0.1"
