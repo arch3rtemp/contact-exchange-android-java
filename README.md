@@ -34,12 +34,14 @@ This repository demonstrates different Android architecture approaches. Each bra
 1. **MVP** (branch: `master`)
    - **Java 17**
    - Plain MVP architecture (no Clean Architecture)
+   - **Dagger2** for dependency injection
    - **RxJava** for reactive programming
    - **Tests**: JUnit, Mockito, Robolectric
 
 2. **MVP-MVI** (branch: `mvp-mvi`)
    - **Java 17**
    - Clean Architecture + MVP + MVI pattern
+   - **Hilt** for dependency injection
    - **RxJava** for reactive programming
    - **Tests**: JUnit, Mockito, Robolectric
 
