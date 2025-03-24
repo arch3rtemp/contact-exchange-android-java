@@ -1,7 +1,7 @@
-package dev.arch3rtemp.contactexchange.di.fragment;
+package dev.arch3rtemp.contactexchange.di.component.fragment;
 
 import dagger.Subcomponent;
-import dev.arch3rtemp.contactexchange.di.FragmentScope;
+import dev.arch3rtemp.contactexchange.di.scope.FragmentScope;
 import dev.arch3rtemp.contactexchange.ui.createoredit.CreateOrEditCardFragment;
 import dev.arch3rtemp.contactexchange.ui.detail.CardDetailsFragment;
 import dev.arch3rtemp.contactexchange.ui.filter.FilterFragment;

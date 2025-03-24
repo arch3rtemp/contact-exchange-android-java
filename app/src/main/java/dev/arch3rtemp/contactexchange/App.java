@@ -2,8 +2,8 @@ package dev.arch3rtemp.contactexchange;
 
 import android.app.Application;
 
-import dev.arch3rtemp.contactexchange.di.app.AppComponent;
-import dev.arch3rtemp.contactexchange.di.app.DaggerAppComponent;
+import dev.arch3rtemp.contactexchange.di.component.app.AppComponent;
+import dev.arch3rtemp.contactexchange.di.component.app.DaggerAppComponent;
 
 public class App extends Application {
 

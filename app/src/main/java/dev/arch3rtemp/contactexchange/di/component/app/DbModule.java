@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.di.app;
+package dev.arch3rtemp.contactexchange.di.component.app;
 
 import android.content.Context;
 
@@ -8,7 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 import dev.arch3rtemp.contactexchange.db.AppDatabase;
 import dev.arch3rtemp.contactexchange.db.ContactDao;
-import dev.arch3rtemp.contactexchange.di.AppScope;
+import dev.arch3rtemp.contactexchange.di.scope.AppScope;
 
 @Module
 public class DbModule {

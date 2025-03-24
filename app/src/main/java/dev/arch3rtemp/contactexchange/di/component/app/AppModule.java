@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.di.app;
+package dev.arch3rtemp.contactexchange.di.component.app;
 
 import android.content.Context;
 

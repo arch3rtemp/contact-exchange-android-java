@@ -1,10 +1,10 @@
-package dev.arch3rtemp.contactexchange.di.app;
+package dev.arch3rtemp.contactexchange.di.component.app;
 
 import dagger.BindsInstance;
 import dagger.Component;
 import dev.arch3rtemp.contactexchange.App;
-import dev.arch3rtemp.contactexchange.di.AppScope;
-import dev.arch3rtemp.contactexchange.di.activity.ActivityComponent;
+import dev.arch3rtemp.contactexchange.di.scope.AppScope;
+import dev.arch3rtemp.contactexchange.di.component.activity.ActivityComponent;
 
 @AppScope
 @Component(modules = {AppModule.class})

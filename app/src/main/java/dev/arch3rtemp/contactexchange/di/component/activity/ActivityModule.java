@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.di.activity;
+package dev.arch3rtemp.contactexchange.di.component.activity;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;

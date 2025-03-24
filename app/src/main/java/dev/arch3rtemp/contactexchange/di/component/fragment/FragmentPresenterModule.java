@@ -1,4 +1,4 @@
-package dev.arch3rtemp.contactexchange.di.fragment;
+package dev.arch3rtemp.contactexchange.di.component.fragment;
 
 import dagger.Binds;
 import dagger.Module;

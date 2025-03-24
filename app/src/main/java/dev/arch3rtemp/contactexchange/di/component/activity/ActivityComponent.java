@@ -1,11 +1,11 @@
-package dev.arch3rtemp.contactexchange.di.activity;
+package dev.arch3rtemp.contactexchange.di.component.activity;
 
 import androidx.fragment.app.FragmentActivity;
 
 import dagger.BindsInstance;
 import dagger.Subcomponent;
-import dev.arch3rtemp.contactexchange.di.ActivityScope;
-import dev.arch3rtemp.contactexchange.di.fragment.FragmentComponent;
+import dev.arch3rtemp.contactexchange.di.scope.ActivityScope;
+import dev.arch3rtemp.contactexchange.di.component.fragment.FragmentComponent;
 import dev.arch3rtemp.contactexchange.ui.MainActivity;
 
 @ActivityScope
