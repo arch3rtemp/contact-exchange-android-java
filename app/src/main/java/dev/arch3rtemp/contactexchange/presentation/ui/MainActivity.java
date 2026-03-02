@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void renderEffect(MainContract.MainEffect effect) {
-        if (effect instanceof MainContract.MainEffect.ShowMessage showMessage) {
-            Toast.makeText(this, showMessage.message(), Toast.LENGTH_SHORT).show();
+        if (effect instanceof MainContract.MainEffect.ShowMessage(String message)) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
 

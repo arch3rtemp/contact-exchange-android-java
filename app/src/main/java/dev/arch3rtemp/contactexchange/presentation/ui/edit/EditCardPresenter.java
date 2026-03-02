@@ -10,6 +10,7 @@ import dev.arch3rtemp.contactexchange.presentation.mapper.CardUiMapper;
 
 import javax.inject.Inject;
 
+import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
 import dev.arch3rtemp.contactexchange.ui.base.BasePresenter;
 import dev.arch3rtemp.contactexchange.ui.util.StringResourceManager;
 
@@ -39,10 +40,10 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
 
     @Override
     protected void handleEvent(EditCardContract.EditCardEvent event) {
-        if (event instanceof EditCardContract.EditCardEvent.OnCardLoad onCardLoad) {
-            getCard(onCardLoad.id());
-        } else if (event instanceof EditCardContract.EditCardEvent.OnUpdateButtonPress onSaveButtonPress) {
-            updateCard(onSaveButtonPress.card());
+        if (event instanceof EditCardContract.EditCardEvent.OnCardLoad(int id)) {
+            getCard(id);
+        } else if (event instanceof EditCardContract.EditCardEvent.OnUpdateButtonPress(Card card)) {
+            updateCard(card);
         }
     }
 
@@ -61,9 +62,9 @@ public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEv
 
     private void updateCard(Card newCard) {
         if (validateCard.invoke(newCard)) {
-            if (getCurrentState() instanceof EditCardContract.EditCardState.Success current) {
+            if (getCurrentState() instanceof EditCardContract.EditCardState.Success(CardUi card)) {
 
-                var disposable = updateCard.invoke(mapper.fromUiModel(current.card()), newCard)
+                var disposable = updateCard.invoke(mapper.fromUiModel(card), newCard)
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.main())
                         .subscribe(

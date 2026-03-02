@@ -1,5 +1,10 @@
 package dev.arch3rtemp.contactexchange.presentation.ui.home;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.usecase.DeleteCardUseCase;
@@ -7,12 +12,6 @@ import dev.arch3rtemp.contactexchange.domain.usecase.FilterCardsUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.GetMyCardsUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.GetScannedCardsUseCase;
 import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.contactexchange.presentation.mapper.CardUiMapper;
 import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
@@ -55,12 +54,12 @@ public class HomePresenter extends BasePresenter<HomeContract.HomeEvent, HomeCon
         } else if (homeEvent instanceof HomeContract.HomeEvent.OnContactsLoad) {
             getScannedCards();
             subscribeToFilter();
-        } else if (homeEvent instanceof HomeContract.HomeEvent.OnContactDeleted onContactDeleted) {
-            deleteCard(onContactDeleted.card());
-        } else if (homeEvent instanceof HomeContract.HomeEvent.OnContactSaved onContactSaved) {
-            saveCard(onContactSaved.card());
-        } else if (homeEvent instanceof HomeContract.HomeEvent.OnSearchQuery onSearchQuery) {
-            filterCards(onSearchQuery.query(), unfilteredContacts);
+        } else if (homeEvent instanceof HomeContract.HomeEvent.OnContactDeleted(CardUi card)) {
+            deleteCard(card);
+        } else if (homeEvent instanceof HomeContract.HomeEvent.OnContactSaved(CardUi card)) {
+            saveCard(card);
+        } else if (homeEvent instanceof HomeContract.HomeEvent.OnSearchQuery(String query)) {
+            filterCards(query, unfilteredContacts);
         }
     }
 

@@ -1,11 +1,10 @@
 package dev.arch3rtemp.contactexchange.presentation.ui;
 
+import javax.inject.Inject;
+
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
-
-import javax.inject.Inject;
-
 import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.contactexchange.ui.base.BasePresenter;
 import dev.arch3rtemp.contactexchange.ui.util.StringResourceManager;
@@ -30,14 +29,14 @@ public class MainPresenter extends BasePresenter<MainContract.MainEvent, MainCon
 
     @Override
     protected void handleEvent(MainContract.MainEvent mainEvent) {
-        if (mainEvent instanceof MainContract.MainEvent.OnQrScanCanceled onQrScanCanceled) {
-            showMessage(onQrScanCanceled.message());
-        } else if (mainEvent instanceof MainContract.MainEvent.OnQrScanComplete onQrScanComplete) {
-            createCard(onQrScanComplete.card());
-        } else if (mainEvent instanceof MainContract.MainEvent.OnQrScanFail onQrScanFail) {
-            showMessage(onQrScanFail.message());
-        } else if (mainEvent instanceof MainContract.MainEvent.OnJsonParseFail onJsonParseFail) {
-            showMessage(onJsonParseFail.message());
+        if (mainEvent instanceof MainContract.MainEvent.OnQrScanCanceled(String message)) {
+            showMessage(message);
+        } else if (mainEvent instanceof MainContract.MainEvent.OnQrScanComplete(Card card)) {
+            createCard(card);
+        } else if (mainEvent instanceof MainContract.MainEvent.OnQrScanFail(String message)) {
+            showMessage(message);
+        } else if (mainEvent instanceof MainContract.MainEvent.OnJsonParseFail(String message)) {
+            showMessage(message);
         }
     }
 
