@@ -26,12 +26,12 @@ import dev.arch3rtemp.contactexchange.databinding.FragmentCardBinding;
 
 import dev.arch3rtemp.contactexchange.presentation.mapper.CardToJsonMapper;
 import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
-import dev.arch3rtemp.ui.util.DeviceSizeResolver;
+import dev.arch3rtemp.contactexchange.ui.util.DeviceSizeResolver;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import dagger.hilt.android.AndroidEntryPoint;
-import dev.arch3rtemp.ui.base.BaseFragment;
+import dev.arch3rtemp.contactexchange.ui.base.BaseFragment;
 
 import javax.inject.Inject;
 

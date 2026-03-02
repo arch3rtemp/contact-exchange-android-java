@@ -7,8 +7,8 @@ import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
 import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
-import dev.arch3rtemp.ui.base.BasePresenter;
-import dev.arch3rtemp.ui.util.StringResourceManager;
+import dev.arch3rtemp.contactexchange.ui.base.BasePresenter;
+import dev.arch3rtemp.contactexchange.ui.util.StringResourceManager;
 
 public class MainPresenter extends BasePresenter<MainContract.MainEvent, MainContract.MainEffect, MainContract.MainState> {
 

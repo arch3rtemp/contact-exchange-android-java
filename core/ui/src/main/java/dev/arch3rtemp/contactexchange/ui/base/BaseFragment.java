@@ -1,4 +1,4 @@
-package dev.arch3rtemp.ui.base;
+package dev.arch3rtemp.contactexchange.ui.base;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

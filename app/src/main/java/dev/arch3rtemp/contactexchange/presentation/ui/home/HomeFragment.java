@@ -26,8 +26,8 @@ import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
 import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.CardsAdapter;
 import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.listener.CardClickListener;
 import dev.arch3rtemp.contactexchange.presentation.ui.home.adapter.listener.ContactClickListener;
-import dev.arch3rtemp.ui.base.BaseFragment;
-import dev.arch3rtemp.ui.view.AppSearchView;
+import dev.arch3rtemp.contactexchange.ui.base.BaseFragment;
+import dev.arch3rtemp.contactexchange.ui.view.AppSearchView;
 
 @AndroidEntryPoint
 public class HomeFragment extends BaseFragment<HomeContract.HomeEvent, HomeContract.HomeEffect, HomeContract.HomeState, FragmentHomeBinding, HomePresenter> implements CardClickListener, ContactClickListener {

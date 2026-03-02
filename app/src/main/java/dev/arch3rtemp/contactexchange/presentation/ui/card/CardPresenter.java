@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.contactexchange.presentation.mapper.CardUiMapper;
-import dev.arch3rtemp.ui.base.BasePresenter;
+import dev.arch3rtemp.contactexchange.ui.base.BasePresenter;
 
 public class CardPresenter extends BasePresenter<CardContract.CardEvent, CardContract.CardEffect, CardContract.CardState> {
 
@@ -31,10 +31,10 @@ public class CardPresenter extends BasePresenter<CardContract.CardEvent, CardCon
 
     @Override
     protected void handleEvent(CardContract.CardEvent cardEvent) {
-        if (cardEvent instanceof CardContract.CardEvent.OnCardDelete onCardDelete) {
-            deleteCard(onCardDelete.id());
-        } else if (cardEvent instanceof CardContract.CardEvent.OnCardLoad onCardLoad) {
-            getCard(onCardLoad.id());
+        if (cardEvent instanceof CardContract.CardEvent.OnCardDelete(int id)) {
+            deleteCard(id);
+        } else if (cardEvent instanceof CardContract.CardEvent.OnCardLoad(int id)) {
+            getCard(id);
         }
     }
 

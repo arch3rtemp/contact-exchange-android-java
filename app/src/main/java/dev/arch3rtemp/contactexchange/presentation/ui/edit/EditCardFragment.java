@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import dev.arch3rtemp.contactexchange.databinding.FragmentCardEditBinding;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
-import dev.arch3rtemp.ui.base.BaseFragment;
+import dev.arch3rtemp.contactexchange.ui.base.BaseFragment;
 
 @AndroidEntryPoint
 public class EditCardFragment extends BaseFragment<EditCardContract.EditCardEvent, EditCardContract.EditCardEffect, EditCardContract.EditCardState, FragmentCardEditBinding, EditCardPresenter> {

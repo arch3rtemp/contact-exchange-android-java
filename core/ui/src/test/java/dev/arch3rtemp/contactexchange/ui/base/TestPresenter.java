@@ -1,4 +1,4 @@
-package dev.arch3rtemp.ui.base;
+package dev.arch3rtemp.contactexchange.ui.base;
 
 public class TestPresenter extends BasePresenter<TestEvent, TestEffect, TestState> {
     @Override

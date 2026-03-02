@@ -22,7 +22,7 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import dev.arch3rtemp.contactexchange.domain.model.Card;
-import dev.arch3rtemp.ui.base.BaseFragment;
+import dev.arch3rtemp.contactexchange.ui.base.BaseFragment;
 
 @AndroidEntryPoint
 public class CreateCardFragment extends BaseFragment<CreateCardContract.CreateCardEvent, CreateCardContract.CreateCardEffect, CreateCardContract.CreateCardState, FragmentCardCreateBinding, CreateCardPresenter> {
@@ -30,7 +30,7 @@ public class CreateCardFragment extends BaseFragment<CreateCardContract.CreateCa
     @Inject
     CreateCardPresenter presenter;
 
-    private int currentColor = R.color.light_navy;
+    private int currentColor = dev.arch3rtemp.contactexchange.ui.R.color.light_navy;
 
     @Override
     protected FragmentCardCreateBinding bindLayout(LayoutInflater inflater, ViewGroup container, boolean attachToRoot) {
@@ -68,37 +68,37 @@ public class CreateCardFragment extends BaseFragment<CreateCardContract.CreateCa
         getBinding().tvColorLightNavy.setOnClickListener((v) -> {
             defaultColorsView();
             getBinding().tvColorLightNavy.setBackgroundResource(R.drawable.shape_selected_card_color_light_navy_bg);
-            setBackgroundColorWithAnimation(currentColor, R.color.light_navy);
+            setBackgroundColorWithAnimation(currentColor, dev.arch3rtemp.contactexchange.ui.R.color.light_navy);
         });
         getBinding().tvColorAquaMarine.setOnClickListener((v) ->  {
             defaultColorsView();
             getBinding().tvColorAquaMarine.setBackgroundResource(R.drawable.shape_selected_card_color_aqua_marine_bg);
-            setBackgroundColorWithAnimation(currentColor, R.color.aqua_marine);
+            setBackgroundColorWithAnimation(currentColor, dev.arch3rtemp.contactexchange.ui.R.color.aqua_marine);
         });
         getBinding().tvColorUglyYellow.setOnClickListener((v) ->  {
             defaultColorsView();
             getBinding().tvColorUglyYellow.setBackgroundResource(R.drawable.shape_selected_card_color_ugly_yellow_bg);
-            setBackgroundColorWithAnimation(currentColor, R.color.ugly_yellow);
+            setBackgroundColorWithAnimation(currentColor, dev.arch3rtemp.contactexchange.ui.R.color.ugly_yellow);
         });
         getBinding().tvColorShamrockGreen.setOnClickListener((v) ->  {
             defaultColorsView();
             getBinding().tvColorShamrockGreen.setBackgroundResource(R.drawable.shape_selected_card_color_shamrock_green_bg);
-            setBackgroundColorWithAnimation(currentColor, R.color.shamrock_green);
+            setBackgroundColorWithAnimation(currentColor, dev.arch3rtemp.contactexchange.ui.R.color.shamrock_green);
         });
         getBinding().tvColorBlackThree.setOnClickListener((v) ->  {
             defaultColorsView();
             getBinding().tvColorBlackThree.setBackgroundResource(R.drawable.shape_selected_card_color_black_bg);
-            setBackgroundColorWithAnimation(currentColor, R.color.black_three);
+            setBackgroundColorWithAnimation(currentColor, dev.arch3rtemp.contactexchange.ui.R.color.black_three);
         });
         getBinding().tvColorPumpkin.setOnClickListener((v) ->  {
             defaultColorsView();
             getBinding().tvColorPumpkin.setBackgroundResource(R.drawable.shape_selected_card_color_pumpkin_bg);
-            setBackgroundColorWithAnimation(currentColor, R.color.pumpkin);
+            setBackgroundColorWithAnimation(currentColor, dev.arch3rtemp.contactexchange.ui.R.color.pumpkin);
         });
         getBinding().tvColorDarkishPurple.setOnClickListener((v) ->  {
             defaultColorsView();
             getBinding().tvColorDarkishPurple.setBackgroundResource(R.drawable.shape_selected_card_color_darkish_purple_bg);
-            setBackgroundColorWithAnimation(currentColor, R.color.darkish_purple);
+            setBackgroundColorWithAnimation(currentColor, dev.arch3rtemp.contactexchange.ui.R.color.darkish_purple);
         });
         getBinding().btnCreate.setOnClickListener((v) ->  {
             var card = getDataFromFields();

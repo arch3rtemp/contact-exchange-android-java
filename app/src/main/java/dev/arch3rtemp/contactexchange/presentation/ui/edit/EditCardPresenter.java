@@ -10,8 +10,8 @@ import dev.arch3rtemp.contactexchange.presentation.mapper.CardUiMapper;
 
 import javax.inject.Inject;
 
-import dev.arch3rtemp.ui.base.BasePresenter;
-import dev.arch3rtemp.ui.util.StringResourceManager;
+import dev.arch3rtemp.contactexchange.ui.base.BasePresenter;
+import dev.arch3rtemp.contactexchange.ui.util.StringResourceManager;
 
 public class EditCardPresenter extends BasePresenter<EditCardContract.EditCardEvent, EditCardContract.EditCardEffect, EditCardContract.EditCardState> {
 

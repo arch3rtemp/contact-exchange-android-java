@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.domain.model.Card;
 import dev.arch3rtemp.contactexchange.presentation.model.CardUi;
-import dev.arch3rtemp.ui.util.TimeConverter;
+import dev.arch3rtemp.contactexchange.ui.util.TimeConverter;
 
 public class CardUiMapper {
 

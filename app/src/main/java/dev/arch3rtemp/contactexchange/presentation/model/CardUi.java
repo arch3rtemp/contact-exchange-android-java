@@ -4,7 +4,7 @@ import android.graphics.PorterDuffColorFilter;
 
 import androidx.annotation.ColorInt;
 
-import dev.arch3rtemp.ui.util.ColorUtils;
+import dev.arch3rtemp.contactexchange.ui.util.ColorUtils;
 
 public record CardUi(
         int id,

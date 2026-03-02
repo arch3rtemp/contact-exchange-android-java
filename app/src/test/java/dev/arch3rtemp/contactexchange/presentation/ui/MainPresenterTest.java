@@ -16,7 +16,7 @@ import dev.arch3rtemp.contactexchange.TestData;
 import dev.arch3rtemp.contactexchange.domain.usecase.SaveCardUseCase;
 import dev.arch3rtemp.contactexchange.domain.util.SchedulerProvider;
 import dev.arch3rtemp.contactexchange.rx.TestSchedulerProvider;
-import dev.arch3rtemp.ui.util.StringResourceManager;
+import dev.arch3rtemp.contactexchange.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.observers.TestObserver;
 

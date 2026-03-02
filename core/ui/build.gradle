@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'dev.arch3rtemp.ui'
-    compileSdk 35
+    namespace 'dev.arch3rtemp.contactexchange.ui'
+    compileSdk 36
 
     defaultConfig {
-        minSdk 21
+        minSdk 23
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -23,8 +23,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
         coreLibraryDesugaringEnabled true
     }
 }

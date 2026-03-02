@@ -29,7 +29,7 @@ import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.TestData;
 import dev.arch3rtemp.contactexchange.data.mapper.JsonToCardMapper;
 import dev.arch3rtemp.contactexchange.rx.RxTrampolineRule;
-import dev.arch3rtemp.ui.util.StringResourceManager;
+import dev.arch3rtemp.contactexchange.ui.util.StringResourceManager;
 
 public class ScannerRepositoryImplTest {
 

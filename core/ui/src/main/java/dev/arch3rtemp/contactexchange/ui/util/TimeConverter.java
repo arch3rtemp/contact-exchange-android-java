@@ -1,4 +1,4 @@
-package dev.arch3rtemp.ui.util;
+package dev.arch3rtemp.contactexchange.ui.util;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

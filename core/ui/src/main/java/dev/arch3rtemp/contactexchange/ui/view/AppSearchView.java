@@ -1,4 +1,4 @@
-package dev.arch3rtemp.ui.view;
+package dev.arch3rtemp.contactexchange.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,8 +11,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import dev.arch3rtemp.ui.R;
-import dev.arch3rtemp.ui.util.ColorUtils;
+import dev.arch3rtemp.contactexchange.ui.R;
+import dev.arch3rtemp.contactexchange.ui.util.ColorUtils;
 
 public class AppSearchView extends SearchView {
 

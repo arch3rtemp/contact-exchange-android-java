@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import dev.arch3rtemp.contactexchange.TestData;
-import dev.arch3rtemp.ui.util.TimeConverter;
+import dev.arch3rtemp.contactexchange.ui.util.TimeConverter;
 
 public class CardUiMapperTest {
 

@@ -1,4 +1,4 @@
-package dev.arch3rtemp.ui.base;
+package dev.arch3rtemp.contactexchange.ui.base;
 
 import org.junit.After;
 import org.junit.Before;

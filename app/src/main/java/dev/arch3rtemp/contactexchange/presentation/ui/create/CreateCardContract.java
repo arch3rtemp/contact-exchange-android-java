@@ -1,9 +1,9 @@
 package dev.arch3rtemp.contactexchange.presentation.ui.create;
 
 import dev.arch3rtemp.contactexchange.domain.model.Card;
-import dev.arch3rtemp.ui.base.UiEffect;
-import dev.arch3rtemp.ui.base.UiEvent;
-import dev.arch3rtemp.ui.base.UiState;
+import dev.arch3rtemp.contactexchange.ui.base.UiEffect;
+import dev.arch3rtemp.contactexchange.ui.base.UiEvent;
+import dev.arch3rtemp.contactexchange.ui.base.UiState;
 
 public interface CreateCardContract {
 

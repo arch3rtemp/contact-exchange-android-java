@@ -1,4 +1,4 @@
-package dev.arch3rtemp.ui.base;
+package dev.arch3rtemp.contactexchange.ui.base;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
