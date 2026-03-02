@@ -13,7 +13,7 @@ import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.ContactClickListener;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.DeleteClickListener;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
-import dev.arch3rtemp.ui.util.ColorUtils;
+import dev.arch3rtemp.contactexchange.ui.util.ColorUtils;
 
 public class ContactHolder extends CommonViewHolder {
     private final TextView tvInitials;

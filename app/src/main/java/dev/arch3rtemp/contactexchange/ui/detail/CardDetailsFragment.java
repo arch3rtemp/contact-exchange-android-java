@@ -33,8 +33,8 @@ import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.createoredit.CreateOrEditCardFragment;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
 import dev.arch3rtemp.contactexchange.ui.result.ResultFragment;
-import dev.arch3rtemp.ui.util.ColorUtils;
-import dev.arch3rtemp.ui.util.DeviceSizeResolver;
+import dev.arch3rtemp.contactexchange.ui.util.ColorUtils;
+import dev.arch3rtemp.contactexchange.ui.util.DeviceSizeResolver;
 
 public class CardDetailsFragment extends Fragment implements CardDetailsContract.View {
 
@@ -201,6 +201,15 @@ public class CardDetailsFragment extends Fragment implements CardDetailsContract
     public void onDestroyView() {
         super.onDestroyView();
         presenter.onDestroy();
+        clCard = null;
+        clEdit = null;
+        clDelete = null;
+        tvName = null;
+        tvPosition = null;
+        tvEmail = null;
+        tvPhoneMobile = null;
+        tvPhoneOffice = null;
+        ivQr = null;
     }
 
     public static CardDetailsFragment newInstance(int id, boolean isMy) {

@@ -1,8 +1,8 @@
 package dev.arch3rtemp.contactexchange.ui.detail;
 
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
-import dev.arch3rtemp.ui.base.BasePresenter;
-import dev.arch3rtemp.ui.base.BaseView;
+import dev.arch3rtemp.contactexchange.ui.base.BasePresenter;
+import dev.arch3rtemp.contactexchange.ui.base.BaseView;
 
 public interface CardDetailsContract {
 

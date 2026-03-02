@@ -24,7 +24,7 @@ import dev.arch3rtemp.contactexchange.App;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
-import dev.arch3rtemp.ui.util.ColorUtils;
+import dev.arch3rtemp.contactexchange.ui.util.ColorUtils;
 
 public class CreateOrEditCardFragment extends Fragment implements View.OnClickListener, CreateOrEditCardContract.View {
 
@@ -94,11 +94,11 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             btnCreateOrSave.setOnClickListener(this);
         } else {
             initColorsView(view);
-            currentColor = ContextCompat.getColor(requireContext(), R.color.light_navy);
+            currentColor = ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.light_navy);
             cardBackground = clCreateOrEdit.getBackground();
             tvNavy.setBackgroundResource(R.drawable.shape_selected_card_color_light_navy_bg);
 
-            setBackgroundColorWithAnimationAndRetainShape(ContextCompat.getColor(requireContext(), R.color.light_navy), ContextCompat.getColor(requireContext(), R.color.light_navy), cardBackground);
+            setBackgroundColorWithAnimationAndRetainShape(ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.light_navy), ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.light_navy), cardBackground);
             setListeners();
         }
     }
@@ -165,37 +165,37 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
         int clickedId = v.getId();
 
         if (clickedId == R.id.tv_color_light_navy) {
-            var color = ContextCompat.getColor(requireContext(), R.color.light_navy);
+            var color = ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.light_navy);
             tvNavy.setBackgroundResource(R.drawable.shape_selected_card_color_light_navy_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_aqua_marine) {
-            var color = ContextCompat.getColor(requireContext(), R.color.aqua_marine);
+            var color = ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.aqua_marine);
             tvAqua.setBackgroundResource(R.drawable.shape_selected_card_color_aqua_marine_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_ugly_yellow) {
-            var color = ContextCompat.getColor(requireContext(), R.color.ugly_yellow);
+            var color = ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.ugly_yellow);
             tvYellow.setBackgroundResource(R.drawable.shape_selected_card_color_ugly_yellow_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_shamrock_green) {
-            var color = ContextCompat.getColor(requireContext(), R.color.shamrock_green);
+            var color = ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.shamrock_green);
             tvGreen.setBackgroundResource(R.drawable.shape_selected_card_color_shamrock_green_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_black_three) {
-            var color = ContextCompat.getColor(requireContext(), R.color.black_three);
+            var color = ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.black_three);
             tvBlack.setBackgroundResource(R.drawable.shape_selected_card_color_black_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_pumpkin) {
-            var color = ContextCompat.getColor(requireContext(), R.color.pumpkin);
+            var color = ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.pumpkin);
             tvPumpkin.setBackgroundResource(R.drawable.shape_selected_card_color_pumpkin_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
         } else if (clickedId == R.id.tv_color_darkish_purple) {
-            var color = ContextCompat.getColor(requireContext(), R.color.darkish_purple);
+            var color = ContextCompat.getColor(requireContext(), dev.arch3rtemp.contactexchange.ui.R.color.darkish_purple);
             tvPurple.setBackgroundResource(R.drawable.shape_selected_card_color_darkish_purple_bg);
             setBackgroundColorWithAnimationAndRetainShape(currentColor, color, cardBackground);
             currentColor = color;
@@ -263,6 +263,28 @@ public class CreateOrEditCardFragment extends Fragment implements View.OnClickLi
             }
         });
         valueAnimator.start();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.onDestroy();
+        clCreateOrEdit = null;
+        btnCreateOrSave = null;
+        tvNavy = null;
+        tvAqua = null;
+        tvYellow = null;
+        tvGreen = null;
+        tvBlack = null;
+        tvPumpkin = null;
+        tvPurple = null;
+        cardBackground = null;
+        etFullName = null;
+        etCompany = null;
+        etPosition = null;
+        etEmail = null;
+        etPhoneMobile = null;
+        etPhoneOffice = null;
     }
 
     public static CreateOrEditCardFragment newInstance(int id, boolean isCreate) {

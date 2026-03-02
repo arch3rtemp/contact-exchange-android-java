@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.listener.ContactClickListener;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
-import dev.arch3rtemp.ui.util.ColorUtils;
+import dev.arch3rtemp.contactexchange.ui.util.ColorUtils;
 
 public class CardHolder extends CommonViewHolder {
     private final View itemView;

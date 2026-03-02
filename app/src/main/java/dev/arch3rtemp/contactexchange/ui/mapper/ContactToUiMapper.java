@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
-import dev.arch3rtemp.ui.util.TimeConverter;
+import dev.arch3rtemp.contactexchange.ui.util.TimeConverter;
 
 public class ContactToUiMapper {
     private final TimeConverter timeConverter;

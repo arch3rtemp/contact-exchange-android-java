@@ -17,6 +17,8 @@ import dev.arch3rtemp.contactexchange.R;
 
 public class ResultFragment extends Fragment {
 
+    private LinearLayout llDeleted;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class ResultFragment extends Fragment {
     }
 
     private void initUI(View view) {
-        LinearLayout llDeleted = view.findViewById(R.id.ll_deleted);
+        llDeleted = view.findViewById(R.id.ll_deleted);
         llDeleted.setClipChildren(false);
         llDeleted.setClipToPadding(false);
 
@@ -59,6 +61,12 @@ public class ResultFragment extends Fragment {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(scaleUpX).with(scaleUpY).with(scaleDownX).with(scaleDownY);
         animatorSet.start();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        llDeleted = null;
     }
 
     public static ResultFragment newInstance() {

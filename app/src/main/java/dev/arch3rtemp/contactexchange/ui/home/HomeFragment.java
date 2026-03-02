@@ -38,6 +38,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     Router router;
 
     private FloatingActionButton fab;
+    private RecyclerView.OnScrollListener scrollListener;
     private RecyclerView rvCards;
     private AppCompatTextView tvCardsErrorDesc;
     private ImageView ivCardsEmpty;
@@ -118,7 +119,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     private void observeRecyclerListener() {
-        rvCards.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        scrollListener = new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -134,7 +135,8 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                     fab.setVisibility(View.VISIBLE);
                 }
             }
-        });
+        };
+        rvCards.addOnScrollListener(scrollListener);
     }
 
     private void getMyCards() {
@@ -182,9 +184,18 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        rvCards.removeOnScrollListener(scrollListener);
         cardAdapter = null;
         contactAdapter = null;
         presenter.onDestroy();
+        fab = null;
+        rvCards = null;
+        tvCardsErrorDesc = null;
+        ivCardsEmpty = null;
+        ivSearch = null;
+        rvContacts = null;
+        tvContactsErrorDesc = null;
+        ivContactsEmpty = null;
     }
 
     private void showCardsContent(List<ContactUi> cards) {

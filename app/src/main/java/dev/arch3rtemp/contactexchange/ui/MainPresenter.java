@@ -1,12 +1,8 @@
 package dev.arch3rtemp.contactexchange.ui;
 
-import android.content.Context;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions;
-import com.google.mlkit.vision.codescanner.GmsBarcodeScanning;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +13,7 @@ import dev.arch3rtemp.contactexchange.R;
 import dev.arch3rtemp.contactexchange.db.ContactDao;
 import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.contactexchange.util.SchedulerProvider;
-import dev.arch3rtemp.ui.util.StringResourceManager;
+import dev.arch3rtemp.contactexchange.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class MainPresenter implements MainContract.Presenter {

@@ -7,7 +7,7 @@ import dev.arch3rtemp.contactexchange.db.ContactDao;
 import dev.arch3rtemp.contactexchange.db.model.Contact;
 import dev.arch3rtemp.contactexchange.ui.mapper.ContactToUiMapper;
 import dev.arch3rtemp.contactexchange.util.SchedulerProvider;
-import dev.arch3rtemp.ui.util.StringResourceManager;
+import dev.arch3rtemp.contactexchange.ui.util.StringResourceManager;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public class CreateOrEditCardPresenter implements CreateOrEditCardContract.Presenter {
@@ -31,7 +31,9 @@ public class CreateOrEditCardPresenter implements CreateOrEditCardContract.Prese
     @Override
     public void onCreate(CreateOrEditCardContract.View view) {
         this.view = view;
-        compositeDisposable = new CompositeDisposable();
+        if (compositeDisposable == null || compositeDisposable.isDisposed()) {
+            compositeDisposable = new CompositeDisposable();
+        }
     }
 
     private boolean containsBlankField(Contact contact) {
@@ -98,7 +100,9 @@ public class CreateOrEditCardPresenter implements CreateOrEditCardContract.Prese
 
     @Override
     public void onDestroy() {
-        compositeDisposable.clear();
+        if (compositeDisposable != null) {
+            compositeDisposable.clear();
+        }
         this.view = null;
     }
 }

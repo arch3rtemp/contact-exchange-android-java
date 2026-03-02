@@ -1,4 +1,4 @@
-package dev.arch3rtemp.ui.view;
+package dev.arch3rtemp.contactexchange.ui.view;
 
 import android.text.Editable;
 import android.text.TextWatcher;

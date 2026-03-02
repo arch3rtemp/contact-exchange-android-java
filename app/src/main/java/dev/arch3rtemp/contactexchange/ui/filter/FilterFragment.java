@@ -26,7 +26,7 @@ import dev.arch3rtemp.contactexchange.router.Router;
 import dev.arch3rtemp.contactexchange.ui.detail.CardDetailsFragment;
 import dev.arch3rtemp.contactexchange.ui.home.adapter.ContactRecyclerAdapter;
 import dev.arch3rtemp.contactexchange.ui.model.ContactUi;
-import dev.arch3rtemp.ui.view.FilterTextWatcher;
+import dev.arch3rtemp.contactexchange.ui.view.FilterTextWatcher;
 
 public class FilterFragment extends Fragment implements FilterContract.View {
 
@@ -115,6 +115,16 @@ public class FilterFragment extends Fragment implements FilterContract.View {
     @Override
     public void showMessage(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.onDestroy();
+        etSearch = null;
+        ivSearch = null;
+        rvContacts = null;
+        rvContactAdapter = null;
     }
 
     public static FilterFragment newInstance() {
