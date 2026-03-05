@@ -1,6 +1,6 @@
 [versions]
 #Gradle
-gradle-plugin = "9.0.1"
+gradle-plugin = "9.1.0"
 #Jetpack
 core = "1.17.0"
 appcompat = "1.7.1"
@@ -52,7 +52,7 @@ rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroi
 #Misc
 desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
 swipereveallayout = { module = "com.github.hydrated:swipereveallayout", version.ref = "swipereveallayout" } #TODO Legacy library to be replaced
-qrgenerator = { module = "com.github.androidmads:qrgenerator", version.ref = "qrgenerator" }
+qrgenerator = { module = "com.github.androidmads:QRGenerator", version.ref = "qrgenerator" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 #Testing
 junit = { module = "junit:junit", version.ref = "junit" }
